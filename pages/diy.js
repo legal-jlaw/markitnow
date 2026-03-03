@@ -116,7 +116,7 @@ export default function DIY() {
                   }}>
                     {s.id < step ? "✓" : s.id}
                   </div>
-                  <div style={{ fontSize: 10, color: s.id === step ? "#c9a84c" : "rgba(255,255,255,0.25)", fontWeight: 600, textAlign: "center", display: window?.innerWidth > 600 ? "block" : "none" }}>
+                  <div style={{ fontSize: 10, color: s.id === step ? "#c9a84c" : "rgba(255,255,255,0.25)", fontWeight: 600, textAlign: "center", display: "block" }}>
                     {s.title}
                   </div>
                 </div>
