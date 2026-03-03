@@ -297,7 +297,7 @@ export default function Pricing() {
 
         {/* FAQ */}
         <div style={{ maxWidth: 720, margin: "0 auto 100px", padding: "0 24px" }}>
-          <h2 style={{ fontSize: 36, fontWeight: 900, color: "#fff", letterSpacing: -1, marginBottom: 48, textAlign: "center" }}>Common questions</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, color: "#fff", letterSpacing: -1, marginBottom: 48, textAlign: "center" }}>Frequently Asked Questions</h2>
           {[
             { q: "Are USPTO filing fees included?", a: "No. USPTO government fees are separate and paid directly to the USPTO. For TEAS Plus applications, the fee is $250 per class. We'll always tell you the total cost upfront before you pay anything." },
             { q: "Who is the attorney?", a: "All filings are handled by a U.S.-licensed attorney in the District of Columbia with experience in trademark prosecution and entertainment industry clients." },
