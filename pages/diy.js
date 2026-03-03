@@ -46,7 +46,7 @@ export default function DIY() {
     setAiLoading(true);
     setAiSuggestion("");
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/ai-suggest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
