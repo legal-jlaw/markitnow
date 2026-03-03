@@ -8,8 +8,9 @@ const SERVICES = [
     items: [
       {
         name: "Trademark Search",
-        price: "Free",
-        priceNote: "Always free",
+        ourFee: "Free",
+        usptoFee: null,
+        totalNote: "Always free",
         description: "Search the live USPTO database of 4M+ marks instantly. See active conflicts, dead marks, and status.",
         features: ["Live USPTO database", "Active & dead marks", "No account required", "Results in seconds"],
         cta: "Search Free",
@@ -19,8 +20,9 @@ const SERVICES = [
       },
       {
         name: "AI Analysis Report",
-        price: "$99",
-        priceNote: "One-time",
+        ourFee: "$99",
+        usptoFee: null,
+        totalNote: "No USPTO fee",
         description: "Full AI-powered conflict analysis with risk scoring, DuPont factor breakdown, and filing recommendations.",
         features: ["Likelihood of confusion analysis", "Risk score (0–100)", "Class-by-class breakdown", "Filing strategy recommendations"],
         cta: "Get Report",
@@ -30,8 +32,9 @@ const SERVICES = [
       },
       {
         name: "Attorney Memo",
-        price: "$149",
-        priceNote: "One-time",
+        ourFee: "$149",
+        usptoFee: null,
+        totalNote: "No USPTO fee",
         description: "A formal attorney-reviewed legal memo covering all 13 DuPont factors with prosecution strategy.",
         features: ["All 13 DuPont factors analyzed", "Attorney-signed memo", "Risk matrix", "Prosecution strategy"],
         cta: "Get Memo",
@@ -45,11 +48,12 @@ const SERVICES = [
     category: "Filing Services",
     items: [
       {
-        name: "Attorney-Filed TEAS Plus",
-        price: "$399",
-        priceNote: "+ USPTO fees",
+        name: "Attorney-Filed Application",
+        ourFee: "$399",
+        usptoFee: "$350/class",
+        totalNote: "Total: $749+ per class",
         description: "Full trademark application filed by a U.S.-licensed DC attorney. Includes specimen review and class strategy.",
-        features: ["Licensed DC attorney files", "Specimen review included", "Class strategy consultation", "USPTO filing fees separate (~$250/class)"],
+        features: ["Licensed DC attorney files", "Specimen review included", "Class strategy consultation", "Our fee: $399 + USPTO: $350/class"],
         cta: "Start Filing",
         ctaAction: "file",
         highlight: true,
@@ -57,10 +61,11 @@ const SERVICES = [
       },
       {
         name: "Statement of Use",
-        price: "$249",
-        priceNote: "+ USPTO fees",
+        ourFee: "$249",
+        usptoFee: "$150/class",
+        totalNote: "Total: $399+ per class",
         description: "Filed when your intent-to-use application is approved and you're ready to show use in commerce.",
-        features: ["Specimen preparation review", "Attorney-filed SOU", "Use in commerce guidance", "USPTO fees separate"],
+        features: ["Specimen preparation review", "Attorney-filed SOU", "Use in commerce guidance", "Our fee: $249 + USPTO: $150/class"],
         cta: "File SOU",
         ctaAction: "contact",
         highlight: false,
@@ -68,10 +73,11 @@ const SERVICES = [
       },
       {
         name: "Trademark Revival",
-        price: "$349",
-        priceNote: "+ USPTO fees",
+        ourFee: "$349",
+        usptoFee: "Varies",
+        totalNote: "USPTO fee varies by type",
         description: "Revive an abandoned trademark application with a petition to the USPTO. Time-sensitive — act fast.",
-        features: ["Petition to revive drafted", "Attorney-filed", "Urgency analysis included", "USPTO fees separate"],
+        features: ["Petition to revive drafted", "Attorney-filed", "Urgency analysis included", "Our fee: $349 + USPTO fees"],
         cta: "Revive Now",
         ctaAction: "contact",
         highlight: false,
@@ -84,8 +90,9 @@ const SERVICES = [
     items: [
       {
         name: "Portfolio Monitor",
-        price: "$49",
-        priceNote: "per mark / year",
+        ourFee: "$49/yr",
+        usptoFee: null,
+        totalNote: "Per mark, no USPTO fee",
         description: "We watch your trademark 24/7 and alert you to status changes, office actions, and upcoming deadlines.",
         features: ["Weekly USPTO status checks", "Deadline alerts (renewals, SOU)", "Office action notifications", "Client dashboard access"],
         cta: "Start Monitoring",
@@ -95,10 +102,11 @@ const SERVICES = [
       },
       {
         name: "Renewal Filing",
-        price: "$199",
-        priceNote: "+ USPTO fees",
+        ourFee: "$199",
+        usptoFee: "$325/class",
+        totalNote: "Total: $524+ per class",
         description: "Section 8 & 15 declarations (years 5–6) and Section 9 renewals (year 10+) filed by a licensed attorney.",
-        features: ["Section 8 & 15 declarations", "Section 9 renewals", "Attorney-filed", "Deadline monitoring included"],
+        features: ["Section 8 & 15 declarations", "Section 9 renewals", "Attorney-filed", "Our fee: $199 + USPTO: $325/class"],
         cta: "File Renewal",
         ctaAction: "contact",
         highlight: false,
@@ -106,8 +114,9 @@ const SERVICES = [
       },
       {
         name: "Office Action Response",
-        price: "$499+",
-        priceNote: "quoted per case",
+        ourFee: "$499+",
+        usptoFee: null,
+        totalNote: "Quoted per case, no USPTO fee",
         description: "Attorney-drafted response to USPTO office actions. Complexity varies — contact us for a quote.",
         features: ["Attorney analysis of OA", "Full response drafted", "Likelihood of confusion arguments", "Quoted based on complexity"],
         cta: "Get Quote",
@@ -120,11 +129,11 @@ const SERVICES = [
 ];
 
 const FAQS = [
-  { q: "Are USPTO filing fees included?", a: "No. USPTO government fees are separate and paid directly to the USPTO. For TEAS Plus applications, the fee is $250 per class. We'll always tell you the total cost upfront before you pay anything." },
+  { q: "What are USPTO filing fees?", a: "USPTO fees are government fees paid directly to the U.S. Patent and Trademark Office — separate from our service fee. The base application fee is $350/class (as of January 2025). Statement of Use is $150/class. Renewals (Section 8 & 9) are $325/class. We always show you the total cost before you pay anything." },
   { q: "Who is the attorney?", a: "All filings are handled by a U.S.-licensed attorney in the District of Columbia with experience in trademark prosecution and entertainment industry clients." },
-  { q: "What if I get an Office Action?", a: "Office Action responses are quoted per case starting at $499. Contact us after receiving your OA and we'll give you a quote within 24 hours." },
+  { q: "What if I get an Office Action?", a: "Office Action responses are quoted per case starting at $499. Contact us after receiving your OA and we'll give you a quote within 24 hours. There is no additional USPTO fee to respond to most office actions." },
   { q: "What's the difference between the $99 report and the $149 memo?", a: "The $99 AI Report is a consumer-friendly risk analysis with a confidence score and plain-English explanation. The $149 Attorney Memo is a formal legal document covering all 13 DuPont factors, suitable for business decisions or sharing with investors." },
-  { q: "When do I need a Statement of Use?", a: "If you filed an intent-to-use application, you'll need to file a Statement of Use once the USPTO approves your application and you begin using the mark in commerce. Deadlines are strict — this is a good reason to use Portfolio Monitor." },
+  { q: "When do I need a Statement of Use?", a: "If you filed an intent-to-use application, you'll need to file a Statement of Use once the USPTO approves your application and you begin using the mark in commerce. The USPTO fee is $150/class plus our $249 service fee. Deadlines are strict — this is a good reason to use Portfolio Monitor." },
 ];
 
 export default function Pricing() {
@@ -142,7 +151,7 @@ export default function Pricing() {
     <>
       <Head>
         <title>Pricing — MarkItNow.ai</title>
-        <meta name="description" content="Transparent trademark pricing. Search free, AI report $99, attorney filing $399." />
+        <meta name="description" content="Transparent trademark pricing. Search free, AI report $99, attorney filing $399 + $350 USPTO fee." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
@@ -168,9 +177,23 @@ export default function Pricing() {
           <h1 style={{ fontSize: "clamp(36px, 6vw, 56px)", fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: 16, letterSpacing: -2 }}>
             Simple, transparent<br /><span style={{ color: "#c9a84c" }}>pricing.</span>
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto" }}>
-            Pick exactly what your trademark needs. No hidden fees. USPTO government filing fees are always listed separately.
+          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: 500, margin: "0 auto 0" }}>
+            Our service fee plus USPTO government fees — always shown separately so you know exactly what you're paying.
           </p>
+        </div>
+
+        {/* Fee Legend */}
+        <div style={{ maxWidth: 600, margin: "0 auto 56px", padding: "0 24px" }}>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.25)", borderRadius: 8, padding: "8px 16px" }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#c9a84c" }} />
+              <span style={{ fontSize: 13, color: "#c9a84c", fontWeight: 600 }}>Our service fee</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px" }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "rgba(255,255,255,0.4)" }} />
+              <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>USPTO government fee (paid to USPTO)</span>
+            </div>
+          </div>
         </div>
 
         {/* Service Categories */}
@@ -210,16 +233,35 @@ export default function Pricing() {
                       }}>{service.badge}</div>
                     )}
 
-                    <h3 style={{ fontSize: 17, fontWeight: 800, color: "#fff", margin: "0 0 6px" }}>{service.name}</h3>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 14 }}>
-                      <span style={{ fontSize: 30, fontWeight: 900, color: service.highlight ? "#c9a84c" : "#fff" }}>{service.price}</span>
-                      <span style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>{service.priceNote}</span>
+                    <h3 style={{ fontSize: 17, fontWeight: 800, color: "#fff", margin: "0 0 16px" }}>{service.name}</h3>
+
+                    {/* Fee Breakdown */}
+                    <div style={{ background: "rgba(0,0,0,0.2)", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: service.usptoFee ? 8 : 0 }}>
+                        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)" }}>Our fee</span>
+                        <span style={{ fontSize: 22, fontWeight: 900, color: "#c9a84c" }}>{service.ourFee}</span>
+                      </div>
+                      {service.usptoFee && (
+                        <>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)" }}>USPTO fee</span>
+                            <span style={{ fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.45)" }}>{service.usptoFee}</span>
+                          </div>
+                          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>Total</span>
+                            <span style={{ fontSize: 14, fontWeight: 800, color: "rgba(255,255,255,0.6)" }}>{service.totalNote}</span>
+                          </div>
+                        </>
+                      )}
+                      {!service.usptoFee && (
+                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>{service.totalNote}</div>
+                      )}
                     </div>
 
                     <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, marginBottom: 18 }}>{service.description}</p>
 
                     <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 8 }}>
-                      {service.features.map(f => (
+                      {service.features.filter(f => !f.includes("Our fee:")).map(f => (
                         <li key={f} style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 8 }}>
                           <span style={{ color: "#7ecba1" }}>✓</span> {f}
                         </li>
@@ -254,7 +296,7 @@ export default function Pricing() {
             <div key={q} onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: 20, marginBottom: 20, cursor: "pointer" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: "#fff", margin: 0 }}>{q}</h3>
-                <span style={{ color: "#c9a84c", fontSize: 20, fontWeight: 300 }}>{openFaq === i ? "−" : "+"}</span>
+                <span style={{ color: "#c9a84c", fontSize: 20, fontWeight: 300, flexShrink: 0, marginLeft: 16 }}>{openFaq === i ? "−" : "+"}</span>
               </div>
               {openFaq === i && (
                 <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: "12px 0 0" }}>{a}</p>
