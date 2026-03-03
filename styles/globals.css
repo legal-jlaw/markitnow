@@ -1,0 +1,41 @@
+/* styles/globals.css */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-deep: #1a3c2e;
+  --green-mid: #2d7a4f;
+  --green-light: #7ecba1;
+  --green-pale: #f0f7f2;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --bg: #f4f7f5;
+  --white: #ffffff;
+  --text: #1a2e23;
+  --text-muted: #6b8a78;
+  --border: #d4e3d9;
+  --red: #c0392b;
+  --orange: #e67e22;
+  --radius: 12px;
+  --shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+@keyframes pulse { 0%,80%,100%{transform:scale(0);opacity:.4} 40%{transform:scale(1);opacity:1} }
+@keyframes mni-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.animate-in { animation: fadeIn 0.3s ease forwards; }
+
+input, textarea, select {
+  width: 100%; padding: 9px 12px; border-radius: 8px;
+  border: 1.5px solid var(--border); font-size: 14px;
+  background: #f8faf9; color: var(--text); outline: none;
+  font-family: inherit; transition: border-color 0.15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--green-mid); }
+textarea { resize: vertical; min-height: 80px; }
+
+button { font-family: inherit; cursor: pointer; }
+a { color: inherit; text-decoration: none; }

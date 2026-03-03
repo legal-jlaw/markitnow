@@ -1,0 +1,426 @@
+import { useState, useRef } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+
+const STEPS = ["mark", "owner", "goods", "basis", "review"];
+const STEP_LABELS = {
+  mark: "The Mark", owner: "Owner Info", goods: "Goods & Services",
+  basis: "Filing Basis", review: "AI Analysis & Filing Packet",
+};
+
+const initialForm = {
+  markText: "", markType: "standard", markDescription: "",
+  ownerName: "", ownerEntity: "LLC", ownerState: "", ownerCountry: "United States",
+  ownerAddress: "", ownerCity: "", ownerStateAddr: "", ownerZip: "",
+  gsDescription: "", basis: "1b", firstUseDate: "", firstUseCommerceDate: "",
+  specimenDescription: "",
+};
+
+function Field({ label, sublabel, required, children }) {
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <label style={{ display: "block", fontWeight: 600, fontSize: 13, color: "#1a3c2e", marginBottom: 6 }}>
+        {label} {required && <span style={{ color: "#c0392b" }}>*</span>}
+        {sublabel && <span style={{ fontWeight: 400, color: "#6b8a78", fontSize: 11, marginLeft: 6 }}>{sublabel}</span>}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function StepIndicator({ current }) {
+  return (
+    <div style={{ display: "flex", gap: 0, marginBottom: 32 }}>
+      {STEPS.map((s, i) => {
+        const idx = STEPS.indexOf(current);
+        const done = i < idx;
+        const active = s === current;
+        return (
+          <div key={s} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: "50%", flexShrink: 0,
+              background: done ? "#1a3c2e" : active ? "#2d7a4f" : "#e8ede9",
+              color: done || active ? "#fff" : "#8aa898",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 11, fontWeight: 700,
+            }}>
+              {done ? "✓" : i + 1}
+            </div>
+            <div style={{ fontSize: 10, fontWeight: active ? 700 : 400, color: active ? "#1a3c2e" : "#8aa898", marginLeft: 6, whiteSpace: "nowrap" }}>
+              {STEP_LABELS[s].split(" & ")[0]}
+            </div>
+            {i < STEPS.length - 1 && (
+              <div style={{ flex: 1, height: 1, background: done ? "#1a3c2e" : "#dde8e1", margin: "0 8px" }} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export default function FilePage() {
+  const router = useRouter();
+  const { mark: initialMark } = router.query;
+
+  const [step, setStep] = useState("mark");
+  const [form, setForm] = useState({ ...initialForm, markText: initialMark || "" });
+  const [analysis, setAnalysis] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const analysisRef = useRef(null);
+  const set = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }));
+
+  async function runAnalysis() {
+    setLoading(true); setError(null); setAnalysis(null);
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1500,
+          messages: [{
+            role: "user",
+            content: `You are a USPTO trademark attorney. Analyze this trademark application and respond ONLY with valid JSON (no markdown, no backticks):
+{
+  "niceClasses": [{ "class": 41, "className": "Entertainment and Education", "idLanguage": "Entertainment services, namely...", "fee": 350, "rationale": "Why this class applies" }],
+  "totalFees": 700,
+  "riskFlags": [{ "level": "HIGH", "category": "Descriptiveness", "issue": "Brief description", "recommendation": "Action to take" }],
+  "disclaimers": ["Terms requiring disclaimer"],
+  "specimenGuidance": "What specimen evidence is needed",
+  "strengthAssessment": { "score": 75, "category": "Suggestive", "explanation": "Why this mark receives this rating" },
+  "teasPlusEligible": true,
+  "teasPlusNote": "Why eligible or not",
+  "identificationSuggestion": "A single refined USPTO-acceptable identification string",
+  "prosecutionTips": ["Practical tips"],
+  "overallRecommendation": "One paragraph summary"
+}
+
+MARK: "${form.markText}" (${form.markType})
+OWNER: ${form.ownerName} (${form.ownerEntity}, ${form.ownerState || form.ownerCountry})
+GOODS/SERVICES: ${form.gsDescription}
+BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "1b" ? "Section 1(b) Intent to Use" : "Section 44(d) Foreign Priority"}`
+          }]
+        }),
+      });
+      const data = await res.json();
+      const text = data.content?.find(b => b.type === "text")?.text || "";
+      setAnalysis(JSON.parse(text.replace(/```json|```/g, "").trim()));
+      setTimeout(() => analysisRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+    } catch (e) { setError("Analysis failed: " + e.message); }
+    setLoading(false);
+  }
+
+  function downloadSummary() {
+    if (!analysis) return;
+    const lines = [
+      `TRADEMARK FILING PACKET | MarkItNow.ai`,
+      `Mark: ${form.markText} | Owner: ${form.ownerName} (${form.ownerEntity})`,
+      `Basis: ${form.basis}`, "",
+      "NICE CLASSES:",
+    ];
+    analysis.niceClasses?.forEach(nc => lines.push(`  Class ${nc.class}: ${nc.idLanguage} ($${nc.fee})`));
+    lines.push("", `TOTAL USPTO FEES: $${analysis.totalFees}`, "", "IDENTIFICATION:", analysis.identificationSuggestion, "");
+    lines.push("RISK FLAGS:");
+    analysis.riskFlags?.forEach(r => lines.push(`  [${r.level}] ${r.category}: ${r.issue}\n  → ${r.recommendation}`));
+    lines.push("", "SPECIMEN GUIDANCE:", analysis.specimenGuidance, "", "RECOMMENDATION:", analysis.overallRecommendation, "", "-".repeat(60), "MarkItNow.ai — AI-assisted, attorney review required before filing.");
+    const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `trademark-${form.markText.replace(/\s+/g, "-").toUpperCase()}.txt`;
+    a.click();
+  }
+
+  function canProceed() {
+    if (step === "mark") return form.markText.trim().length > 0;
+    if (step === "owner") return form.ownerName.trim().length > 0;
+    if (step === "goods") return form.gsDescription.trim().length > 20;
+    return true;
+  }
+
+  function nextStep() {
+    const idx = STEPS.indexOf(step);
+    if (idx < STEPS.length - 1) {
+      const next = STEPS[idx + 1];
+      setStep(next);
+      if (next === "review") runAnalysis();
+    }
+  }
+
+  const riskColor = { HIGH: "#c0392b", MEDIUM: "#e67e22", LOW: "#2d7a4f" };
+  const riskBg = { HIGH: "#fdf2f1", MEDIUM: "#fef9f0", LOW: "#f0f7f2" };
+
+  return (
+    <>
+      <Head>
+        <title>File a Trademark — MarkItNow.ai</title>
+      </Head>
+
+      <div style={{ minHeight: "100vh", background: "#f4f7f5" }}>
+        {/* Header */}
+        <div style={{ background: "#1a3c2e", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <button onClick={() => router.push("/")} style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#7ecba1", borderRadius: 8, padding: "6px 14px", fontSize: 13, fontWeight: 600 }}>← Home</button>
+            <div>
+              <div style={{ color: "#7ecba1", fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>MarkItNow.ai</div>
+              <div style={{ color: "#fff", fontSize: 18, fontWeight: 900 }}>USPTO Filing Intake</div>
+            </div>
+          </div>
+          <div style={{ color: "#7ecba1", fontSize: 13 }}>Attorney-reviewed · TEAS Plus eligible · $399 flat</div>
+        </div>
+
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px" }}>
+          <StepIndicator current={step} />
+
+          <div style={{ background: "#fff", borderRadius: 16, padding: 36, boxShadow: "0 2px 16px rgba(0,0,0,0.06)" }}>
+            <h2 style={{ margin: "0 0 6px", fontSize: 22, fontWeight: 900, color: "#1a3c2e" }}>{STEP_LABELS[step]}</h2>
+            <p style={{ margin: "0 0 28px", color: "#6b8a78", fontSize: 13, lineHeight: 1.6 }}>
+              {step === "mark" && "Enter the mark you want to register with the USPTO."}
+              {step === "owner" && "Who owns this trademark? This becomes the applicant of record."}
+              {step === "goods" && "Describe your goods or services in plain English. AI translates to USPTO-acceptable language."}
+              {step === "basis" && "What is your legal basis for filing with the USPTO?"}
+              {step === "review" && "AI analysis — Nice classes, risk flags, and filing strategy."}
+            </p>
+
+            {/* STEP: MARK */}
+            {step === "mark" && (
+              <>
+                <Field label="Mark Text" required>
+                  <input value={form.markText} onChange={set("markText")} placeholder="e.g. CITY OF GODS" />
+                </Field>
+                <Field label="Mark Type" required>
+                  <select value={form.markType} onChange={set("markType")}>
+                    <option value="standard">Standard Character Mark (words only)</option>
+                    <option value="design">Special Form / Design Mark (logo with words)</option>
+                    <option value="design-only">Design Only (no words)</option>
+                  </select>
+                </Field>
+                {form.markType !== "standard" && (
+                  <Field label="Mark Description" required>
+                    <textarea value={form.markDescription} onChange={set("markDescription")} placeholder="Describe the design elements (colors, shapes, stylization)..." />
+                  </Field>
+                )}
+                <div style={{ background: "#f0f7f2", borderRadius: 10, padding: 12, fontSize: 12, color: "#2d6e4e", lineHeight: 1.6 }}>
+                  <strong>Standard Character marks</strong> are the most common and provide the broadest protection — covering any stylization of the words.
+                </div>
+              </>
+            )}
+
+            {/* STEP: OWNER */}
+            {step === "owner" && (
+              <>
+                <Field label="Owner / Applicant Name" sublabel="Legal name of individual or entity" required>
+                  <input value={form.ownerName} onChange={set("ownerName")} placeholder="e.g. Method Zero LLC" />
+                </Field>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                  <Field label="Entity Type" required>
+                    <select value={form.ownerEntity} onChange={set("ownerEntity")}>
+                      {["LLC", "Corporation", "Partnership", "Sole Proprietorship", "Individual", "Joint Venture"].map(e => <option key={e}>{e}</option>)}
+                    </select>
+                  </Field>
+                  <Field label="State of Incorporation" sublabel="if U.S. entity">
+                    <input value={form.ownerState} onChange={set("ownerState")} placeholder="e.g. New York" />
+                  </Field>
+                </div>
+                <Field label="Street Address" required>
+                  <input value={form.ownerAddress} onChange={set("ownerAddress")} placeholder="123 Main Street" />
+                </Field>
+                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 12 }}>
+                  <Field label="City" required><input value={form.ownerCity} onChange={set("ownerCity")} placeholder="New York" /></Field>
+                  <Field label="State" required><input value={form.ownerStateAddr} onChange={set("ownerStateAddr")} placeholder="NY" /></Field>
+                  <Field label="ZIP" required><input value={form.ownerZip} onChange={set("ownerZip")} placeholder="10001" /></Field>
+                </div>
+              </>
+            )}
+
+            {/* STEP: GOODS */}
+            {step === "goods" && (
+              <>
+                <Field label="Goods & Services Description" sublabel="plain English — AI handles USPTO language" required>
+                  <textarea
+                    value={form.gsDescription}
+                    onChange={set("gsDescription")}
+                    style={{ minHeight: 120 }}
+                    placeholder="e.g. Music festival and events featuring emerging artists; merchandise including t-shirts and hats; online streaming of live performances..."
+                  />
+                </Field>
+                <div style={{ background: "#f8faf9", borderRadius: 10, padding: 12, fontSize: 12, color: "#6b8a78", lineHeight: 1.7, border: "1px solid #eef2f0" }}>
+                  <strong style={{ color: "#1a3c2e" }}>Tip:</strong> No need to use formal language. The AI identifies the right Nice classes and drafts compliant identification language automatically. Describe everything you do or plan to do with this brand.
+                </div>
+              </>
+            )}
+
+            {/* STEP: BASIS */}
+            {step === "basis" && (
+              <>
+                <Field label="Filing Basis" required>
+                  <select value={form.basis} onChange={set("basis")}>
+                    <option value="1b">Section 1(b) — Intent to Use (not yet in commerce)</option>
+                    <option value="1a">Section 1(a) — Use in Commerce (already in use)</option>
+                    <option value="44d">Section 44(d) — Foreign Priority</option>
+                  </select>
+                </Field>
+                {form.basis === "1a" && (
+                  <>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                      <Field label="First Use Anywhere" required><input type="date" value={form.firstUseDate} onChange={set("firstUseDate")} /></Field>
+                      <Field label="First Use in Commerce" required><input type="date" value={form.firstUseCommerceDate} onChange={set("firstUseCommerceDate")} /></Field>
+                    </div>
+                    <Field label="Specimen Description">
+                      <textarea value={form.specimenDescription} onChange={set("specimenDescription")} placeholder="e.g. Website screenshot showing the mark used in connection with event ticketing..." />
+                    </Field>
+                  </>
+                )}
+                {form.basis === "1b" && (
+                  <div style={{ background: "#f0f7f2", borderRadius: 10, padding: 14, fontSize: 12, color: "#2d6e4e", lineHeight: 1.7 }}>
+                    <strong>Intent to Use:</strong> Statement of Use must be filed within 6 months of Notice of Allowance. Extensions available up to 3 years total under 15 U.S.C. § 1051(d). USPTO fee: $100/class per extension.
+                  </div>
+                )}
+                {form.basis === "44d" && (
+                  <div style={{ background: "#f0f7f2", borderRadius: 10, padding: 14, fontSize: 12, color: "#2d6e4e", lineHeight: 1.7 }}>
+                    <strong>Foreign Priority:</strong> Must have a pending foreign application filed within 6 months. Priority date is established by the foreign filing date under 15 U.S.C. § 1126(d).
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* STEP: REVIEW */}
+            {step === "review" && (
+              <div ref={analysisRef}>
+                {loading && (
+                  <div style={{ textAlign: "center", padding: "48px 0" }}>
+                    <div style={{ fontSize: 40, marginBottom: 14 }}>⚖️</div>
+                    <div style={{ color: "#2d7a4f", fontWeight: 700, fontSize: 16, marginBottom: 6 }}>Analyzing Application...</div>
+                    <div style={{ color: "#8aa898", fontSize: 13 }}>Identifying Nice classes · Assessing mark strength · Drafting identification</div>
+                    <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 6 }}>
+                      {[0,1,2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: "#2d7a4f", animation: `pulse 1.2s ${i*0.2}s infinite ease-in-out` }} />)}
+                    </div>
+                    <style>{`@keyframes pulse{0%,80%,100%{transform:scale(0);opacity:.4}40%{transform:scale(1);opacity:1}}`}</style>
+                  </div>
+                )}
+                {error && (
+                  <div style={{ background: "#fdf2f1", border: "1px solid #e8b4b0", borderRadius: 10, padding: 14, color: "#c0392b", fontSize: 13 }}>
+                    {error} <button onClick={runAnalysis} style={{ marginLeft: 10, background: "#c0392b", color: "#fff", border: "none", borderRadius: 6, padding: "4px 12px", cursor: "pointer" }}>Retry</button>
+                  </div>
+                )}
+                {analysis && (
+                  <div>
+                    {/* Mark strength */}
+                    <div style={{ background: "#f0f7f2", borderRadius: 12, padding: 20, marginBottom: 20 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                        <div style={{ fontWeight: 800, fontSize: 15, color: "#1a3c2e" }}>Mark Strength</div>
+                        <div style={{ fontWeight: 900, fontSize: 24, color: "#2d7a4f" }}>{analysis.strengthAssessment?.score}/100</div>
+                      </div>
+                      <div style={{ fontWeight: 700, color: "#2d7a4f", marginBottom: 6, fontSize: 14 }}>{analysis.strengthAssessment?.category}</div>
+                      <div style={{ fontSize: 13, color: "#3d6b52", lineHeight: 1.6, marginBottom: 12 }}>{analysis.strengthAssessment?.explanation}</div>
+                      <div style={{ height: 6, background: "#d4e8db", borderRadius: 3 }}>
+                        <div style={{ height: "100%", width: `${analysis.strengthAssessment?.score}%`, background: "#2d7a4f", borderRadius: 3, transition: "width 0.8s ease" }} />
+                      </div>
+                    </div>
+
+                    {/* Nice classes */}
+                    <div style={{ marginBottom: 20 }}>
+                      <div style={{ fontWeight: 800, fontSize: 14, color: "#1a3c2e", marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}>
+                        Nice Classes
+                        <span style={{ background: "#1a3c2e", color: "#7ecba1", fontSize: 10, padding: "2px 8px", borderRadius: 10 }}>{analysis.niceClasses?.length}</span>
+                      </div>
+                      {analysis.niceClasses?.map((nc, i) => (
+                        <div key={i} style={{ border: "1.5px solid #d4e3d9", borderRadius: 10, padding: 14, marginBottom: 10 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                            <div style={{ fontWeight: 700, color: "#1a3c2e", fontSize: 13 }}>Class {nc.class}: {nc.className}</div>
+                            <span style={{ background: "#f0f7f2", color: "#2d7a4f", fontWeight: 700, fontSize: 12, padding: "2px 10px", borderRadius: 6 }}>${nc.fee}</span>
+                          </div>
+                          <div style={{ fontSize: 12, color: "#3d6b52", fontStyle: "italic", lineHeight: 1.6, marginBottom: 4 }}>{nc.idLanguage}</div>
+                          <div style={{ fontSize: 11, color: "#8aa898" }}>Why: {nc.rationale}</div>
+                        </div>
+                      ))}
+                      <div style={{ textAlign: "right", fontWeight: 800, color: "#1a3c2e", fontSize: 14, padding: "8px 0" }}>
+                        Total USPTO Fees: <span style={{ color: "#c9a84c" }}>${analysis.totalFees}</span>
+                        <span style={{ fontWeight: 400, fontSize: 11, color: "#8aa898", marginLeft: 4 }}>(paid directly to USPTO)</span>
+                      </div>
+                    </div>
+
+                    {/* Identification */}
+                    <div style={{ background: "#f8faf9", border: "1.5px solid #d4e3d9", borderRadius: 10, padding: 16, marginBottom: 20 }}>
+                      <div style={{ fontWeight: 700, color: "#1a3c2e", marginBottom: 8, fontSize: 13 }}>Suggested TEAS Identification</div>
+                      <div style={{ fontSize: 13, color: "#3d6b52", lineHeight: 1.8, fontFamily: "Georgia, serif" }}>{analysis.identificationSuggestion}</div>
+                    </div>
+
+                    {/* Risk flags */}
+                    {analysis.riskFlags?.length > 0 && (
+                      <div style={{ marginBottom: 20 }}>
+                        <div style={{ fontWeight: 800, fontSize: 14, color: "#1a3c2e", marginBottom: 10 }}>Risk Flags</div>
+                        {analysis.riskFlags.map((r, i) => (
+                          <div key={i} style={{ background: riskBg[r.level], borderLeft: `4px solid ${riskColor[r.level]}`, borderRadius: "0 10px 10px 0", padding: 14, marginBottom: 10 }}>
+                            <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
+                              <span style={{ background: riskColor[r.level], color: "#fff", fontSize: 9, fontWeight: 800, padding: "2px 7px", borderRadius: 4 }}>{r.level}</span>
+                              <span style={{ fontWeight: 700, color: "#1a3c2e", fontSize: 13 }}>{r.category}</span>
+                            </div>
+                            <div style={{ fontSize: 13, color: "#444", marginBottom: 4 }}>{r.issue}</div>
+                            <div style={{ fontSize: 12, color: "#2d7a4f", fontWeight: 600 }}>→ {r.recommendation}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Attorney recommendation */}
+                    <div style={{ background: "#1a3c2e", borderRadius: 12, padding: 20, marginBottom: 20 }}>
+                      <div style={{ color: "#7ecba1", fontWeight: 700, fontSize: 12, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>Attorney Recommendation</div>
+                      <div style={{ color: "#e8f5ee", fontSize: 13, lineHeight: 1.8 }}>{analysis.overallRecommendation}</div>
+                    </div>
+
+                    {/* TEAS Plus */}
+                    {analysis.teasPlusEligible !== undefined && (
+                      <div style={{ background: analysis.teasPlusEligible ? "#f0f7f2" : "#fef9f0", borderRadius: 10, padding: 14, marginBottom: 20, border: `1px solid ${analysis.teasPlusEligible ? "#d4e8db" : "#f5d5b0"}` }}>
+                        <div style={{ fontWeight: 700, fontSize: 13, color: analysis.teasPlusEligible ? "#2d7a4f" : "#e67e22", marginBottom: 4 }}>
+                          {analysis.teasPlusEligible ? "✓ TEAS Plus Eligible (saves $100/class)" : "TEAS Standard Required"}
+                        </div>
+                        <div style={{ fontSize: 12, color: "#6b8a78" }}>{analysis.teasPlusNote}</div>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div style={{ display: "flex", gap: 12 }}>
+                      <button onClick={downloadSummary} style={{ flex: 1, padding: "14px", background: "#f4f7f5", color: "#1a3c2e", border: "1px solid #d0e4d8", borderRadius: 10, fontWeight: 700, fontSize: 14 }}>
+                        Download Filing Packet
+                      </button>
+                      <button onClick={() => router.push(`/search?mark=${encodeURIComponent(form.markText)}`)} style={{ flex: 1, padding: "14px", background: "#1a3c2e", color: "#fff", border: "none", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
+                        View Full Search Report
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Nav buttons */}
+          {step !== "review" && (
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
+              <button
+                onClick={() => step === "mark" ? router.push("/") : setStep(STEPS[STEPS.indexOf(step) - 1])}
+                style={{ padding: "11px 24px", borderRadius: 8, border: "1.5px solid #d4e3d9", background: "#fff", color: "#1a3c2e", fontWeight: 600, fontSize: 14 }}>
+                Back
+              </button>
+              <button
+                onClick={nextStep}
+                disabled={!canProceed()}
+                style={{ padding: "11px 28px", borderRadius: 8, border: "none", background: canProceed() ? "#1a3c2e" : "#d4e3d9", color: canProceed() ? "#fff" : "#8aa898", fontWeight: 700, fontSize: 14 }}>
+                {STEPS.indexOf(step) === STEPS.length - 2 ? "Run AI Analysis →" : "Continue →"}
+              </button>
+            </div>
+          )}
+          {step === "review" && !loading && (
+            <div style={{ marginTop: 20, display: "flex", gap: 12 }}>
+              <button onClick={() => { setStep("basis"); setAnalysis(null); }}
+                style={{ padding: "11px 24px", borderRadius: 8, border: "1.5px solid #d4e3d9", background: "#fff", color: "#1a3c2e", fontWeight: 600, fontSize: 14 }}>
+                Edit Application
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
