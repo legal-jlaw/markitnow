@@ -143,11 +143,13 @@ export default function Home() {
         {/* Footer */}
         <div className="footer" style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111", flexShrink: 0 }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
-          <div style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
             <span onClick={() => router.push("/protect")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>Protect My Brand</span>
+            <span style={{ fontSize: 12, color: "#ddd" }}>·</span>
             <span onClick={() => router.push("/pricing")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>Pricing</span>
+            <span style={{ fontSize: 12, color: "#ddd" }}>·</span>
             <span onClick={() => router.push("/faq")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>FAQ</span>
-            <span style={{ fontSize: 12, color: "#ddd" }}>|</span>
+            <span style={{ fontSize: 12, color: "#ddd" }}>·</span>
             <span style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Not legal advice · Attorney services by licensed partner law firms</span>
           </div>
         </div>
