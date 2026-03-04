@@ -103,7 +103,7 @@ function buildDay3Email(mark, email) {
 
     ${ctaButton(`https://markitnow.ai/file?mark=${encodeURIComponent(mark)}`, "Lock In Your Priority Date →")}
 
-    <p style="font-size:13px;color:#aaa;line-height:1.6;margin:0;">Already filed? Make sure no one is filing against you with our <a href="https://markitnow.ai/protect" style="color:#c9a84c;font-weight:700;">Monitor plan from $79/month</a>.</p>`;
+    <p style="font-size:13px;color:#aaa;line-height:1.6;margin:0;">Already filed? Make sure no one is filing against you with our <a href="https://markitnow.ai/protect" style="color:#c9a84c;font-weight:700;">Watch plan from $79/month</a>.</p>`;
 
   return emailWrapper(mark, content, `<a href="https://markitnow.ai/unsubscribe?email=${encodeURIComponent(email)}" style="color:#ddd;">Unsubscribe</a>`);
 }

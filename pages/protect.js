@@ -263,13 +263,13 @@ export default function Protect() {
               {
                 name: "Protect", tagline: "Stay defended", price: "$99", period: "/month per mark",
                 annual: "$799/yr - save $389", highlight: true, badge: "Most Popular",
-                features: ["Everything in Monitor", "Quarterly attorney review of AI-flagged conflicts", "Written attorney assessment each quarter", "1 Office Action response/year included", "Priority attorney email access"],
+                features: ["Everything in Monitor", "Quarterly attorney review of AI-flagged conflicts", "Priority attorney review of Office Actions", "Priority attorney email access"],
                 cta: "Stop Flying Blind →",
               },
               {
                 name: "Shield", tagline: "Stay untouchable", price: "$249", period: "/month per mark",
                 annual: "$1,999/yr - save $989", highlight: false, badge: "Enterprise",
-                features: ["Everything in Protect", "Unlimited attorney reviews - no waiting", "C&D letter drafting when conflicts arise", "Dedicated attorney on file", "Portfolio-wide mark coverage"],
+                features: ["Everything in Protect", "Procedural Office Action responses included", "30-min attorney consultation on complex refusals", "Dedicated attorney on file", "Portfolio-wide mark coverage"],
                 cta: "Lock It Down →",
               },
             ].map(plan => (
