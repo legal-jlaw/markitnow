@@ -88,15 +88,15 @@ export default function DIY() {
   return (
     <>
       <Head>
-        <title>DIY Trademark Filing Guide — File Your Own Trademark | MarkItNow.ai</title>
+        <title>DIY Trademark Filing Guide File Your Own Trademark | MarkItNow.ai</title>
         <meta name="description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
         <meta name="keywords" content="DIY trademark filing, file trademark yourself, TEAS application guide, trademark class identification, how to file trademark online, USPTO TEAS Plus instructions" />
-        <meta property="og:title" content="DIY Trademark Filing Guide — File Your Own Trademark | MarkItNow.ai" />
+        <meta property="og:title" content="DIY Trademark Filing Guide File Your Own Trademark | MarkItNow.ai" />
         <meta property="og:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MarkItNow.ai" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="DIY Trademark Filing Guide — File Your Own Trademark | MarkItNow.ai" />
+        <meta name="twitter:title" content="DIY Trademark Filing Guide File Your Own Trademark | MarkItNow.ai" />
         <meta name="twitter:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
@@ -144,7 +144,7 @@ export default function DIY() {
             <p style={{ fontSize: 16, color: "#888", margin: 0 }}>{STEPS[step - 1].subtitle}</p>
           </div>
 
-          {/* STEP 1 — Your Trademark */}
+          {/* STEP 1 Your Trademark */}
           {step === 1 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div>
@@ -174,7 +174,7 @@ export default function DIY() {
             </div>
           )}
 
-          {/* STEP 2 — Class Selection */}
+          {/* STEP 2 Class Selection */}
           {step === 2 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "20px 24px" }}>
@@ -195,7 +195,7 @@ export default function DIY() {
               )}
 
               <div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#555", marginBottom: 14 }}>Select your class(es) — USPTO fee is $350 per class</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#555", marginBottom: 14 }}>Select your class(es) USPTO fee is $350 per class</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 }}>
                   {NICE_CLASSES.map(cls => (
                     <div key={cls.num} onClick={() => toggleClass(cls.num)} style={{ padding: "12px 16px", borderRadius: 10, border: `1px solid ${form.selectedClasses.includes(cls.num) ? "#c9a84c" : "#e8e8e8"}`, background: form.selectedClasses.includes(cls.num) ? "#fff8e6" : "#fff", cursor: "pointer", transition: "all 0.2s" }}>
@@ -215,13 +215,13 @@ export default function DIY() {
             </div>
           )}
 
-          {/* STEP 3 — Goods & Services */}
+          {/* STEP 3 Goods & Services */}
           {step === 3 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "16px 20px" }}>
                 <div style={{ fontSize: 13, color: "#999", marginBottom: 4 }}>Selected classes</div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: "#c9a84c" }}>
-                  {form.selectedClasses.map(n => `Class ${n} — ${NICE_CLASSES.find(c => c.num === n)?.label}`).join(" · ")}
+                  {form.selectedClasses.map(n => `Class ${n} ${NICE_CLASSES.find(c => c.num === n)?.label}`).join(" · ")}
                 </div>
               </div>
 
@@ -251,7 +251,7 @@ export default function DIY() {
             </div>
           )}
 
-          {/* STEP 4 — Filing Basis */}
+          {/* STEP 4 Filing Basis */}
           {step === 4 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <div style={{ fontSize: 15, color: "#666", lineHeight: 1.7 }}>
@@ -261,14 +261,14 @@ export default function DIY() {
               {[
                 {
                   val: "use",
-                  label: "Section 1(a) — Use in Commerce",
+                  label: "Section 1(a) Use in Commerce",
                   subtitle: "I'm already using this mark on products/services sold to customers",
                   detail: "You must have already used the mark in commerce between states or internationally. You'll need a specimen (proof of use) to file. This is the faster path to registration.",
                   good: "Best if your business is already operating",
                 },
                 {
                   val: "itu",
-                  label: "Section 1(b) — Intent to Use",
+                  label: "Section 1(b) Intent to Use",
                   subtitle: "I plan to use this mark but haven't started yet",
                   detail: "You can file before you launch. You'll get a priority date immediately but must file a Statement of Use ($150/class) once you start using the mark. You have up to 3 years to file the SOU.",
                   good: "Best if you're launching soon or want to lock in your date",
@@ -298,7 +298,7 @@ export default function DIY() {
             </div>
           )}
 
-          {/* STEP 5 — Specimen */}
+          {/* STEP 5 Specimen */}
           {step === 5 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {form.basis === "itu" ? (
@@ -347,7 +347,7 @@ export default function DIY() {
             </div>
           )}
 
-          {/* STEP 6 — File on USPTO */}
+          {/* STEP 6 File on USPTO */}
           {step === 6 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {/* Summary Card */}
@@ -358,7 +358,7 @@ export default function DIY() {
                     ["Mark", form.mark],
                     ["Type", form.markType === "word" ? "Word Mark" : "Logo / Design Mark"],
                     ["Classes", form.selectedClasses.map(n => `Class ${n}`).join(", ")],
-                    ["Basis", form.basis === "use" ? "Section 1(a) — Use in Commerce" : "Section 1(b) — Intent to Use"],
+                    ["Basis", form.basis === "use" ? "Section 1(a) Use in Commerce" : "Section 1(b) Intent to Use"],
                     ["USPTO Fee", `$${form.selectedClasses.length * 350} (${form.selectedClasses.length} class${form.selectedClasses.length > 1 ? "es" : ""} × $350)`],
                   ].map(([label, val]) => (
                     <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
@@ -374,8 +374,8 @@ export default function DIY() {
 
               {[
                 { num: 1, title: "Go to the TEAS filing system", body: "Visit teas.uspto.gov and click 'File a new application'. Create a USPTO.gov account if you don't have one (free)." },
-                { num: 2, title: "Select 'TEAS — Base Application'", body: "This is the standard electronic filing option at $350/class. Do not select the paper option ($850/class)." },
-                { num: 3, title: "Enter your mark", body: `Type your mark exactly as: "${form.mark}". ${form.markType === "logo" ? "For a logo mark, you'll upload your image file (JPG or PNG)." : "For a word mark, select 'Standard Characters' — this gives you the broadest protection."}` },
+                { num: 2, title: "Select 'TEAS Base Application'", body: "This is the standard electronic filing option at $350/class. Do not select the paper option ($850/class)." },
+                { num: 3, title: "Enter your mark", body: `Type your mark exactly as: "${form.mark}". ${form.markType === "logo" ? "For a logo mark, you'll upload your image file (JPG or PNG)." : "For a word mark, select 'Standard Characters' this gives you the broadest protection."}` },
                 { num: 4, title: `Select Class${form.selectedClasses.length > 1 ? "es" : ""} ${form.selectedClasses.join(", ")}`, body: "Use the dropdown to select your class(es). For each class, paste your goods/services description from Step 3 of this guide." },
                 { num: 5, title: `Select Filing Basis`, body: form.basis === "use" ? "You'll be asked to provide your first use date and first use in commerce date. Enter the date you first used the mark to sell goods/services." : "Select Intent to Use. You won't need a specimen now. You'll file a Statement of Use later after you launch." },
                 ...(form.basis === "use" ? [{ num: 6, title: "Upload your specimen", body: `Upload your ${form.specimenType === "website" ? "website screenshot" : form.specimenType === "label" ? "product label photo" : form.specimenType === "menu" ? "menu or signage photo" : "social media screenshot"} as a JPG or PNG under 5MB. Add a brief description of what the image shows.` }] : []),
@@ -394,11 +394,11 @@ export default function DIY() {
               <div style={{ background: "#f0fff4", border: "1px solid #c6f6d5", borderRadius: 14, padding: "24px", marginTop: 8 }}>
                 <div style={{ fontSize: 15, fontWeight: 800, color: "#555", marginBottom: 16 }}>What happens after you file</div>
                 {[
-                  ["1–3 days", "You receive a filing receipt with your serial number. Your priority date is locked in."],
-                  ["3–4 months", "USPTO assigns an examining attorney who reviews your application."],
-                  ["4–6 months", "You either receive approval or an Office Action (objection). Most first-time applicants get at least one OA."],
+                  ["1 to 3 days", "You receive a filing receipt with your serial number. Your priority date is locked in."],
+                  ["3 to 4 months", "USPTO assigns an examining attorney who reviews your application."],
+                  ["4 to 6 months", "You either receive approval or an Office Action (objection). Most first-time applicants get at least one OA."],
                   ["~12 months", "If approved, your mark publishes for opposition for 30 days."],
-                  ["~13–18 months", "If no opposition, your mark registers. You receive your certificate."],
+                  ["~13 to 18 months", "If no opposition, your mark registers. You receive your certificate."],
                 ].map(([time, desc]) => (
                   <div key={time} style={{ display: "flex", gap: 16, marginBottom: 14 }}>
                     <div style={{ fontSize: 12, fontWeight: 800, color: "#555", minWidth: 90, paddingTop: 2 }}>{time}</div>
@@ -409,7 +409,7 @@ export default function DIY() {
 
               <div style={{ background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 12, padding: "20px 24px" }}>
                 <div style={{ fontSize: 14, fontWeight: 700, color: "#c9a84c", marginBottom: 8 }}>Got an Office Action?</div>
-                <div style={{ fontSize: 13, color: "#777", lineHeight: 1.6, marginBottom: 14 }}>Don't panic — they're common. Our attorney can draft a response starting at $499. Contact us within 30 days of receiving your OA.</div>
+                <div style={{ fontSize: 13, color: "#777", lineHeight: 1.6, marginBottom: 14 }}>Don't panic they're common. Our attorney can draft a response starting at $499. Contact us within 30 days of receiving your OA.</div>
                 <button onClick={() => window.location.href = "mailto:legal@jarralslaw.com?subject=Office Action Response"} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "10px 20px", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                   Get OA Help →
                 </button>

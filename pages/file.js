@@ -132,7 +132,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
     lines.push("", `TOTAL USPTO FEES: $${analysis.totalFees}`, "", "IDENTIFICATION:", analysis.identificationSuggestion, "");
     lines.push("RISK FLAGS:");
     analysis.riskFlags?.forEach(r => lines.push(`  [${r.level}] ${r.category}: ${r.issue}\n  → ${r.recommendation}`));
-    lines.push("", "SPECIMEN GUIDANCE:", analysis.specimenGuidance, "", "RECOMMENDATION:", analysis.overallRecommendation, "", "-".repeat(60), "MarkItNow.ai — Search and AI reports are informational only and do not constitute legal advice. Attorney filing services provided by licensed partner law firms.");
+    lines.push("", "SPECIMEN GUIDANCE:", analysis.specimenGuidance, "", "RECOMMENDATION:", analysis.overallRecommendation, "", "-".repeat(60), "MarkItNow.ai Search and AI reports are informational only and do not constitute legal advice. Attorney filing services provided by licensed partner law firms.");
     const blob = new Blob([lines.join("\n")], { type: "text/plain" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -216,7 +216,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
               {step === "owner" && "Who owns this trademark? This becomes the applicant of record."}
               {step === "goods" && "Describe your goods or services in plain English. AI translates to USPTO-acceptable language."}
               {step === "basis" && "What is your legal basis for filing with the USPTO?"}
-              {step === "review" && "AI analysis — Nice classes, risk flags, and filing strategy."}
+              {step === "review" && "AI analysis Nice classes, risk flags, and filing strategy."}
             </p>
 
             {/* STEP: MARK */}
@@ -238,7 +238,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                   </Field>
                 )}
                 <div style={{ background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 10, padding: 14, fontSize: 12, color: "#b8860b", lineHeight: 1.6 }}>
-                  <strong>Standard Character marks</strong> are the most common and provide the broadest protection — covering any stylization of the words.
+                  <strong>Standard Character marks</strong> are the most common and provide the broadest protection covering any stylization of the words.
                 </div>
               </>
             )}
@@ -273,7 +273,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
             {/* STEP: GOODS */}
             {step === "goods" && (
               <>
-                <Field label="Goods & Services Description" sublabel="plain English — AI handles USPTO language" required>
+                <Field label="Goods & Services Description" sublabel="plain English AI handles USPTO language" required>
                   <textarea value={form.gsDescription} onChange={set("gsDescription")} style={{ ...textareaStyle, minHeight: 120 }} placeholder="e.g. Music festival and events featuring emerging artists; merchandise including t-shirts and hats; online streaming of live performances..." />
                 </Field>
                 <div style={{ background: "#f9f9f9", border: "1px solid #e8e8e8", borderRadius: 10, padding: 14, fontSize: 12, color: "#777", lineHeight: 1.7 }}>
@@ -287,9 +287,9 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
               <>
                 <Field label="Filing Basis" required>
                   <select value={form.basis} onChange={set("basis")} style={selectStyle}>
-                    <option value="1b">Section 1(b) — Intent to Use (not yet in commerce)</option>
-                    <option value="1a">Section 1(a) — Use in Commerce (already in use)</option>
-                    <option value="44d">Section 44(d) — Foreign Priority</option>
+                    <option value="1b">Section 1(b) Intent to Use (not yet in commerce)</option>
+                    <option value="1a">Section 1(a) Use in Commerce (already in use)</option>
+                    <option value="44d">Section 44(d) Foreign Priority</option>
                   </select>
                 </Field>
                 {form.basis === "1a" && (

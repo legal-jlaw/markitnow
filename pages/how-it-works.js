@@ -6,7 +6,7 @@ const STEPS = [
   {
     num: "01",
     title: "Search for Free",
-    desc: "Enter your brand name and search the live USPTO database of 4M+ marks instantly. See active conflicts, dead marks, class breakdowns, and owner info — no account required.",
+    desc: "Enter your brand name and search the live USPTO database of 4M+ marks instantly. See active conflicts, dead marks, class breakdowns, and owner info no account required.",
     tag: "Free",
     icon: "🔍",
     detail: ["Live USPTO TESS database", "Active & dead marks", "Owner info & filing dates", "Results in seconds"],
@@ -17,7 +17,7 @@ const STEPS = [
     desc: "Our AI analyzes your search results and produces a full conflict analysis with a risk score, DuPont factor breakdown, and class-by-class recommendations.",
     tag: "$99",
     icon: "🤖",
-    detail: ["Likelihood of confusion analysis", "Risk score (0–100)", "All 13 DuPont factors", "Filing strategy recommendations"],
+    detail: ["Likelihood of confusion analysis", "Risk score (0 to 100)", "All 13 DuPont factors", "Filing strategy recommendations"],
   },
   {
     num: "03",
@@ -25,13 +25,13 @@ const STEPS = [
     desc: "Based on your results, decide how to proceed. File yourself with our DIY guide, or have a U.S. Licensed Attorney handle everything for you.",
     tag: "$69 or $399",
     icon: "⚖️",
-    detail: ["DIY guided filing ($69 + USPTO fees)", "Attorney filing ($399 + USPTO fees)", "Attorney memo for investors ($149)", "No pressure — move at your pace"],
+    detail: ["DIY guided filing ($69 + USPTO fees)", "Attorney filing ($399 + USPTO fees)", "Attorney memo for investors ($149)", "No pressure move at your pace"],
   },
   {
     num: "04",
     title: "USPTO Reviews Your Application",
-    desc: "After filing, the USPTO assigns an examining attorney who reviews your application. This typically takes 3–4 months. You may receive an Office Action (objection) requiring a response.",
-    tag: "3–4 months",
+    desc: "After filing, the USPTO assigns an examining attorney who reviews your application. This typically takes 3 to 4 months. You may receive an Office Action (objection) requiring a response.",
+    tag: "3 to 4 months",
     icon: "📋",
     detail: ["Filing receipt issued immediately", "Serial number assigned", "Examining attorney review", "Office Action response if needed"],
   },
@@ -39,7 +39,7 @@ const STEPS = [
     num: "05",
     title: "Publication & Registration",
     desc: "If approved, your mark publishes in the Official Gazette for 30 days. If no opposition is filed, your trademark registers and you receive your certificate.",
-    tag: "~13–18 months total",
+    tag: "~13 to 18 months total",
     icon: "🏆",
     detail: ["30-day publication period", "Certificate of registration", "® symbol rights", "10-year renewable term"],
   },
@@ -52,16 +52,16 @@ export default function HowItWorks() {
   return (
     <>
       <Head>
-        <title>How Trademark Registration Works — Step by Step | MarkItNow.ai</title>
-        <meta name="description" content="Learn how to register a trademark with the USPTO. From free search to federal registration — timelines, costs, Office Actions, and what happens after you file." />
+        <title>How Trademark Registration Works Step by Step | MarkItNow.ai</title>
+        <meta name="description" content="Learn how to register a trademark with the USPTO. From free search to federal registration timelines, costs, Office Actions, and what happens after you file." />
         <meta name="keywords" content="how to register a trademark, trademark registration process, USPTO trademark application, trademark timeline, how long does trademark registration take, trademark steps" />
-        <meta property="og:title" content="How Trademark Registration Works — Step by Step | MarkItNow.ai" />
-        <meta property="og:description" content="Learn how to register a trademark with the USPTO. From free search to federal registration — timelines, costs, Office Actions, and what happens after you file." />
+        <meta property="og:title" content="How Trademark Registration Works Step by Step | MarkItNow.ai" />
+        <meta property="og:description" content="Learn how to register a trademark with the USPTO. From free search to federal registration timelines, costs, Office Actions, and what happens after you file." />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MarkItNow.ai" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="How Trademark Registration Works — Step by Step | MarkItNow.ai" />
-        <meta name="twitter:description" content="Learn how to register a trademark with the USPTO. From free search to federal registration — timelines, costs, Office Actions, and what happens after you file." />
+        <meta name="twitter:title" content="How Trademark Registration Works Step by Step | MarkItNow.ai" />
+        <meta name="twitter:description" content="Learn how to register a trademark with the USPTO. From free search to federal registration timelines, costs, Office Actions, and what happens after you file." />
         <meta name="description" content="Learn how trademark registration works, from free search to USPTO registration. Step-by-step guide by MarkItNow.ai." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
@@ -90,7 +90,7 @@ export default function HowItWorks() {
             How trademark registration works
           </h1>
           <p style={{ fontSize: 17, color: "#777", maxWidth: 520, margin: "0 auto" }}>
-            From free search to federal registration — here's exactly what happens and what it costs at every step.
+            From free search to federal registration here's exactly what happens and what it costs at every step.
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export default function HowItWorks() {
           <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: "32px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
             <div>
               <h3 style={{ fontSize: 18, fontWeight: 800, color: "#111", margin: "0 0 6px" }}>Have more questions?</h3>
-              <p style={{ fontSize: 14, color: "#777", margin: 0 }}>Browse our full FAQ — costs, timelines, Office Actions, renewals, and more.</p>
+              <p style={{ fontSize: 14, color: "#777", margin: 0 }}>Browse our full FAQ costs, timelines, Office Actions, renewals, and more.</p>
             </div>
             <button onClick={() => router.push("/faq")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 10, padding: "12px 28px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif", whiteSpace: "nowrap", marginLeft: 24 }}>
               View FAQ →

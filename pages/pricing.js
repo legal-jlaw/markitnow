@@ -8,7 +8,7 @@ const SERVICES = [
     category: "Search & Analysis",
     items: [
       { name: "Trademark Search", ourFee: "Free", usptoFee: null, totalNote: "Always free", description: "Search the live USPTO database of 4M+ marks instantly.", features: ["Live USPTO database", "Active & dead marks", "No account required", "Results in seconds"], cta: "Search Free", ctaAction: "search", highlight: false, badge: null },
-      { name: "AI Analysis Report", ourFee: "$99", usptoFee: null, totalNote: "No USPTO fee", description: "Full AI-powered conflict analysis with risk scoring and DuPont factor breakdown.", features: ["Likelihood of confusion analysis", "Risk score (0–100)", "Class-by-class breakdown", "Filing strategy recommendations"], cta: "Get Report", ctaAction: "search", highlight: true, badge: "Most Popular" },
+      { name: "AI Analysis Report", ourFee: "$99", usptoFee: null, totalNote: "No USPTO fee", description: "Full AI-powered conflict analysis with risk scoring and DuPont factor breakdown.", features: ["Likelihood of confusion analysis", "Risk score (0 to 100)", "Class-by-class breakdown", "Filing strategy recommendations"], cta: "Get Report", ctaAction: "search", highlight: true, badge: "Most Popular" },
       { name: "Attorney Memo", ourFee: "$149", usptoFee: null, totalNote: "No USPTO fee", description: "Formal attorney-reviewed memo covering all 13 DuPont factors.", features: ["All 13 DuPont factors analyzed", "Attorney-signed memo", "Risk matrix", "Prosecution strategy"], cta: "Get Memo", ctaAction: "search", highlight: false, badge: null },
     ],
   },
@@ -47,15 +47,15 @@ export default function Pricing() {
     <>
       <Head>
         <title>Trademark Filing Prices & USPTO Fees | MarkItNow.ai</title>
-        <meta name="description" content="Transparent trademark pricing — free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
+        <meta name="description" content="Transparent trademark pricing free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
         <meta name="keywords" content="trademark filing cost, USPTO filing fee 2025, trademark attorney fee, TEAS Plus fee, trademark registration price, trademark renewal cost, Statement of Use fee" />
         <meta property="og:title" content="Trademark Filing Prices & USPTO Fees | MarkItNow.ai" />
-        <meta property="og:description" content="Transparent trademark pricing — free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
+        <meta property="og:description" content="Transparent trademark pricing free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MarkItNow.ai" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Trademark Filing Prices & USPTO Fees | MarkItNow.ai" />
-        <meta name="twitter:description" content="Transparent trademark pricing — free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
+        <meta name="twitter:description" content="Transparent trademark pricing free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
@@ -80,7 +80,7 @@ export default function Pricing() {
             Simple, transparent pricing.
           </h1>
           <p style={{ fontSize: 17, color: "#777", maxWidth: 480, margin: "0 auto" }}>
-            Our service fee plus USPTO government fees — always shown separately.
+            Our service fee plus USPTO government fees always shown separately.
           </p>
           {/* Fee legend */}
           <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 28, flexWrap: "wrap" }}>

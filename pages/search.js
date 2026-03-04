@@ -42,7 +42,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
 
     const conflictSection = trademarks.length
       ? `LIVE USPTO RESULTS (${trademarks.length} marks found matching "${mark}" or its keywords):\n${conflictText}`
-      : `LIVE USPTO RESULTS: No marks found for "${mark}" — appears to be a clear mark.`;
+      : `LIVE USPTO RESULTS: No marks found for "${mark}" appears to be a clear mark.`;
 
     const isReport = type === "report";
     const systemPrompt = isReport
@@ -171,7 +171,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               Summary + pros/cons + conflict breakdown. Full PDF (with DuPont memo) unlocks for $99.
             </div>
             <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
-              Generate Client Report — Free →
+              Generate Client Report Free →
             </button>
           </div>
 
@@ -188,7 +188,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               Full legal memo w/ DuPont 13-factor analysis, risk matrix, prosecution strategy. PDF unlocks for $149.
             </div>
             <button onClick={() => generate("memo")} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
-              Generate Attorney Memo — Free →
+              Generate Attorney Memo Free →
             </button>
           </div>
 
@@ -196,10 +196,10 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 16 }}>
             <div style={{ fontWeight: 800, fontSize: 13, color: "#555", marginBottom: 4 }}>⚡ Skip straight to filing?</div>
             <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6, marginBottom: 10 }}>
-              U.S. Licensed Attorney reviews your application and files TEAS Plus. $399 flat — $100 less than Trademarkia.
+              U.S. Licensed Attorney reviews your application and files TEAS Plus. $399 flat $100 less than Trademarkia.
             </div>
             <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ display: "block", textAlign: "center", padding: "9px", background: "#c9a84c", color: "#0a0a0a", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
-              File With Attorney — $399 →
+              File With Attorney $399 →
             </a>
           </div>
         </div>
@@ -307,7 +307,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
                 <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}>📄 Full PDF Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>DuPont analysis + attorney memo + prosecution strategy</div>
                 <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
-                  Unlock PDF — $99
+                  Unlock PDF $99
                 </button>
               </>
             ) : (
@@ -401,9 +401,9 @@ Respond ONLY with valid JSON (no markdown, no backticks):
             {!isPaid ? (
               <>
                 <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}>📄 Full Attorney Memo PDF</div>
-                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>Complete work product — printable, shareable, attorney-reviewed</div>
+                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>Complete work product printable, shareable, attorney-reviewed</div>
                 <button onClick={() => handlePurchase("memo", 149)} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
-                  Unlock Memo PDF — $149
+                  Unlock Memo PDF $149
                 </button>
               </>
             ) : (
@@ -494,7 +494,7 @@ export default function SearchPage() {
               placeholder="Search another mark..." />
             <button type="submit" style={{ padding: "7px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 7, fontWeight: 800, fontSize: 13 }}>Search</button>
           </form>
-          <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>File — $399</a>
+          <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>File $399</a>
         </div>
 
         {/* Split pane */}
@@ -522,7 +522,7 @@ export default function SearchPage() {
               </div>
               <div style={{ fontSize: 12, color: "#6b8a78" }}>
                 Results for: <strong style={{ color: "#0f1e3c" }}>"{mark}"</strong>
-                {trademarks.length > 0 && ` — expanded search includes first keyword`}
+                {trademarks.length > 0 && ` expanded search includes first keyword`}
               </div>
               {usptoStatus === "done" && trademarks.length > 0 && (
                 <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
@@ -557,7 +557,7 @@ export default function SearchPage() {
                   <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 6 }}>✓ No matching marks found</div>
                   <div style={{ fontSize: 12, lineHeight: 1.6 }}>
                     {filterStatus === "all"
-                      ? `No USPTO marks found matching "${mark}" or its keywords. Positive indicator for registrability — proceed with AI analysis.`
+                      ? `No USPTO marks found matching "${mark}" or its keywords. Positive indicator for registrability proceed with AI analysis.`
                       : `No ${filterStatus} marks for this filter. Try "All" to see all results.`}
                   </div>
                 </div>
