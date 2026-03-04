@@ -90,15 +90,15 @@ export default function DIY() {
     <>
       <Head>
         <title>DIY Trademark Filing Guide File Your Own Trademark | MarkItNow.ai</title>
-        <meta name="description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
+        <meta name="description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $199." />
         <meta name="keywords" content="DIY trademark filing, file trademark yourself, TEAS application guide, trademark class identification, how to file trademark online, USPTO TEAS Plus instructions" />
         <meta property="og:title" content="DIY Trademark Filing Guide File Your Own Trademark | MarkItNow.ai" />
-        <meta property="og:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
+        <meta property="og:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $199." />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MarkItNow.ai" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="DIY Trademark Filing Guide File Your Own Trademark | MarkItNow.ai" />
-        <meta name="twitter:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
+        <meta name="twitter:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $199." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
@@ -129,6 +129,18 @@ export default function DIY() {
       `}</style>
       <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
         <Nav />
+
+        {/* Risk disclaimer — steers toward attorney filing */}
+        <div style={{ background: "#fff8f0", borderBottom: "1px solid #fde8c8", padding: "14px 24px" }}>
+          <div style={{ maxWidth: 780, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ fontSize: 13, color: "#92400e", lineHeight: 1.6 }}>
+              <strong>Know before you file:</strong> Most first-time DIY filers receive an Office Action. If you do, attorney response starts at $499. If you'd prefer an attorney to file correctly the first time, it's $399 total.
+            </div>
+            <button onClick={() => window.location.href = "/file"} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontWeight: 800, fontSize: 12, cursor: "pointer", fontFamily: "Poppins, sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>
+              Let an Attorney File →
+            </button>
+          </div>
+        </div>
 
         <div style={{ maxWidth: 780, margin: "0 auto", padding: "48px 24px 80px" }}>
 

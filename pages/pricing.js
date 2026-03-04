@@ -74,7 +74,7 @@ export default function Pricing() {
             {
               category: "Filing Services",
               items: [
-                { name: "DIY Guided Filing", desc: "Step-by-step AI-guided TEAS application.", our: "$69", uspto: "$350/class", path: "/diy" },
+                { name: "DIY Guided Filing", desc: "Step-by-step AI-guided TEAS application. Note: most first-time filers receive an Office Action.", our: "$199", uspto: "$350/class", path: "/diy" },
                 { name: "Attorney-Filed Application", desc: "U.S. Licensed Attorney prepares and files your TEAS Plus application.", our: "$399", uspto: "$350/class", path: "/file" },
                 { name: "Statement of Use", desc: "File after your Intent-to-Use mark goes live in commerce.", our: "$249", uspto: "$150/class", path: "/file" },
                 { name: "Trademark Revival", desc: "Petition to revive an abandoned application.", our: "$349", uspto: "$150", path: "/file" },
