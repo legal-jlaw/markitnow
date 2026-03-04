@@ -5,7 +5,7 @@ const NAV_LINKS = [
   { label: "Search", path: "/" },
   { label: "Pricing", path: "/pricing" },
   { label: "Protect My Brand", path: "/protect", gold: true },
-  { label: "How It Works", path: "/how-it-works" },
+  { label: "FAQ", path: "/faq" },
 ];
 
 
