@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 SERVICES AND PRICING:
 - Free USPTO Search - markitnow.ai
 - AI Analysis Report - $99 (DuPont breakdown, risk score, PDF)
-- Attorney Legal Memo - $149 (full written legal opinion)
+- AI Legal Memo - $149 (full written legal opinion)
 - DIY Guided Filing - $69 + $350/class USPTO fee
 - Attorney-Filed Application - $399 + $350/class USPTO fee
 - Statement of Use - $249 + $150/class USPTO fee

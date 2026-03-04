@@ -67,7 +67,7 @@ export default function Pricing() {
               items: [
                 { name: "USPTO Trademark Search", desc: "Live search of 4M+ active and dead marks.", our: "Free", uspto: null, path: "/" },
                 { name: "AI Analysis Report", desc: "DuPont breakdown, risk score, class-by-class conflicts. PDF delivered instantly.", our: "$99", uspto: null, path: "/file" },
-                { name: "Attorney Legal Memo", desc: "Full written legal opinion from a U.S. Licensed Attorney.", our: "$149", uspto: null, path: "/file" },
+                { name: "AI Legal Memo", desc: "Comprehensive AI-generated analysis of registrability, conflict risks, and filing strategy. Formatted as a legal memo. Not a substitute for legal advice.", our: "$149", uspto: null, path: "/file" },
               ],
             },
             {
@@ -86,7 +86,8 @@ export default function Pricing() {
                 { name: "Office Action Response", desc: "Attorney-drafted response to USPTO refusals.", our: "$499+", uspto: null, path: "/file" },
                 { name: "Renewal Filing (Sec. 8 & 9)", desc: "Required between years 5-6 and every 10 years.", our: "$199", uspto: "$325/class", path: "/file" },
                 { name: "Section 15 Incontestability", desc: "Strengthen your rights after 5 years of continuous use.", our: "$149", uspto: "$250/class", path: "/file" },
-                { name: "Portfolio Audit", desc: "Full review of all marks, classes, deadlines, and risk.", our: "$299", uspto: null, path: "/file" },
+                { name: "AI Portfolio Report", desc: "Instant scan of all your marks, classes, renewal deadlines, and conflict risks. PDF delivered automatically.", our: "$149", uspto: null, path: "/file" },
+                { name: "Attorney Portfolio Review", desc: "Attorney-written memo covering coverage gaps, renewal strategy, and conflict risks across all marks. Ideal as an annual review for multi-mark operators.", our: "$499", uspto: null, path: "/file" },
               ],
             },
           ].map(group => (
