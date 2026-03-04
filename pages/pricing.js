@@ -19,9 +19,7 @@ export default function Pricing() {
       <style>{`
         * { box-sizing: border-box; }
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        @media (max-width: 900px) {
-          .services-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr; } }
         @media (max-width: 600px) {
           .page-hero { padding: 48px 20px 40px !important; }
           .content-wrap { padding: 0 16px !important; }
@@ -38,7 +36,7 @@ export default function Pricing() {
             Simple, transparent pricing
           </h1>
           <p style={{ fontSize: 16, color: "#777", maxWidth: 460, margin: "0 auto 28px", lineHeight: 1.7 }}>
-            Two ways to protect your brand. Plans for ongoing protection. One-time services for when you need them.
+            One-time filing services. Ongoing protection plans. USPTO fees always shown separately.
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13 }}>
@@ -52,22 +50,8 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* Protection Plans Callout */}
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 0" }}>
-          <div style={{ background: "#111", borderRadius: 16, padding: "32px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#c9a84c", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 8 }}>Brand Protection Plans — from $49/month</div>
-              <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", marginBottom: 8, letterSpacing: -0.5 }}>Looking for ongoing protection?</div>
-              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6, maxWidth: 480 }}>24/7 AI monitoring, renewal alerts, attorney reviews, and more. All plans include a free $99 AI Analysis Report on signup.</div>
-            </div>
-            <button onClick={() => router.push("/protect")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 12, padding: "14px 32px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>
-              See Protection Plans →
-            </button>
-          </div>
-        </div>
-
-                {/* Section 2 — One-Time Services */}
-        <div className="content-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 0" }}>
+        {/* One-Time Services */}
+        <div className="content-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 24px 0" }}>
           <div style={{ marginBottom: 32 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
               <div style={{ width: 4, height: 24, background: "#555", borderRadius: 2, flexShrink: 0 }} />
@@ -109,7 +93,10 @@ export default function Pricing() {
               <div style={{ fontSize: 11, fontWeight: 700, color: "#bbb", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 14, paddingLeft: 2 }}>{group.category}</div>
               <div className="services-grid">
                 {group.items.map(s => (
-                  <div key={s.name} onClick={() => router.push(s.path)} onMouseEnter={e => e.currentTarget.style.borderColor = "#c9a84c"} onMouseLeave={e => e.currentTarget.style.borderColor = "#e8e8e8"} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, cursor: "pointer" }}>
+                  <div key={s.name} onClick={() => router.push(s.path)}
+                    onMouseEnter={e => e.currentTarget.style.borderColor = "#c9a84c"}
+                    onMouseLeave={e => e.currentTarget.style.borderColor = "#e8e8e8"}
+                    style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, cursor: "pointer" }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 3 }}>{s.name}</div>
                       <div style={{ fontSize: 12, color: "#999", lineHeight: 1.5 }}>{s.desc}</div>
@@ -132,6 +119,20 @@ export default function Pricing() {
           </div>
         </div>
 
+        {/* Protection Plans Callout */}
+        <div style={{ maxWidth: 1100, margin: "24px auto 0", padding: "0 24px" }}>
+          <div style={{ background: "#111", borderRadius: 16, padding: "32px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#c9a84c", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 8 }}>Brand Protection Plans — from $49/month</div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", marginBottom: 8, letterSpacing: -0.5 }}>Looking for ongoing protection?</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6, maxWidth: 480 }}>24/7 AI monitoring, renewal alerts, attorney reviews, and more. All plans include a free $99 AI Analysis Report on signup.</div>
+            </div>
+            <button onClick={() => router.push("/protect")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 12, padding: "14px 32px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>
+              See Protection Plans →
+            </button>
+          </div>
+        </div>
+
         {/* CTA */}
         <div style={{ textAlign: "center", padding: "64px 24px 80px" }}>
           <p style={{ fontSize: 14, color: "#aaa", marginBottom: 20 }}>Not sure where to start?</p>
@@ -141,7 +142,7 @@ export default function Pricing() {
         </div>
 
         {/* Footer */}
-        <div style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+        <div className="footer" style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111" }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
           <div style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Not legal advice · Legal services by licensed partner law firms</div>
         </div>
