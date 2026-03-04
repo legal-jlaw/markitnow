@@ -67,7 +67,7 @@ export default function FAQ() {
             MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span>
           </div>
           <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-            {["How It Works", "Pricing"].map(item => (
+            {["How It Works", "Pricing", "FAQ"].map(item => (
               <span key={item} onClick={() => item === "Pricing" ? router.push("/pricing") : router.push("/how-it-works")} style={{ color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer" }}>{item}</span>
             ))}
             <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>File Now</button>
