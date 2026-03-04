@@ -162,7 +162,16 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
   return (
     <>
       <Head>
-        <title>File a Trademark — MarkItNow.ai</title>
+        <title>Attorney-Filed Trademark Application | MarkItNow.ai</title>
+        <meta name="description" content="Have a U.S. Licensed Attorney file your trademark application for $399 flat fee plus USPTO fees. AI-powered intake, attorney review, and TEAS Plus filing." />
+        <meta name="keywords" content="trademark attorney filing, USPTO trademark application attorney, file trademark with attorney, TEAS Plus application, trademark lawyer, attorney trademark registration" />
+        <meta property="og:title" content="Attorney-Filed Trademark Application | MarkItNow.ai" />
+        <meta property="og:description" content="Have a U.S. Licensed Attorney file your trademark application for $399 flat fee plus USPTO fees. AI-powered intake, attorney review, and TEAS Plus filing." />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="MarkItNow.ai" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Attorney-Filed Trademark Application | MarkItNow.ai" />
+        <meta name="twitter:description" content="Have a U.S. Licensed Attorney file your trademark application for $399 flat fee plus USPTO fees. AI-powered intake, attorney review, and TEAS Plus filing." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 

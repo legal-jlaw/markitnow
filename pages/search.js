@@ -467,7 +467,16 @@ export default function SearchPage() {
   return (
     <>
       <Head>
-        <title>"{mark}" USPTO Search | MarkItNow.ai</title>
+        <title>Free USPTO Trademark Search | MarkItNow.ai</title>
+        <meta name="description" content="Search the live USPTO trademark database free. See active marks, dead marks, owner info, and filing dates. Instant results across 4M+ federal trademark registrations." />
+        <meta name="keywords" content="free trademark search, USPTO TESS search, trademark database search, check trademark availability, trademark conflict search, is my trademark available" />
+        <meta property="og:title" content="Free USPTO Trademark Search | MarkItNow.ai" />
+        <meta property="og:description" content="Search the live USPTO trademark database free. See active marks, dead marks, owner info, and filing dates. Instant results across 4M+ federal trademark registrations." />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="MarkItNow.ai" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Free USPTO Trademark Search | MarkItNow.ai" />
+        <meta name="twitter:description" content="Search the live USPTO trademark database free. See active marks, dead marks, owner info, and filing dates. Instant results across 4M+ federal trademark registrations." />
       </Head>
       <style>{`
         @keyframes mni-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }

@@ -18,7 +18,16 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>MarkItNow — Trademark Search & Filing</title>
+        <title>MarkItNow.ai — Free Trademark Search & USPTO Filing</title>
+        <meta name="description" content="Search 4M+ USPTO trademarks free. Get an AI conflict analysis for $99. File with a U.S. Licensed Attorney for $399. Faster and more affordable than traditional law firms." />
+        <meta name="keywords" content="free trademark search, USPTO trademark search, trademark registration, file a trademark, trademark attorney, trademark filing cost, TEAS application, brand protection" />
+        <meta property="og:title" content="MarkItNow.ai — Free Trademark Search & USPTO Filing" />
+        <meta property="og:description" content="Search 4M+ USPTO trademarks free. Get an AI conflict analysis for $99. File with a U.S. Licensed Attorney for $399. Faster and more affordable than traditional law firms." />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="MarkItNow.ai" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="MarkItNow.ai — Free Trademark Search & USPTO Filing" />
+        <meta name="twitter:description" content="Search 4M+ USPTO trademarks free. Get an AI conflict analysis for $99. File with a U.S. Licensed Attorney for $399. Faster and more affordable than traditional law firms." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 

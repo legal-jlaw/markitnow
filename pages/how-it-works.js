@@ -52,7 +52,16 @@ export default function HowItWorks() {
   return (
     <>
       <Head>
-        <title>How It Works — MarkItNow.ai</title>
+        <title>How Trademark Registration Works — Step by Step | MarkItNow.ai</title>
+        <meta name="description" content="Learn how to register a trademark with the USPTO. From free search to federal registration — timelines, costs, Office Actions, and what happens after you file." />
+        <meta name="keywords" content="how to register a trademark, trademark registration process, USPTO trademark application, trademark timeline, how long does trademark registration take, trademark steps" />
+        <meta property="og:title" content="How Trademark Registration Works — Step by Step | MarkItNow.ai" />
+        <meta property="og:description" content="Learn how to register a trademark with the USPTO. From free search to federal registration — timelines, costs, Office Actions, and what happens after you file." />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="MarkItNow.ai" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="How Trademark Registration Works — Step by Step | MarkItNow.ai" />
+        <meta name="twitter:description" content="Learn how to register a trademark with the USPTO. From free search to federal registration — timelines, costs, Office Actions, and what happens after you file." />
         <meta name="description" content="Learn how trademark registration works, from free search to USPTO registration. Step-by-step guide by MarkItNow.ai." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>

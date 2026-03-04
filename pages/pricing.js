@@ -46,7 +46,16 @@ export default function Pricing() {
   return (
     <>
       <Head>
-        <title>Pricing — MarkItNow.ai</title>
+        <title>Trademark Filing Prices & USPTO Fees | MarkItNow.ai</title>
+        <meta name="description" content="Transparent trademark pricing — free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
+        <meta name="keywords" content="trademark filing cost, USPTO filing fee 2025, trademark attorney fee, TEAS Plus fee, trademark registration price, trademark renewal cost, Statement of Use fee" />
+        <meta property="og:title" content="Trademark Filing Prices & USPTO Fees | MarkItNow.ai" />
+        <meta property="og:description" content="Transparent trademark pricing — free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="MarkItNow.ai" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Trademark Filing Prices & USPTO Fees | MarkItNow.ai" />
+        <meta name="twitter:description" content="Transparent trademark pricing — free search, $99 AI analysis, $399 attorney filing. See exact USPTO government fees broken out separately. No hidden costs." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 

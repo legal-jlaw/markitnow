@@ -88,7 +88,16 @@ export default function DIY() {
   return (
     <>
       <Head>
-        <title>DIY Filing Guide — MarkItNow.ai</title>
+        <title>DIY Trademark Filing Guide — File Your Own Trademark | MarkItNow.ai</title>
+        <meta name="description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
+        <meta name="keywords" content="DIY trademark filing, file trademark yourself, TEAS application guide, trademark class identification, how to file trademark online, USPTO TEAS Plus instructions" />
+        <meta property="og:title" content="DIY Trademark Filing Guide — File Your Own Trademark | MarkItNow.ai" />
+        <meta property="og:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="MarkItNow.ai" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="DIY Trademark Filing Guide — File Your Own Trademark | MarkItNow.ai" />
+        <meta name="twitter:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
