@@ -1,3 +1,4 @@
+import Nav from "../components/Nav";
 import ChatWidget from "../components/ChatWidget";
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
@@ -172,23 +173,12 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Attorney-Filed Trademark Application | MarkItNow.ai" />
         <meta name="twitter:description" content="Have a U.S. Licensed Attorney file your trademark application for $399 flat fee plus USPTO fees. AI-powered intake, attorney review, and TEAS Plus filing." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
       <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
-
-        {/* Nav */}
-        <nav style={{ background: "#fff", borderBottom: "1px solid #e0e0e0", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 48px", height: 64 }}>
-          <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 22, color: "#111", letterSpacing: -0.5, cursor: "pointer" }}>
-            MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span>
-          </div>
-          <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-            <button onClick={() => router.push("/how-it-works")} style={{ background: "none", border: "none", color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "8px 4px" }}>How It Works</button>
-            <button onClick={() => router.push("/pricing")} style={{ background: "none", border: "none", color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "8px 4px" }}>Pricing</button>
-            <button onClick={() => router.push("/faq")} style={{ background: "none", border: "none", color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "8px 4px" }}>FAQ</button>
-            <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>File Now</button>
-          </div>
-        </nav>
+        <Nav />
 
         {/* Page header */}
         <div style={{ background: "#fff", borderBottom: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>

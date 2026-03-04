@@ -94,7 +94,7 @@ export default function ChatWidget() {
 
           {/* Disclaimer */}
           <div style={{ background: "#fff8e6", borderBottom: "1px solid #f0d080", padding: "8px 16px", fontSize: 11, color: "#b8860b", flexShrink: 0 }}>
-            ⚠️ AI assistant only — not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
+            ⚠️ AI assistant only not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
           </div>
 
           {/* Messages */}

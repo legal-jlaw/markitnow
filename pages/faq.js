@@ -1,3 +1,4 @@
+import Nav from "../components/Nav";
 import ChatWidget from "../components/ChatWidget";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -84,23 +85,36 @@ export default function FAQ() {
         <meta name="description" content="Answers to the most common trademark questions USPTO filing fees, likelihood of confusion, Office Actions, Nice classes, TEAS Plus, renewals, and more." />
         <meta name="keywords" content="trademark registration, USPTO filing, trademark search, likelihood of confusion, DuPont factors, TEAS Plus, trademark Office Action, trademark renewal, how to trademark a name, trademark cost 2025" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
-      <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
 
-        {/* Nav */}
-        <nav style={{ background: "#fff", borderBottom: "1px solid #e0e0e0", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 48px", height: 64 }}>
-          <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 22, color: "#111", letterSpacing: -0.5, cursor: "pointer" }}>
-            MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span>
-          </div>
-          <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-            <button onClick={() => router.push("/how-it-works")} style={{ background: "none", border: "none", color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "8px 4px" }}>How It Works</button>
-            <button onClick={() => router.push("/pricing")} style={{ background: "none", border: "none", color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "8px 4px" }}>Pricing</button>
-            <button onClick={() => router.push("/faq")} style={{ background: "none", border: "none", color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "8px 4px" }}>FAQ</button>
-            <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>File Now</button>
-          </div>
-        </nav>
+      <style>{`
+        * { box-sizing: border-box; }
+        @media (max-width: 768px) {
+          .page-hero { padding: 48px 20px !important; }
+          .page-hero h1 { font-size: 32px !important; letter-spacing: -1px !important; }
+          .page-hero p { font-size: 15px !important; }
+          .content-wrap { padding: 32px 16px !important; }
+          .two-col { grid-template-columns: 1fr !important; }
+          .three-col { grid-template-columns: 1fr !important; }
+          .footer { flex-direction: column !important; gap: 12px !important; padding: 24px 20px !important; text-align: center !important; }
+          .footer-right { flex-direction: column !important; gap: 8px !important; align-items: center !important; }
+          .cta-buttons { flex-direction: column !important; align-items: stretch !important; }
+          .cta-buttons button { width: 100% !important; }
+          .faq-card { padding: 14px 16px !important; }
+          .pricing-card { padding: 24px 20px !important; }
+          .step-card { padding: 20px 16px !important; }
+          table { font-size: 12px !important; }
+          table td, table th { padding: 10px 12px !important; }
+          .stats-bar { flex-direction: column !important; gap: 24px !important; padding: 32px 20px !important; }
+          .hiw-faq-card { flex-direction: column !important; gap: 16px !important; padding: 24px 20px !important; }
+          .hiw-faq-card button { width: 100% !important; margin-left: 0 !important; }
+        }
+      `}</style>
+      <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
+        <Nav />
 
         {/* Hero */}
         <div style={{ background: "#fff", borderBottom: "1px solid #e0e0e0", padding: "64px 24px", textAlign: "center" }}>

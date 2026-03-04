@@ -1,3 +1,4 @@
+import Nav from "../components/Nav";
 import ChatWidget from "../components/ChatWidget";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";

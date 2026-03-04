@@ -1,3 +1,4 @@
+import Nav from "../components/Nav";
 import ChatWidget from "../components/ChatWidget";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -98,18 +99,36 @@ export default function DIY() {
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="DIY Trademark Filing Guide File Your Own Trademark | MarkItNow.ai" />
         <meta name="twitter:description" content="File your own trademark on USPTO.gov with AI-powered guidance. Get class recommendations, USPTO-compliant descriptions, and step-by-step instructions for $69." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
-      <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
 
-        {/* Nav */}
-        <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", borderBottom: "1px solid #e0e0e0", background: "#fff" }}>
-          <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 24, color: "#111", letterSpacing: -0.5, cursor: "pointer" }}>
-            MarkItNow<span style={{ color: "#555" }}>.ai</span>
-          </div>
-          <div style={{ fontSize: 13, color: "#999" }}>DIY Filing Guide · $69</div>
-        </nav>
+      <style>{`
+        * { box-sizing: border-box; }
+        @media (max-width: 768px) {
+          .page-hero { padding: 48px 20px !important; }
+          .page-hero h1 { font-size: 32px !important; letter-spacing: -1px !important; }
+          .page-hero p { font-size: 15px !important; }
+          .content-wrap { padding: 32px 16px !important; }
+          .two-col { grid-template-columns: 1fr !important; }
+          .three-col { grid-template-columns: 1fr !important; }
+          .footer { flex-direction: column !important; gap: 12px !important; padding: 24px 20px !important; text-align: center !important; }
+          .footer-right { flex-direction: column !important; gap: 8px !important; align-items: center !important; }
+          .cta-buttons { flex-direction: column !important; align-items: stretch !important; }
+          .cta-buttons button { width: 100% !important; }
+          .faq-card { padding: 14px 16px !important; }
+          .pricing-card { padding: 24px 20px !important; }
+          .step-card { padding: 20px 16px !important; }
+          table { font-size: 12px !important; }
+          table td, table th { padding: 10px 12px !important; }
+          .stats-bar { flex-direction: column !important; gap: 24px !important; padding: 32px 20px !important; }
+          .hiw-faq-card { flex-direction: column !important; gap: 16px !important; padding: 24px 20px !important; }
+          .hiw-faq-card button { width: 100% !important; margin-left: 0 !important; }
+        }
+      `}</style>
+      <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
+        <Nav />
 
         <div style={{ maxWidth: 780, margin: "0 auto", padding: "48px 24px 80px" }}>
 
