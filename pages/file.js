@@ -19,7 +19,7 @@ const initialForm = {
 function Field({ label, sublabel, required, children }) {
   return (
     <div style={{ marginBottom: 20 }}>
-      <label style={{ display: "block", fontWeight: 600, fontSize: 13, color: "#1a3c2e", marginBottom: 6 }}>
+      <label style={{ display: "block", fontWeight: 600, fontSize: 13, color: "#0f1e3c", marginBottom: 6 }}>
         {label} {required && <span style={{ color: "#c0392b" }}>*</span>}
         {sublabel && <span style={{ fontWeight: 400, color: "#6b8a78", fontSize: 11, marginLeft: 6 }}>{sublabel}</span>}
       </label>
@@ -39,18 +39,18 @@ function StepIndicator({ current }) {
           <div key={s} style={{ display: "flex", alignItems: "center", flex: 1 }}>
             <div style={{
               width: 28, height: 28, borderRadius: "50%", flexShrink: 0,
-              background: done ? "#1a3c2e" : active ? "#2d7a4f" : "#e8ede9",
+              background: done ? "#0f1e3c" : active ? "#2d7a4f" : "#e8ede9",
               color: done || active ? "#fff" : "#8aa898",
               display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 11, fontWeight: 700,
             }}>
               {done ? "✓" : i + 1}
             </div>
-            <div style={{ fontSize: 10, fontWeight: active ? 700 : 400, color: active ? "#1a3c2e" : "#8aa898", marginLeft: 6, whiteSpace: "nowrap" }}>
+            <div style={{ fontSize: 10, fontWeight: active ? 700 : 400, color: active ? "#0f1e3c" : "#8aa898", marginLeft: 6, whiteSpace: "nowrap" }}>
               {STEP_LABELS[s].split(" & ")[0]}
             </div>
             {i < STEPS.length - 1 && (
-              <div style={{ flex: 1, height: 1, background: done ? "#1a3c2e" : "#dde8e1", margin: "0 8px" }} />
+              <div style={{ flex: 1, height: 1, background: done ? "#0f1e3c" : "#dde8e1", margin: "0 8px" }} />
             )}
           </div>
         );
@@ -159,22 +159,22 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
 
       <div style={{ minHeight: "100vh", background: "#f4f7f5" }}>
         {/* Header */}
-        <div style={{ background: "#1a3c2e", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ background: "#0f1e3c", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <button onClick={() => router.push("/")} style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#7ecba1", borderRadius: 8, padding: "6px 14px", fontSize: 13, fontWeight: 600 }}>← Home</button>
+            <button onClick={() => router.push("/")} style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#7eb5e8", borderRadius: 8, padding: "6px 14px", fontSize: 13, fontWeight: 600 }}>← Home</button>
             <div>
-              <div style={{ color: "#7ecba1", fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>MarkItNow.ai</div>
+              <div style={{ color: "#7eb5e8", fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>MarkItNow.ai</div>
               <div style={{ color: "#fff", fontSize: 18, fontWeight: 900 }}>USPTO Filing Intake</div>
             </div>
           </div>
-          <div style={{ color: "#7ecba1", fontSize: 13 }}>Attorney-reviewed · TEAS Plus eligible · $399 flat</div>
+          <div style={{ color: "#7eb5e8", fontSize: 13 }}>Attorney-reviewed · TEAS Plus eligible · $399 flat</div>
         </div>
 
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px" }}>
           <StepIndicator current={step} />
 
           <div style={{ background: "#fff", borderRadius: 16, padding: 36, boxShadow: "0 2px 16px rgba(0,0,0,0.06)" }}>
-            <h2 style={{ margin: "0 0 6px", fontSize: 22, fontWeight: 900, color: "#1a3c2e" }}>{STEP_LABELS[step]}</h2>
+            <h2 style={{ margin: "0 0 6px", fontSize: 22, fontWeight: 900, color: "#0f1e3c" }}>{STEP_LABELS[step]}</h2>
             <p style={{ margin: "0 0 28px", color: "#6b8a78", fontSize: 13, lineHeight: 1.6 }}>
               {step === "mark" && "Enter the mark you want to register with the USPTO."}
               {step === "owner" && "Who owns this trademark? This becomes the applicant of record."}
@@ -246,7 +246,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                   />
                 </Field>
                 <div style={{ background: "#f8faf9", borderRadius: 10, padding: 12, fontSize: 12, color: "#6b8a78", lineHeight: 1.7, border: "1px solid #eef2f0" }}>
-                  <strong style={{ color: "#1a3c2e" }}>Tip:</strong> No need to use formal language. The AI identifies the right Nice classes and drafts compliant identification language automatically. Describe everything you do or plan to do with this brand.
+                  <strong style={{ color: "#0f1e3c" }}>Tip:</strong> No need to use formal language. The AI identifies the right Nice classes and drafts compliant identification language automatically. Describe everything you do or plan to do with this brand.
                 </div>
               </>
             )}
@@ -309,7 +309,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                     {/* Mark strength */}
                     <div style={{ background: "#f0f7f2", borderRadius: 12, padding: 20, marginBottom: 20 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                        <div style={{ fontWeight: 800, fontSize: 15, color: "#1a3c2e" }}>Mark Strength</div>
+                        <div style={{ fontWeight: 800, fontSize: 15, color: "#0f1e3c" }}>Mark Strength</div>
                         <div style={{ fontWeight: 900, fontSize: 24, color: "#2d7a4f" }}>{analysis.strengthAssessment?.score}/100</div>
                       </div>
                       <div style={{ fontWeight: 700, color: "#2d7a4f", marginBottom: 6, fontSize: 14 }}>{analysis.strengthAssessment?.category}</div>
@@ -321,21 +321,21 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
 
                     {/* Nice classes */}
                     <div style={{ marginBottom: 20 }}>
-                      <div style={{ fontWeight: 800, fontSize: 14, color: "#1a3c2e", marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}>
+                      <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c", marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}>
                         Nice Classes
-                        <span style={{ background: "#1a3c2e", color: "#7ecba1", fontSize: 10, padding: "2px 8px", borderRadius: 10 }}>{analysis.niceClasses?.length}</span>
+                        <span style={{ background: "#0f1e3c", color: "#7eb5e8", fontSize: 10, padding: "2px 8px", borderRadius: 10 }}>{analysis.niceClasses?.length}</span>
                       </div>
                       {analysis.niceClasses?.map((nc, i) => (
                         <div key={i} style={{ border: "1.5px solid #d4e3d9", borderRadius: 10, padding: 14, marginBottom: 10 }}>
                           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                            <div style={{ fontWeight: 700, color: "#1a3c2e", fontSize: 13 }}>Class {nc.class}: {nc.className}</div>
+                            <div style={{ fontWeight: 700, color: "#0f1e3c", fontSize: 13 }}>Class {nc.class}: {nc.className}</div>
                             <span style={{ background: "#f0f7f2", color: "#2d7a4f", fontWeight: 700, fontSize: 12, padding: "2px 10px", borderRadius: 6 }}>${nc.fee}</span>
                           </div>
                           <div style={{ fontSize: 12, color: "#3d6b52", fontStyle: "italic", lineHeight: 1.6, marginBottom: 4 }}>{nc.idLanguage}</div>
                           <div style={{ fontSize: 11, color: "#8aa898" }}>Why: {nc.rationale}</div>
                         </div>
                       ))}
-                      <div style={{ textAlign: "right", fontWeight: 800, color: "#1a3c2e", fontSize: 14, padding: "8px 0" }}>
+                      <div style={{ textAlign: "right", fontWeight: 800, color: "#0f1e3c", fontSize: 14, padding: "8px 0" }}>
                         Total USPTO Fees: <span style={{ color: "#c9a84c" }}>${analysis.totalFees}</span>
                         <span style={{ fontWeight: 400, fontSize: 11, color: "#8aa898", marginLeft: 4 }}>(paid directly to USPTO)</span>
                       </div>
@@ -343,19 +343,19 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
 
                     {/* Identification */}
                     <div style={{ background: "#f8faf9", border: "1.5px solid #d4e3d9", borderRadius: 10, padding: 16, marginBottom: 20 }}>
-                      <div style={{ fontWeight: 700, color: "#1a3c2e", marginBottom: 8, fontSize: 13 }}>Suggested TEAS Identification</div>
+                      <div style={{ fontWeight: 700, color: "#0f1e3c", marginBottom: 8, fontSize: 13 }}>Suggested TEAS Identification</div>
                       <div style={{ fontSize: 13, color: "#3d6b52", lineHeight: 1.8, fontFamily: "Georgia, serif" }}>{analysis.identificationSuggestion}</div>
                     </div>
 
                     {/* Risk flags */}
                     {analysis.riskFlags?.length > 0 && (
                       <div style={{ marginBottom: 20 }}>
-                        <div style={{ fontWeight: 800, fontSize: 14, color: "#1a3c2e", marginBottom: 10 }}>Risk Flags</div>
+                        <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c", marginBottom: 10 }}>Risk Flags</div>
                         {analysis.riskFlags.map((r, i) => (
                           <div key={i} style={{ background: riskBg[r.level], borderLeft: `4px solid ${riskColor[r.level]}`, borderRadius: "0 10px 10px 0", padding: 14, marginBottom: 10 }}>
                             <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
                               <span style={{ background: riskColor[r.level], color: "#fff", fontSize: 9, fontWeight: 800, padding: "2px 7px", borderRadius: 4 }}>{r.level}</span>
-                              <span style={{ fontWeight: 700, color: "#1a3c2e", fontSize: 13 }}>{r.category}</span>
+                              <span style={{ fontWeight: 700, color: "#0f1e3c", fontSize: 13 }}>{r.category}</span>
                             </div>
                             <div style={{ fontSize: 13, color: "#444", marginBottom: 4 }}>{r.issue}</div>
                             <div style={{ fontSize: 12, color: "#2d7a4f", fontWeight: 600 }}>→ {r.recommendation}</div>
@@ -365,8 +365,8 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                     )}
 
                     {/* Attorney recommendation */}
-                    <div style={{ background: "#1a3c2e", borderRadius: 12, padding: 20, marginBottom: 20 }}>
-                      <div style={{ color: "#7ecba1", fontWeight: 700, fontSize: 12, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>Attorney Recommendation</div>
+                    <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 20, marginBottom: 20 }}>
+                      <div style={{ color: "#7eb5e8", fontWeight: 700, fontSize: 12, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>Attorney Recommendation</div>
                       <div style={{ color: "#e8f5ee", fontSize: 13, lineHeight: 1.8 }}>{analysis.overallRecommendation}</div>
                     </div>
 
@@ -382,10 +382,10 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
 
                     {/* Actions */}
                     <div style={{ display: "flex", gap: 12 }}>
-                      <button onClick={downloadSummary} style={{ flex: 1, padding: "14px", background: "#f4f7f5", color: "#1a3c2e", border: "1px solid #d0e4d8", borderRadius: 10, fontWeight: 700, fontSize: 14 }}>
+                      <button onClick={downloadSummary} style={{ flex: 1, padding: "14px", background: "#f4f7f5", color: "#0f1e3c", border: "1px solid #d0e4d8", borderRadius: 10, fontWeight: 700, fontSize: 14 }}>
                         Download Filing Packet
                       </button>
-                      <button onClick={() => router.push(`/search?mark=${encodeURIComponent(form.markText)}`)} style={{ flex: 1, padding: "14px", background: "#1a3c2e", color: "#fff", border: "none", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
+                      <button onClick={() => router.push(`/search?mark=${encodeURIComponent(form.markText)}`)} style={{ flex: 1, padding: "14px", background: "#0f1e3c", color: "#fff", border: "none", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
                         View Full Search Report
                       </button>
                     </div>
@@ -400,13 +400,13 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
               <button
                 onClick={() => step === "mark" ? router.push("/") : setStep(STEPS[STEPS.indexOf(step) - 1])}
-                style={{ padding: "11px 24px", borderRadius: 8, border: "1.5px solid #d4e3d9", background: "#fff", color: "#1a3c2e", fontWeight: 600, fontSize: 14 }}>
+                style={{ padding: "11px 24px", borderRadius: 8, border: "1.5px solid #d4e3d9", background: "#fff", color: "#0f1e3c", fontWeight: 600, fontSize: 14 }}>
                 Back
               </button>
               <button
                 onClick={nextStep}
                 disabled={!canProceed()}
-                style={{ padding: "11px 28px", borderRadius: 8, border: "none", background: canProceed() ? "#1a3c2e" : "#d4e3d9", color: canProceed() ? "#fff" : "#8aa898", fontWeight: 700, fontSize: 14 }}>
+                style={{ padding: "11px 28px", borderRadius: 8, border: "none", background: canProceed() ? "#0f1e3c" : "#d4e3d9", color: canProceed() ? "#fff" : "#8aa898", fontWeight: 700, fontSize: 14 }}>
                 {STEPS.indexOf(step) === STEPS.length - 2 ? "Run AI Analysis →" : "Continue →"}
               </button>
             </div>
@@ -414,7 +414,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
           {step === "review" && !loading && (
             <div style={{ marginTop: 20, display: "flex", gap: 12 }}>
               <button onClick={() => { setStep("basis"); setAnalysis(null); }}
-                style={{ padding: "11px 24px", borderRadius: 8, border: "1.5px solid #d4e3d9", background: "#fff", color: "#1a3c2e", fontWeight: 600, fontSize: 14 }}>
+                style={{ padding: "11px 24px", borderRadius: 8, border: "1.5px solid #d4e3d9", background: "#fff", color: "#0f1e3c", fontWeight: 600, fontSize: 14 }}>
                 Edit Application
               </button>
             </div>

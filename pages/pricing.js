@@ -155,16 +155,16 @@ export default function Pricing() {
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
-      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0f2419 0%, #1a3c2e 50%, #0f2419 100%)", fontFamily: "Poppins, sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0a0f1e 0%, #0f1e3c 50%, #0a0f1e 100%)", fontFamily: "Poppins, sans-serif" }}>
 
         {/* Nav */}
         <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 24, color: "#c9a84c", letterSpacing: -0.5, cursor: "pointer" }}>
-            MarkItNow<span style={{ color: "#7ecba1" }}>.ai</span>
+            MarkItNow<span style={{ color: "#7eb5e8" }}>.ai</span>
           </div>
           <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
             {["How It Works", "Pricing", "For Attorneys"].map(item => (
-              <span key={item} onClick={() => item === "Pricing" ? null : router.push("/")} style={{ color: item === "Pricing" ? "#c9a84c" : "#7ecba1", fontSize: 14, fontWeight: item === "Pricing" ? 700 : 500, cursor: "pointer", opacity: item === "Pricing" ? 1 : 0.8 }}>{item}</span>
+              <span key={item} onClick={() => item === "Pricing" ? null : router.push("/")} style={{ color: item === "Pricing" ? "#c9a84c" : "#7eb5e8", fontSize: 14, fontWeight: item === "Pricing" ? 700 : 500, cursor: "pointer", opacity: item === "Pricing" ? 1 : 0.8 }}>{item}</span>
             ))}
             <button onClick={() => router.push("/file")} style={{ background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
               File Now
@@ -226,7 +226,7 @@ export default function Pricing() {
                     {service.badge && (
                       <div style={{
                         position: "absolute", top: -12, right: 20,
-                        background: service.badge === "Coming Soon" ? "#1a3c2e" : service.badge === "Time Sensitive" ? "#7c2d12" : "#c9a84c",
+                        background: service.badge === "Coming Soon" ? "#0f1e3c" : service.badge === "Time Sensitive" ? "#7c2d12" : "#c9a84c",
                         border: service.badge === "Coming Soon" ? "1px solid rgba(201,168,76,0.4)" : "none",
                         color: service.badge === "Coming Soon" ? "#c9a84c" : service.badge === "Time Sensitive" ? "#fca5a5" : "#0a0a0a",
                         fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 20, letterSpacing: 0.5, textTransform: "uppercase"
@@ -263,7 +263,7 @@ export default function Pricing() {
                     <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 8 }}>
                       {service.features.filter(f => !f.includes("Our fee:")).map(f => (
                         <li key={f} style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 8 }}>
-                          <span style={{ color: "#7ecba1" }}>✓</span> {f}
+                          <span style={{ color: "#7eb5e8" }}>✓</span> {f}
                         </li>
                       ))}
                     </ul>
@@ -318,7 +318,7 @@ export default function Pricing() {
 
         {/* Footer */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "32px 40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ fontWeight: 900, fontSize: 18, color: "#c9a84c" }}>MarkItNow<span style={{ color: "#7ecba1" }}>.ai</span></div>
+          <div style={{ fontWeight: 900, fontSize: 18, color: "#c9a84c" }}>MarkItNow<span style={{ color: "#7eb5e8" }}>.ai</span></div>
           <div style={{ fontSize: 13, color: "rgba(255,255,255,0.3)" }}>© 2026 Aggressive Counsel PLLC. Not legal advice until retained.</div>
         </div>
       </div>

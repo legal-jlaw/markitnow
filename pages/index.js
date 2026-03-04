@@ -20,15 +20,15 @@ export default function Home() {
         <title>MarkItNow — Trademark Search & Filing</title>
       </Head>
 
-      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0f2419 0%, #1a3c2e 50%, #0f2419 100%)" }}>
+      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0a0f1e 0%, #0f1e3c 50%, #0a0f1e 100%)" }}>
         {/* Nav */}
         <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div style={{ fontFamily: "Poppins, sans-serif", fontWeight: 900, fontSize: 24, color: "#c9a84c", letterSpacing: -0.5 }}>
-            MarkItNow<span style={{ color: "#7ecba1" }}>.ai</span>
+            MarkItNow<span style={{ color: "#7eb5e8" }}>.ai</span>
           </div>
           <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
             {["How It Works", "Pricing", "For Attorneys"].map(item => (
-              <span key={item} style={{ color: "#7ecba1", fontSize: 14, fontWeight: 500, cursor: "pointer", opacity: 0.8 }}>{item}</span>
+              <span key={item} style={{ color: "#7eb5e8", fontSize: 14, fontWeight: 500, cursor: "pointer", opacity: 0.8 }}>{item}</span>
             ))}
             <button onClick={() => router.push("/file")} style={{ background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 800, fontSize: 14 }}>
               File Now
@@ -47,7 +47,7 @@ export default function Home() {
           </h1>
           <p style={{ fontSize: 20, color: "rgba(255,255,255,0.65)", marginBottom: 48, lineHeight: 1.6, maxWidth: 560, margin: "0 auto 48px" }}>
             Search the live USPTO database free. Get a full AI analysis report for $99. File with a U.S.-licensed attorney for $399.
-            <br /><span style={{ color: "#7ecba1", fontWeight: 600 }}>Trademarkia charges $499 for the same thing.</span>
+            <br /><span style={{ color: "#7eb5e8", fontWeight: 600 }}>Trademarkia charges $499 for the same thing.</span>
           </p>
 
           {/* Search bar */}
@@ -102,7 +102,7 @@ export default function Home() {
                 <div style={{ flex: 1, marginBottom: 24 }}>
                   {tier.items.map(item => (
                     <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 10, fontSize: 14, color: tier.featured ? "#d4c090" : "rgba(255,255,255,0.7)" }}>
-                      <span style={{ color: "#7ecba1", fontWeight: 700, marginTop: 1 }}>✓</span>
+                      <span style={{ color: "#7eb5e8", fontWeight: 700, marginTop: 1 }}>✓</span>
                       {item}
                     </div>
                   ))}

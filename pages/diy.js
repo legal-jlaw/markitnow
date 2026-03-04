@@ -91,12 +91,12 @@ export default function DIY() {
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
-      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0f2419 0%, #1a3c2e 50%, #0f2419 100%)", fontFamily: "Poppins, sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0a0f1e 0%, #0f1e3c 50%, #0a0f1e 100%)", fontFamily: "Poppins, sans-serif" }}>
 
         {/* Nav */}
         <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 24, color: "#c9a84c", letterSpacing: -0.5, cursor: "pointer" }}>
-            MarkItNow<span style={{ color: "#7ecba1" }}>.ai</span>
+            MarkItNow<span style={{ color: "#7eb5e8" }}>.ai</span>
           </div>
           <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>DIY Filing Guide · $69</div>
         </nav>
@@ -110,7 +110,7 @@ export default function DIY() {
                 <div key={s.id} style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
                   <div style={{
                     width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                    background: s.id < step ? "#7ecba1" : s.id === step ? "#c9a84c" : "rgba(255,255,255,0.08)",
+                    background: s.id < step ? "#7eb5e8" : s.id === step ? "#c9a84c" : "rgba(255,255,255,0.08)",
                     color: s.id <= step ? "#0a0a0a" : "rgba(255,255,255,0.3)",
                     fontSize: 13, fontWeight: 800, marginBottom: 6, transition: "all 0.3s",
                   }}>
@@ -123,7 +123,7 @@ export default function DIY() {
               ))}
             </div>
             <div style={{ height: 3, background: "rgba(255,255,255,0.08)", borderRadius: 2, position: "relative" }}>
-              <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${progress}%`, background: "linear-gradient(90deg, #7ecba1, #c9a84c)", borderRadius: 2, transition: "width 0.4s ease" }} />
+              <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${progress}%`, background: "linear-gradient(90deg, #7eb5e8, #c9a84c)", borderRadius: 2, transition: "width 0.4s ease" }} />
             </div>
           </div>
 
@@ -173,13 +173,13 @@ export default function DIY() {
                 <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>{form.businessDescription}</div>
               </div>
 
-              <button onClick={suggestClasses} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#7ecba1", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+              <button onClick={suggestClasses} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#7eb5e8", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                 {aiLoading ? "⏳ AI is analyzing your business..." : "✨ Get AI Class Recommendations"}
               </button>
 
               {aiSuggestion && (
                 <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 12, padding: "20px 24px" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#7ecba1", marginBottom: 12 }}>AI Recommendation</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#7eb5e8", marginBottom: 12 }}>AI Recommendation</div>
                   <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{aiSuggestion}</div>
                 </div>
               )}
@@ -215,14 +215,14 @@ export default function DIY() {
                 </div>
               </div>
 
-              <button onClick={suggestDescription} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#7ecba1", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+              <button onClick={suggestDescription} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#7eb5e8", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                 {aiLoading ? "⏳ Writing your description..." : "✨ Generate USPTO-Compliant Description"}
               </button>
 
               {aiSuggestion && (
                 <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 12, padding: "20px 24px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "#7ecba1" }}>AI Generated Description</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "#7eb5e8" }}>AI Generated Description</div>
                     <button onClick={() => updateForm("goodsServices", aiSuggestion)} style={{ background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 6, padding: "6px 14px", fontSize: 12, fontWeight: 800, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>Use This →</button>
                   </div>
                   <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{aiSuggestion}</div>
@@ -273,7 +273,7 @@ export default function DIY() {
                       <div style={{ fontSize: 16, fontWeight: 800, color: form.basis === opt.val ? "#c9a84c" : "#fff", marginBottom: 4 }}>{opt.label}</div>
                       <div style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", marginBottom: 12 }}>{opt.subtitle}</div>
                       <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, marginBottom: 10 }}>{opt.detail}</div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#7ecba1" }}>✓ {opt.good}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#7eb5e8" }}>✓ {opt.good}</div>
                     </div>
                   </div>
                 </div>
@@ -294,7 +294,7 @@ export default function DIY() {
               {form.basis === "itu" ? (
                 <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 14, padding: "32px", textAlign: "center" }}>
                   <div style={{ fontSize: 32, marginBottom: 16 }}>✓</div>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: "#7ecba1", marginBottom: 12 }}>No specimen needed yet</div>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: "#7eb5e8", marginBottom: 12 }}>No specimen needed yet</div>
                   <div style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>Since you're filing Intent-to-Use, you don't need a specimen now. You'll submit one later when you file your Statement of Use after you launch your business.</div>
                 </div>
               ) : (
@@ -314,7 +314,7 @@ export default function DIY() {
                         <div>
                           <div style={{ fontSize: 15, fontWeight: 800, color: form.specimenType === opt.val ? "#c9a84c" : "#fff", marginBottom: 6 }}>{opt.label}</div>
                           <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6, marginBottom: 8 }}>{opt.detail}</div>
-                          <div style={{ fontSize: 12, fontWeight: 700, color: "#7ecba1" }}>✓ Good for: {opt.ok}</div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#7eb5e8" }}>✓ Good for: {opt.ok}</div>
                         </div>
                         <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${form.specimenType === opt.val ? "#c9a84c" : "rgba(255,255,255,0.2)"}`, background: form.specimenType === opt.val ? "#c9a84c" : "transparent", flexShrink: 0, marginLeft: 16 }} />
                       </div>
@@ -382,7 +382,7 @@ export default function DIY() {
 
               {/* What happens after */}
               <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 14, padding: "24px", marginTop: 8 }}>
-                <div style={{ fontSize: 15, fontWeight: 800, color: "#7ecba1", marginBottom: 16 }}>What happens after you file</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: "#7eb5e8", marginBottom: 16 }}>What happens after you file</div>
                 {[
                   ["1–3 days", "You receive a filing receipt with your serial number. Your priority date is locked in."],
                   ["3–4 months", "USPTO assigns an examining attorney who reviews your application."],
@@ -391,7 +391,7 @@ export default function DIY() {
                   ["~13–18 months", "If no opposition, your mark registers. You receive your certificate."],
                 ].map(([time, desc]) => (
                   <div key={time} style={{ display: "flex", gap: 16, marginBottom: 14 }}>
-                    <div style={{ fontSize: 12, fontWeight: 800, color: "#7ecba1", minWidth: 90, paddingTop: 2 }}>{time}</div>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: "#7eb5e8", minWidth: 90, paddingTop: 2 }}>{time}</div>
                     <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.6 }}>{desc}</div>
                   </div>
                 ))}
@@ -405,7 +405,7 @@ export default function DIY() {
                 </button>
               </div>
 
-              <a href="https://teas.uspto.gov" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "#7ecba1", color: "#0a0a0a", border: "none", borderRadius: 12, padding: "18px", fontWeight: 900, fontSize: 16, cursor: "pointer", fontFamily: "Poppins, sans-serif", textAlign: "center", textDecoration: "none", marginTop: 8 }}>
+              <a href="https://teas.uspto.gov" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "#7eb5e8", color: "#0a0a0a", border: "none", borderRadius: 12, padding: "18px", fontWeight: 900, fontSize: 16, cursor: "pointer", fontFamily: "Poppins, sans-serif", textAlign: "center", textDecoration: "none", marginTop: 8 }}>
                 File on USPTO.gov Now →
               </a>
             </div>
@@ -421,7 +421,7 @@ export default function DIY() {
                 Continue →
               </button>
             ) : (
-              <button onClick={() => router.push("/")} style={{ background: "#7ecba1", color: "#0a0a0a", border: "none", borderRadius: 10, padding: "12px 32px", fontWeight: 900, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+              <button onClick={() => router.push("/")} style={{ background: "#7eb5e8", color: "#0a0a0a", border: "none", borderRadius: 10, padding: "12px 32px", fontWeight: 900, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                 Back to Home
               </button>
             )}
