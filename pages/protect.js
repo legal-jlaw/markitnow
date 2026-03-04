@@ -182,6 +182,64 @@ export default function Protect() {
           </div>
         </div>
 
+
+        {/* AI powered section */}
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "72px 24px 0" }}>
+          <div style={{ textAlign: "center", marginBottom: 52 }}>
+            <div style={{ display: "inline-block", background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 20, padding: "6px 16px", fontSize: 11, fontWeight: 700, color: "#b8860b", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>
+              AI-Powered Protection
+            </div>
+            <h2 style={{ fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 900, color: "#111", margin: "0 0 14px", letterSpacing: -1 }}>
+              Never sleeps. Never misses.<br />Never forgets a deadline.
+            </h2>
+            <p style={{ fontSize: 15, color: "#777", maxWidth: 520, margin: "0 auto", lineHeight: 1.75 }}>
+              A human checking the USPTO database once a week is not protection. Our AI monitors continuously — scanning every new filing, every status change, every deadline — so nothing slips through.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+            {[
+              { icon: "⚡", title: "Real-time conflict detection", desc: "The moment a similar mark is filed anywhere in the USPTO database, you get an alert. Not next week. Not next month. Immediately.", highlight: false },
+              { icon: "🧠", title: "AI conflict analysis — always on", desc: "Our AI evaluates every new filing against your mark using the same DuPont factors a trademark attorney would apply — automatically, continuously, 24/7.", highlight: true },
+              { icon: "📅", title: "Deadline tracking", desc: "Section 8, Section 15, renewals, Statement of Use deadlines — all tracked automatically. You get reminders weeks before anything is due.", highlight: false },
+              { icon: "📊", title: "Monthly brand health report", desc: "Every month, a clean summary of your mark's status, any new conflicts detected, and recommended actions — delivered to your inbox.", highlight: false },
+              { icon: "👨‍⚖️", title: "Attorney review — on demand", desc: "The AI flags it. A U.S. Licensed Attorney reviews it. Human judgment applied to every serious conflict — not just automated alerts.", highlight: false },
+              { icon: "🔒", title: "Escalation when it matters", desc: "When a real threat is identified, your plan determines how fast an attorney responds — from priority email access to same-day C&D drafting.", highlight: false },
+            ].map(f => (
+              <div key={f.title} style={{
+                background: f.highlight ? "#111" : "#fff",
+                border: f.highlight ? "none" : "1px solid #e8e8e8",
+                borderRadius: 16, padding: "28px 24px",
+                boxShadow: f.highlight ? "0 8px 32px rgba(0,0,0,0.15)" : "0 2px 8px rgba(0,0,0,0.04)",
+              }}>
+                <div style={{ fontSize: 24, marginBottom: 14 }}>{f.icon}</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: f.highlight ? "#fff" : "#111", marginBottom: 8 }}>{f.title}</div>
+                <div style={{ fontSize: 13, color: f.highlight ? "rgba(255,255,255,0.55)" : "#777", lineHeight: 1.7 }}>{f.desc}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* AI vs manual comparison */}
+          <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: "32px", marginTop: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0 }}>
+            <div style={{ paddingRight: 32, borderRight: "1px solid #f0f0f0" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#ccc", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 16 }}>Without MarkItNow</div>
+              {["Manual USPTO searches — if you remember", "No alert when a competitor files", "Deadlines tracked in a spreadsheet", "Attorney bills $300/hr to check status", "Find out about conflicts after it is too late"].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13, color: "#aaa" }}>
+                  <span style={{ color: "#f87171", fontWeight: 900, flexShrink: 0 }}>✗</span>{item}
+                </div>
+              ))}
+            </div>
+            <div style={{ paddingLeft: 32 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 16 }}>With MarkItNow</div>
+              {["AI scans USPTO 24/7 automatically", "Instant alert the moment a conflict is filed", "Every deadline tracked and flagged automatically", "AI-powered monitoring from $49/month", "Act before a conflict becomes a threat"].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13, color: "#444" }}>
+                  <span style={{ color: "#c9a84c", fontWeight: 900, flexShrink: 0 }}>✓</span>{item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Plans */}
         <div id="plans" style={{ maxWidth: 1100, margin: "0 auto", padding: "72px 24px 0" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
@@ -194,19 +252,19 @@ export default function Protect() {
               {
                 name: "Monitor", tagline: "Stay aware", price: "$49", period: "/month per mark",
                 annual: "$399/yr — save $189", highlight: false, badge: null,
-                features: ["24/7 USPTO conflict monitoring", "Renewal & deadline alerts", "Instant alerts on similar filings", "Monthly brand health summary", "Free $99 AI Report on signup"],
+                features: ["24/7 AI conflict monitoring", "Renewal & deadline alerts", "Instant alerts when similar marks are filed", "Monthly brand health summary", "Free $99 AI Report on signup"],
                 cta: "Start Monitoring",
               },
               {
                 name: "Protect", tagline: "Stay defended", price: "$99", period: "/month per mark",
                 annual: "$799/yr — save $389", highlight: true, badge: "Most Popular",
-                features: ["Everything in Monitor", "Quarterly AI conflict scans", "1 Office Action response/year", "Priority attorney email access", "Competitor filing alerts"],
+                features: ["Everything in Monitor", "Quarterly attorney review of AI-flagged conflicts", "Written attorney assessment each quarter", "1 Office Action response/year included", "Priority attorney email access"],
                 cta: "Start Protecting",
               },
               {
                 name: "Shield", tagline: "Stay untouchable", price: "$249", period: "/month per mark",
                 annual: "$1,999/yr — save $989", highlight: false, badge: "Enterprise",
-                features: ["Everything in Protect", "Unlimited Office Action responses", "C&D letter drafting on conflicts", "Dedicated attorney on file", "Portfolio-wide coverage"],
+                features: ["Everything in Protect", "Unlimited attorney reviews — no waiting", "C&D letter drafting when conflicts arise", "Dedicated attorney on file", "Portfolio-wide mark coverage"],
                 cta: "Get Full Shield",
               },
             ].map(plan => (
