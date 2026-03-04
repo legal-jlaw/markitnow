@@ -74,24 +74,15 @@ export default function Home() {
         {/* Hero */}
         <div className="hero" style={{ maxWidth: 700, margin: "0 auto", padding: "100px 24px 64px", textAlign: "center" }}>
 
-          {/* Social proof counter — specificity signals credibility */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #e8e8e8", borderRadius: 20, padding: "6px 16px", fontSize: 12, fontWeight: 600, color: "#555", marginBottom: 32, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-            <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#2ecc71", animation: "pulse 2s infinite", flexShrink: 0 }} />
-            <span><strong style={{ color: "#111" }}>{liveCount}</strong> searches run this month</span>
+          <div style={{ display: "inline-block", background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 20, padding: "6px 16px", fontSize: 11, fontWeight: 700, color: "#b8860b", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 32 }}>
+            Free Search. No Account. Results in Seconds.
           </div>
-
-          {/* Loss aversion headline */}
           <h1 style={{ fontSize: "clamp(34px, 6vw, 60px)", fontWeight: 900, color: "#111", lineHeight: 1.05, marginBottom: 20, letterSpacing: -2 }}>
             Don't file blind.<br />
             <span style={{ color: "#c9a84c" }}>Search free before you build.</span>
           </h1>
-          <p style={{ fontSize: 17, color: "#666", marginBottom: 16, lineHeight: 1.7, maxWidth: 480, margin: "0 auto 16px" }}>
+          <p style={{ fontSize: 17, color: "#666", marginBottom: 44, lineHeight: 1.7, maxWidth: 480, margin: "0 auto 44px" }}>
             A conflicting mark in the USPTO database could block your application, force a rebrand, or cost you everything you've built. Search takes 10 seconds. Finding out too late costs far more.
-          </p>
-
-          {/* Authority line — built by practicing attorney */}
-          <p style={{ fontSize: 13, color: "#aaa", marginBottom: 36, lineHeight: 1.6, maxWidth: 400, margin: "0 auto 36px" }}>
-            Built by a practicing trademark attorney who has filed hundreds of federal applications.
           </p>
 
           <form onSubmit={handleSearch} className="search-form" style={{ display: "flex", gap: 10, maxWidth: 560, margin: "0 auto", background: "#fff", border: "1px solid #e0e0e0", borderRadius: 14, padding: 8, boxShadow: "0 4px 24px rgba(0,0,0,0.07)" }}>
