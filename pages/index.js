@@ -4,19 +4,31 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-// Live search counter - specific number builds social proof
-const BASE_COUNT = 14382;
-const BASE_TIME = new Date("2026-03-01T00:00:00Z").getTime();
+// Placeholder until real counter is wired up
 function useLiveCount() {
-  const [count, setCount] = useState(BASE_COUNT);
-  useEffect(() => {
-    const elapsed = (Date.now() - BASE_TIME) / 1000;
-    const initial = BASE_COUNT + Math.floor(elapsed * 0.04);
-    setCount(initial);
-    const timer = setInterval(() => setCount(c => c + 1), 24000);
-    return () => clearInterval(timer);
-  }, []);
-  return count.toLocaleString();
+  return null;
+}
+
+function DebtClock({ value }) {
+  const formatted = Math.floor(value).toLocaleString("en-US");
+  const chars = formatted.split("");
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 0, fontVariantNumeric: "tabular-nums", fontWeight: 900, letterSpacing: 0, lineHeight: 1 }}>
+      {chars.map((d, i) =>
+        d === "," ? (
+          <span key={i} style={{ fontSize: 10, color: "#999", margin: "0 1px", lineHeight: 1 }}>,</span>
+        ) : (
+          <span key={i} className="digit-wrap">
+            <span className="digit-inner" style={{ transform: `translateY(-${parseInt(d) * 10}%)` }}>
+              {[0,1,2,3,4,5,6,7,8,9].map(n => (
+                <span key={n} style={{ display: "block", height: "1.1em", textAlign: "center" }}>{n}</span>
+              ))}
+            </span>
+          </span>
+        )
+      )}
+    </span>
+  );
 }
 
 export default function Home() {
