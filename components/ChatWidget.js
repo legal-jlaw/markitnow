@@ -57,7 +57,7 @@ export default function ChatWidget() {
       {/* Tooltip bubble */}
       {!open && messages.length === 0 && (
         <div style={{ position: "fixed", bottom: 96, right: 28, zIndex: 1001, background: "#fff", border: "1px solid #e0e0e0", borderRadius: 20, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: "#333", fontFamily: "Poppins, sans-serif", boxShadow: "0 2px 12px rgba(0,0,0,0.1)", whiteSpace: "nowrap" }}>
-          Questions? Ask MarkitBot ✨
+          Questions? Ask MarkitBot 
         </div>
       )}
 
@@ -94,7 +94,7 @@ export default function ChatWidget() {
 
           {/* Disclaimer */}
           <div style={{ background: "#fff8e6", borderBottom: "1px solid #f0d080", padding: "8px 16px", fontSize: 11, color: "#b8860b", flexShrink: 0 }}>
-            ⚠️ AI assistant only not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
+            ️ AI assistant only not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
           </div>
 
           {/* Messages */}
@@ -109,7 +109,7 @@ export default function ChatWidget() {
                 </svg>
               </div>
                 <div style={{ background: "#f4f4f4", borderRadius: "4px 16px 16px 16px", padding: "12px 14px", maxWidth: "85%", fontSize: 13, color: "#333", lineHeight: 1.6 }}>
-                  Hi! I'm MarkitBot 👋 I can answer questions about trademark registration, USPTO fees, the filing process, and MarkItNow's services. What can I help you with?
+                  Hi! I'm MarkitBot  I can answer questions about trademark registration, USPTO fees, the filing process, and MarkItNow's services. What can I help you with?
                 </div>
               </div>
             )}

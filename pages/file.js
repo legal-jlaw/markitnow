@@ -60,7 +60,7 @@ function StepIndicator({ current }) {
               display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 12, fontWeight: 800,
             }}>
-              {done ? "✓" : i + 1}
+              {done ? "" : i + 1}
             </div>
             <div style={{ fontSize: 10, fontWeight: active ? 700 : 400, color: active ? "#111" : "#aaa", marginLeft: 6, whiteSpace: "nowrap" }}>
               {STEP_LABELS[s].split(" & ")[0]}
@@ -311,7 +311,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
               <div ref={analysisRef}>
                 {loading && (
                   <div style={{ textAlign: "center", padding: "48px 0" }}>
-                    <div style={{ fontSize: 40, marginBottom: 14 }}>⚖️</div>
+                    <div style={{ fontSize: 40, marginBottom: 14 }}>️</div>
                     <div style={{ color: "#c9a84c", fontWeight: 700, fontSize: 16, marginBottom: 6 }}>Analyzing Application...</div>
                     <div style={{ color: "#aaa", fontSize: 13 }}>Identifying Nice classes · Assessing mark strength · Drafting identification</div>
                     <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 6 }}>
@@ -395,7 +395,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                     {analysis.teasPlusEligible !== undefined && (
                       <div style={{ background: analysis.teasPlusEligible ? "#f0fff4" : "#fffaf0", borderRadius: 10, padding: 14, marginBottom: 20, border: `1px solid ${analysis.teasPlusEligible ? "#c6f6d5" : "#fbd38d"}` }}>
                         <div style={{ fontWeight: 700, fontSize: 13, color: analysis.teasPlusEligible ? "#38a169" : "#dd6b20", marginBottom: 4 }}>
-                          {analysis.teasPlusEligible ? "✓ TEAS Plus Eligible (saves $100/class)" : "TEAS Standard Required"}
+                          {analysis.teasPlusEligible ? " TEAS Plus Eligible (saves $100/class)" : "TEAS Standard Required"}
                         </div>
                         <div style={{ fontSize: 12, color: "#777" }}>{analysis.teasPlusNote}</div>
                       </div>

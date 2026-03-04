@@ -143,7 +143,7 @@ export default function DIY() {
                     color: s.id <= step ? "#fff" : "#aaa",
                     fontSize: 13, fontWeight: 800, marginBottom: 6, transition: "all 0.3s",
                   }}>
-                    {s.id < step ? "✓" : s.id}
+                    {s.id < step ? "" : s.id}
                   </div>
                   <div style={{ fontSize: 10, color: s.id === step ? "#111" : "#aaa", fontWeight: 600, textAlign: "center", display: "block" }}>
                     {s.title}
@@ -187,7 +187,7 @@ export default function DIY() {
                 <div style={{ fontSize: 12, color: "#aaa", marginTop: 8 }}>The more detail you give, the better the AI guidance.</div>
               </div>
               <div style={{ background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 10, padding: "16px 20px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}>💡 Word marks are the strongest protection</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}> Word marks are the strongest protection</div>
                 <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>A word mark protects the text itself in any font or style. A logo mark only protects that specific design. Most attorneys recommend filing a word mark first.</div>
               </div>
             </div>
@@ -203,7 +203,7 @@ export default function DIY() {
               </div>
 
               <button onClick={suggestClasses} disabled={aiLoading} style={{ background: "#f0fff4", border: "1px solid #c6f6d5", borderRadius: 10, padding: "14px 20px", color: "#555", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
-                {aiLoading ? "⏳ AI is analyzing your business..." : "✨ Get AI Class Recommendations"}
+                {aiLoading ? " AI is analyzing your business..." : " Get AI Class Recommendations"}
               </button>
 
               {aiSuggestion && (
@@ -245,7 +245,7 @@ export default function DIY() {
               </div>
 
               <button onClick={suggestDescription} disabled={aiLoading} style={{ background: "#f0fff4", border: "1px solid #c6f6d5", borderRadius: 10, padding: "14px 20px", color: "#555", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
-                {aiLoading ? "⏳ Writing your description..." : "✨ Generate USPTO-Compliant Description"}
+                {aiLoading ? " Writing your description..." : " Generate USPTO-Compliant Description"}
               </button>
 
               {aiSuggestion && (
@@ -264,7 +264,7 @@ export default function DIY() {
               </div>
 
               <div style={{ background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 10, padding: "16px 20px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}>💡 Use ID Manual language when possible</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}> Use ID Manual language when possible</div>
                 <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>Using exact language from the USPTO ID Manual avoids a $200/class surcharge and speeds up examination. The AI description above is designed to match ID Manual language.</div>
               </div>
             </div>
@@ -302,7 +302,7 @@ export default function DIY() {
                       <div style={{ fontSize: 16, fontWeight: 800, color: form.basis === opt.val ? "#c9a84c" : "#fff", marginBottom: 4 }}>{opt.label}</div>
                       <div style={{ fontSize: 14, color: "#666", marginBottom: 12 }}>{opt.subtitle}</div>
                       <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, marginBottom: 10 }}>{opt.detail}</div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#555" }}>✓ {opt.good}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#555" }}> {opt.good}</div>
                     </div>
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export default function DIY() {
 
               {form.basis === "itu" && (
                 <div style={{ background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 10, padding: "16px 20px" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}>📋 ITU reminder</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}> ITU reminder</div>
                   <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>You'll skip the specimen step for now. After USPTO approves your application, you'll file a Statement of Use ($249 our fee + $150 USPTO fee) to complete registration. We can help you with that when the time comes.</div>
                 </div>
               )}
@@ -322,7 +322,7 @@ export default function DIY() {
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {form.basis === "itu" ? (
                 <div style={{ background: "#f0fff4", border: "1px solid #c6f6d5", borderRadius: 14, padding: "32px", textAlign: "center" }}>
-                  <div style={{ fontSize: 32, marginBottom: 16 }}>✓</div>
+                  <div style={{ fontSize: 32, marginBottom: 16 }}></div>
                   <div style={{ fontSize: 20, fontWeight: 800, color: "#555", marginBottom: 12 }}>No specimen needed yet</div>
                   <div style={{ fontSize: 15, color: "#777", lineHeight: 1.7 }}>Since you're filing Intent-to-Use, you don't need a specimen now. You'll submit one later when you file your Statement of Use after you launch your business.</div>
                 </div>
@@ -343,7 +343,7 @@ export default function DIY() {
                         <div>
                           <div style={{ fontSize: 15, fontWeight: 800, color: form.specimenType === opt.val ? "#c9a84c" : "#fff", marginBottom: 6 }}>{opt.label}</div>
                           <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6, marginBottom: 8 }}>{opt.detail}</div>
-                          <div style={{ fontSize: 12, fontWeight: 700, color: "#555" }}>✓ Good for: {opt.ok}</div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#555" }}> Good for: {opt.ok}</div>
                         </div>
                         <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${form.specimenType === opt.val ? "#c9a84c" : "rgba(255,255,255,0.2)"}`, background: form.specimenType === opt.val ? "#c9a84c" : "transparent", flexShrink: 0, marginLeft: 16 }} />
                       </div>
@@ -352,7 +352,7 @@ export default function DIY() {
 
                   {form.specimenType && (
                     <div style={{ background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 10, padding: "16px 20px" }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}>📸 What to prepare</div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 6 }}> What to prepare</div>
                       <div style={{ fontSize: 13, color: "#888", lineHeight: 1.7 }}>
                         {form.specimenType === "website" && "Take a screenshot of your website showing your trademark name/logo near a 'buy now', 'order', or 'book' button. Save as JPG or PNG under 5MB."}
                         {form.specimenType === "label" && "Take a clear photo of the product label or packaging showing your trademark. The mark must be legible. Save as JPG or PNG under 5MB."}

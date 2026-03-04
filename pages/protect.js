@@ -199,12 +199,12 @@ export default function Protect() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
             {[
-              { icon: "⚡", title: "Real-time conflict detection", desc: "The moment a similar mark is filed anywhere in the USPTO database, you get an alert. Not next week. Not next month. Immediately.", highlight: false },
-              { icon: "🧠", title: "AI conflict analysis - always on", desc: "Our AI evaluates every new filing against your mark using the same DuPont factors a trademark attorney would apply - automatically, continuously, 24/7.", highlight: false },
-              { icon: "📅", title: "Deadline tracking", desc: "Section 8, Section 15, renewals, Statement of Use deadlines - all tracked automatically. You get reminders weeks before anything is due.", highlight: false },
-              { icon: "📊", title: "Monthly brand health report", desc: "Every month, a clean summary of your mark's status, any new conflicts detected, and recommended actions - delivered to your inbox.", highlight: false },
-              { icon: "👨‍⚖️", title: "Attorney review - on demand", desc: "The AI flags it. A U.S. Licensed Attorney reviews it. Human judgment applied to every serious conflict - not just automated alerts.", highlight: false },
-              { icon: "🔒", title: "Escalation when it matters", desc: "When a real threat is identified, your plan determines how fast an attorney responds - from priority email access to same-day C&D drafting.", highlight: false },
+              { icon: "", title: "Real-time conflict detection", desc: "The moment a similar mark is filed anywhere in the USPTO database, you get an alert. Not next week. Not next month. Immediately.", highlight: false },
+              { icon: "", title: "AI conflict analysis - always on", desc: "Our AI evaluates every new filing against your mark using the same DuPont factors a trademark attorney would apply - automatically, continuously, 24/7.", highlight: false },
+              { icon: "", title: "Deadline tracking", desc: "Section 8, Section 15, renewals, Statement of Use deadlines - all tracked automatically. You get reminders weeks before anything is due.", highlight: false },
+              { icon: "", title: "Monthly brand health report", desc: "Every month, a clean summary of your mark's status, any new conflicts detected, and recommended actions - delivered to your inbox.", highlight: false },
+              { icon: "‍️", title: "Attorney review - on demand", desc: "The AI flags it. A U.S. Licensed Attorney reviews it. Human judgment applied to every serious conflict - not just automated alerts.", highlight: false },
+              { icon: "", title: "Escalation when it matters", desc: "When a real threat is identified, your plan determines how fast an attorney responds - from priority email access to same-day C&D drafting.", highlight: false },
             ].map(f => (
               <div key={f.title} style={{
                 background: f.highlight ? "#111" : "#fff",
@@ -225,7 +225,7 @@ export default function Protect() {
               <div style={{ fontSize: 11, fontWeight: 700, color: "#ccc", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 16 }}>Without MarkItNow</div>
               {["Manual USPTO searches - if you remember", "No alert when a competitor files", "Deadlines tracked in a spreadsheet", "Attorney bills $300/hr to check status", "Find out about conflicts after it is too late"].map(item => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13, color: "#aaa" }}>
-                  <span style={{ color: "#f87171", fontWeight: 900, flexShrink: 0 }}>✗</span>{item}
+                  <span style={{ color: "#f87171", fontWeight: 900, flexShrink: 0 }}></span>{item}
                 </div>
               ))}
             </div>
@@ -233,7 +233,7 @@ export default function Protect() {
               <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 16 }}>With MarkItNow</div>
               {["AI scans USPTO 24/7 automatically", "Instant alert the moment a conflict is filed", "Every deadline tracked and flagged automatically", "AI-powered monitoring from $49/month", "Act before a conflict becomes a threat"].map(item => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13, color: "#444" }}>
-                  <span style={{ color: "#c9a84c", fontWeight: 900, flexShrink: 0 }}>✓</span>{item}
+                  <span style={{ color: "#c9a84c", fontWeight: 900, flexShrink: 0 }}></span>{item}
                 </div>
               ))}
             </div>
@@ -289,12 +289,12 @@ export default function Protect() {
                   <div style={{ fontSize: 12, color: "#c9a84c", fontWeight: 600 }}>{plan.annual}</div>
                 </div>
                 <div style={{ background: "#f0fff4", border: "1px solid #9ae6b4", borderRadius: 8, padding: "9px 12px", marginBottom: 20, fontSize: 12, color: "#276749", fontWeight: 600 }}>
-                  🎁 Free $99 AI Report on signup
+                   Free $99 AI Report on signup
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1, marginBottom: 24 }}>
                   {plan.features.map(f => (
                     <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: 13, color: "#444", lineHeight: 1.5 }}>
-                      <span style={{ color: "#c9a84c", fontWeight: 900, fontSize: 14, flexShrink: 0, lineHeight: 1.5 }}>✓</span>
+                      <span style={{ color: "#c9a84c", fontWeight: 900, fontSize: 14, flexShrink: 0, lineHeight: 1.5 }}></span>
                       {f}
                     </div>
                   ))}
@@ -340,7 +340,7 @@ export default function Protect() {
             ].map(t => (
               <div key={t.name} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: 28, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
                 <div style={{ display: "flex", gap: 2, marginBottom: 14 }}>
-                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: "#c9a84c", fontSize: 13 }}>★</span>)}
+                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: "#c9a84c", fontSize: 13 }}></span>)}
                 </div>
                 <p style={{ fontSize: 13, color: "#555", lineHeight: 1.8, margin: "0 0 18px", fontStyle: "italic" }}>"{t.quote}"</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>

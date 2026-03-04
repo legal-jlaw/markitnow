@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+//  Helpers 
 
 function statusStyle(status = "") {
   const s = status.toLowerCase();
@@ -21,7 +21,7 @@ function scoreColor(s) {
   return s >= 70 ? "#2d7a4f" : s >= 45 ? "#e67e22" : "#c0392b";
 }
 
-// ─── Purchase / Analysis Panel ────────────────────────────────────────────────
+//  Purchase / Analysis Panel 
 
 function PurchasePanel({ mark, trademarks, loading }) {
   const [activeResult, setActiveResult] = useState(null);
@@ -127,7 +127,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
     }
   }
 
-  // ── Idle: show product cards ──
+  //  Idle: show product cards 
   if (!activeResult) {
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -163,7 +163,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ border: "1.5px solid #d4e3d9", borderRadius: 12, padding: 16, marginBottom: 12, background: "#fff" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>👤 Client Report</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}> Client Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>Plain English · Risk assessment · Conflict analysis</div>
               </div>
               <div style={{ background: "#f0f7f2", color: "#2d7a4f", fontWeight: 800, fontSize: 11, padding: "3px 8px", borderRadius: 5 }}>Free Preview</div>
@@ -180,7 +180,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ border: "2px solid #c9a84c", borderRadius: 12, padding: 16, marginBottom: 12, background: "#fffdf7" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>⚖️ Attorney Memo</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>️ Attorney Memo</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>DuPont analysis · Case citations · Prosecution strategy</div>
               </div>
               <div style={{ background: "#c9a84c", color: "#0a0a0a", fontWeight: 800, fontSize: 11, padding: "3px 8px", borderRadius: 5 }}>Free Preview</div>
@@ -195,7 +195,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
 
           {/* File CTA */}
           <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 16 }}>
-            <div style={{ fontWeight: 800, fontSize: 13, color: "#555", marginBottom: 4 }}>⚡ Skip straight to filing?</div>
+            <div style={{ fontWeight: 800, fontSize: 13, color: "#555", marginBottom: 4 }}> Skip straight to filing?</div>
             <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6, marginBottom: 10 }}>
               U.S. Licensed Attorney reviews your application and files TEAS Plus. $399 flat $100 less than Trademarkia.
             </div>
@@ -208,11 +208,11 @@ Respond ONLY with valid JSON (no markdown, no backticks):
     );
   }
 
-  // ── Generating spinner ──
+  //  Generating spinner 
   if (generating) {
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: 32, textAlign: "center" }}>
-        <div style={{ fontSize: 44, marginBottom: 16 }}>⚖️</div>
+        <div style={{ fontSize: 44, marginBottom: 16 }}>️</div>
         <div style={{ fontWeight: 800, fontSize: 16, color: "#0f1e3c", marginBottom: 6 }}>
           {activeResult === "report" ? "Analyzing conflicts..." : "Drafting attorney memo..."}
         </div>
@@ -231,14 +231,14 @@ Respond ONLY with valid JSON (no markdown, no backticks):
     );
   }
 
-  // ── Client Report result ──
+  //  Client Report result 
   if (activeResult === "report" && report) {
     const sc = report.clientConfidenceScore || 50;
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         {/* Sticky header */}
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>👤 Client Report</div>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}> Client Report</div>
           <button onClick={() => { setActiveResult(null); setReport(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c" }}>← Back</button>
         </div>
 
@@ -259,7 +259,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           {/* Could work */}
           {report.whyItCouldWork?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}>✓ Why It Could Work</div>
+              <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Why It Could Work</div>
               {report.whyItCouldWork.map((w, i) => (
                 <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
                   <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
@@ -273,7 +273,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           {/* Risks */}
           {report.whyItMightNotWork?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}>⚠ Risks</div>
+              <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Risks</div>
               {report.whyItMightNotWork.map((w, i) => (
                 <div key={i} style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
                   <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
@@ -305,7 +305,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ background: "#f4f7f5", borderRadius: 10, padding: 14, border: "1px solid #d0e4d8" }}>
             {!isPaid ? (
               <>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}>📄 Full PDF Report</div>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}> Full PDF Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>DuPont analysis + attorney memo + prosecution strategy</div>
                 <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
                   Unlock PDF $99
@@ -313,7 +313,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               </>
             ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}>✓ Report Unlocked</div>
+                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}> Report Unlocked</div>
                 <button style={{ padding: "9px 16px", background: "#2d7a4f", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>Download PDF</button>
               </div>
             )}
@@ -327,12 +327,12 @@ Respond ONLY with valid JSON (no markdown, no backticks):
     );
   }
 
-  // ── Attorney Memo result ──
+  //  Attorney Memo result 
   if (activeResult === "memo" && memo) {
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>⚖️ Attorney Memo</div>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>️ Attorney Memo</div>
           <button onClick={() => { setActiveResult(null); setMemo(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c" }}>← Back</button>
         </div>
 
@@ -401,7 +401,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ background: "#fffdf7", borderRadius: 10, padding: 14, border: "2px solid #c9a84c" }}>
             {!isPaid ? (
               <>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}>📄 Full Attorney Memo PDF</div>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}> Full Attorney Memo PDF</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>Complete work product printable, shareable, attorney-reviewed</div>
                 <button onClick={() => handlePurchase("memo", 149)} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
                   Unlock Memo PDF $149
@@ -409,7 +409,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               </>
             ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}>✓ Memo Unlocked</div>
+                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}> Memo Unlocked</div>
                 <button style={{ padding: "9px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>Download PDF</button>
               </div>
             )}
@@ -422,7 +422,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
   return null;
 }
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
+//  Main Page 
 
 export default function SearchPage() {
   const router = useRouter();
@@ -540,7 +540,7 @@ export default function SearchPage() {
             <div style={{ flex: 1, overflowY: "auto" }}>
               {usptoStatus === "loading" && (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 280, color: "#6b8a78" }}>
-                  <div style={{ fontSize: 36, marginBottom: 12 }}>🔍</div>
+                  <div style={{ fontSize: 36, marginBottom: 12 }}></div>
                   <div style={{ fontWeight: 700, fontSize: 14, color: "#0f1e3c" }}>Searching USPTO database...</div>
                   <div style={{ fontSize: 12, marginTop: 4 }}>Running parallel queries · Deduplicating results</div>
                 </div>
@@ -555,7 +555,7 @@ export default function SearchPage() {
 
               {usptoStatus === "done" && filteredMarks.length === 0 && (
                 <div style={{ margin: 16, padding: 18, background: "#f0f7f2", borderRadius: 12, color: "#2d7a4f" }}>
-                  <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 6 }}>✓ No matching marks found</div>
+                  <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 6 }}> No matching marks found</div>
                   <div style={{ fontSize: 12, lineHeight: 1.6 }}>
                     {filterStatus === "all"
                       ? `No USPTO marks found matching "${mark}" or its keywords. Positive indicator for registrability proceed with AI analysis.`

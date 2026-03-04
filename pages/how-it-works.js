@@ -9,7 +9,6 @@ const STEPS = [
     title: "Search for Free",
     desc: "Enter your brand name and search the live USPTO database of 4M+ marks instantly. See active conflicts, dead marks, class breakdowns, and owner info no account required.",
     tag: "Free",
-    icon: "🔍",
     detail: ["Live USPTO TESS database", "Active & dead marks", "Owner info & filing dates", "Results in seconds"],
   },
   {
@@ -17,7 +16,6 @@ const STEPS = [
     title: "Get an AI Analysis Report",
     desc: "Our AI analyzes your search results and produces a full conflict analysis with a risk score, DuPont factor breakdown, and class-by-class recommendations.",
     tag: "$99",
-    icon: "🤖",
     detail: ["Likelihood of confusion analysis", "Risk score (0 to 100)", "All 13 DuPont factors", "Filing strategy recommendations"],
   },
   {
@@ -25,7 +23,7 @@ const STEPS = [
     title: "Choose Your Path",
     desc: "Based on your results, decide how to proceed. File yourself with our DIY guide, or have a U.S. Licensed Attorney handle everything for you.",
     tag: "$69 or $399",
-    icon: "⚖️",
+    icon: "️",
     detail: ["DIY guided filing ($69 + USPTO fees)", "Attorney filing ($399 + USPTO fees)", "Attorney memo for investors ($149)", "No pressure move at your pace"],
   },
   {
@@ -33,7 +31,6 @@ const STEPS = [
     title: "USPTO Reviews Your Application",
     desc: "After filing, the USPTO assigns an examining attorney who reviews your application. This typically takes 3 to 4 months. You may receive an Office Action (objection) requiring a response.",
     tag: "3 to 4 months",
-    icon: "📋",
     detail: ["Filing receipt issued immediately", "Serial number assigned", "Examining attorney review", "Office Action response if needed"],
   },
   {
@@ -41,7 +38,6 @@ const STEPS = [
     title: "Publication & Registration",
     desc: "If approved, your mark publishes in the Official Gazette for 30 days. If no opposition is filed, your trademark registers and you receive your certificate.",
     tag: "~13 to 18 months total",
-    icon: "🏆",
     detail: ["30-day publication period", "Certificate of registration", "® symbol rights", "10-year renewable term"],
   },
 ];
@@ -133,7 +129,7 @@ export default function HowItWorks() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                   {step.detail.map(d => (
                     <div key={d} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#555" }}>
-                      <span style={{ color: "#c9a84c", fontWeight: 800, fontSize: 14 }}>✓</span> {d}
+                      <span style={{ color: "#c9a84c", fontWeight: 800, fontSize: 14 }}></span> {d}
                     </div>
                   ))}
                 </div>

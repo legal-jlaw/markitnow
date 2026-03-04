@@ -82,9 +82,9 @@ export default function Home() {
         <div style={{ maxWidth: 1000, margin: "0 auto 80px", padding: "0 24px" }}>
           <div className="cards-grid">
             {[
-              { icon: "🔍", title: "Free Search", desc: "See every active and dead mark, owner info, filing dates, and class coverage instantly.", tag: "Free", action: null },
-              { icon: "🤖", title: "AI Analysis Report", desc: "Risk score, DuPont factor breakdown, and class-by-class conflict analysis. PDF delivered instantly.", tag: "$99", action: () => router.push("/file") },
-              { icon: "⚖️", title: "Attorney Filing", desc: "U.S. Licensed Attorney prepares and files your TEAS Plus application from start to finish.", tag: "$399 + USPTO fees", action: () => router.push("/file") },
+              { icon: "", title: "Free Search", desc: "See every active and dead mark, owner info, filing dates, and class coverage instantly.", tag: "Free", action: null },
+              { icon: "", title: "AI Analysis Report", desc: "Risk score, DuPont factor breakdown, and class-by-class conflict analysis. PDF delivered instantly.", tag: "$99", action: () => router.push("/file") },
+              { icon: "️", title: "Attorney Filing", desc: "U.S. Licensed Attorney prepares and files your TEAS Plus application from start to finish.", tag: "$399 + USPTO fees", action: () => router.push("/file") },
             ].map(card => (
               <div key={card.title} onClick={card.action} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: "28px 28px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", cursor: card.action ? "pointer" : "default" }}
                 onMouseEnter={e => { if (card.action) e.currentTarget.style.borderColor = "#c9a84c"; }}
@@ -123,7 +123,7 @@ export default function Home() {
             ].map(t => (
               <div key={t.name} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: 28, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
                 <div style={{ display: "flex", gap: 2, marginBottom: 14 }}>
-                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: "#c9a84c", fontSize: 13 }}>★</span>)}
+                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: "#c9a84c", fontSize: 13 }}></span>)}
                 </div>
                 <p style={{ fontSize: 13, color: "#555", lineHeight: 1.8, margin: "0 0 18px", fontStyle: "italic" }}>"{t.quote}"</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
