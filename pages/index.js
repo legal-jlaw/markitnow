@@ -152,7 +152,7 @@ export default function Home() {
         <div className="protect-bar" style={{ background: "#111", textAlign: "center", padding: "52px 24px" }}>
           <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 10 }}>Already filed? You're not done.</div>
           <div style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginBottom: 28, maxWidth: 500, margin: "0 auto 28px" }}>
-            Filing gives you a registration number. It does not stop competitors from filing similar marks, missing your renewal deadlines, or responding to Office Actions. That's what monitoring is for.
+            Filing gives you a serial number. It does not stop competitors from filing similar marks, missing your renewal deadlines, or responding to Office Actions. That's what monitoring is for.
           </div>
           <button onClick={() => router.push("/protect")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 12, padding: "14px 36px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
             Check My Brand Protection →
