@@ -44,13 +44,6 @@ const STEPS = [
   },
 ];
 
-const FAQS = [
-  { q: "How long does the whole process take?", a: "From filing to registration typically takes 13–18 months for a straightforward application. If you receive an Office Action, it can take longer depending on the complexity of the response." },
-  { q: "What is an Office Action?", a: "An Office Action is an official letter from a USPTO examining attorney raising objections to your application. Common issues include likelihood of confusion with existing marks or descriptiveness. You have 3 months to respond (extendable to 6 months for a fee). Our attorneys can draft responses starting at $499." },
-  { q: "What is the difference between ™ and ®?", a: "™ can be used as soon as you claim rights in a mark, even before filing. ® can only be used after your mark is officially registered by the USPTO. Using ® before registration is a federal offense." },
-  { q: "Do I need to be using the mark already to file?", a: "No. You can file under Section 1(b) Intent-to-Use if you have a bona fide intention to use the mark in commerce. You'll need to file a Statement of Use ($150 USPTO fee + our $249 service fee) once you begin using the mark." },
-  { q: "What happens after registration?", a: "Between years 5–6, you must file a Section 8 Declaration of Continued Use and Section 15 Declaration of Incontestability. Between years 9–10, you must file a Section 9 Renewal. Our Portfolio Monitor ($49/year per mark) tracks all of these deadlines for you." },
-];
 
 export default function HowItWorks() {
   const router = useRouter();
@@ -149,19 +142,17 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* FAQ */}
-        <div style={{ maxWidth: 720, margin: "0 auto 80px", padding: "0 24px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28 }}>
-            <div style={{ width: 4, height: 22, background: "#c9a84c", borderRadius: 2 }} />
-            <h2 style={{ fontSize: 18, fontWeight: 800, color: "#111", margin: 0 }}>Common questions</h2>
-            <div style={{ flex: 1, height: 1, background: "#e8e8e8" }} />
-          </div>
-          {FAQS.map(({ q, a }) => (
-            <div key={q} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "18px 22px", marginBottom: 10 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111", margin: "0 0 8px" }}>{q}</h3>
-              <p style={{ fontSize: 13, color: "#777", lineHeight: 1.7, margin: 0 }}>{a}</p>
+        {/* FAQ Link */}
+        <div style={{ maxWidth: 860, margin: "0 auto 80px", padding: "0 24px" }}>
+          <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: "32px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <div>
+              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#111", margin: "0 0 6px" }}>Have more questions?</h3>
+              <p style={{ fontSize: 14, color: "#777", margin: 0 }}>Browse our full FAQ — costs, timelines, Office Actions, renewals, and more.</p>
             </div>
-          ))}
+            <button onClick={() => router.push("/faq")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 10, padding: "12px 28px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif", whiteSpace: "nowrap", marginLeft: 24 }}>
+              View FAQ →
+            </button>
+          </div>
         </div>
 
         {/* CTA */}
@@ -181,7 +172,7 @@ export default function HowItWorks() {
         {/* Footer */}
         <div style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111" }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
-          <div style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</div>
+          <div style={{ display: "flex", gap: 24, alignItems: "center" }}><span onClick={() => router.push("/faq")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>FAQ</span><span style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</span></div>
         </div>
       </div>
     </>
