@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "FAQ", path: "/faq" },
 ];
 
+
 export default function Nav() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,9 +24,9 @@ export default function Nav() {
         <div className="desktop-nav" style={{ display: "flex", gap: 4, alignItems: "center" }}>
           {NAV_LINKS.map(l => (
             <button key={l.label} onClick={() => router.push(l.path)} style={{
-              background: l.gold ? "#fff8e6" : "none",
-              border: l.gold ? "1px solid #f0d080" : "none",
-              color: l.gold ? "#b8860b" : "#555",
+              background: "none",
+              border: "none",
+              color: l.gold ? "#c9a84c" : "#555",
               fontSize: 14, fontWeight: l.gold ? 700 : 500,
               cursor: "pointer", fontFamily: "Poppins, sans-serif",
               padding: "8px 14px", borderRadius: 8,
