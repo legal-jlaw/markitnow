@@ -169,7 +169,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
             <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.6, marginBottom: 12 }}>
               Summary + pros/cons + conflict breakdown. Full PDF (with DuPont memo) unlocks for $99.
             </div>
-            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
               Generate Client Report — Free →
             </button>
           </div>
@@ -193,8 +193,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
 
           {/* File CTA */}
           <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 16 }}>
-            <div style={{ fontWeight: 800, fontSize: 13, color: "#7eb5e8", marginBottom: 4 }}>⚡ Skip straight to filing?</div>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", lineHeight: 1.6, marginBottom: 10 }}>
+            <div style={{ fontWeight: 800, fontSize: 13, color: "#555", marginBottom: 4 }}>⚡ Skip straight to filing?</div>
+            <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6, marginBottom: 10 }}>
               U.S.-licensed attorney reviews your application and files TEAS Plus. $399 flat — $100 less than Trademarkia.
             </div>
             <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ display: "block", textAlign: "center", padding: "9px", background: "#c9a84c", color: "#0a0a0a", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
@@ -305,14 +305,14 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               <>
                 <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}>📄 Full PDF Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>DuPont analysis + attorney memo + prosecution strategy</div>
-                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
                   Unlock PDF — $99
                 </button>
               </>
             ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                 <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}>✓ Report Unlocked</div>
-                <button style={{ padding: "9px 16px", background: "#2d7a4f", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>Download PDF</button>
+                <button style={{ padding: "9px 16px", background: "#2d7a4f", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>Download PDF</button>
               </div>
             )}
           </div>
@@ -346,7 +346,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               <div style={{ fontSize: 10, color: "#6b8a78", lineHeight: 1.6, marginBottom: 8 }}>{memo.duPontAnalysis.overview}</div>
               {memo.duPontAnalysis.factors?.map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
-                  <div style={{ fontSize: 9, fontWeight: 800, background: "#0f1e3c", color: "#fff", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
+                  <div style={{ fontSize: 9, fontWeight: 800, background: "#0f1e3c", color: "#111", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 11, color: "#0f1e3c" }}>{f.factor}</div>
                     <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
@@ -477,10 +477,10 @@ export default function SearchPage() {
       <div style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* Top bar */}
         <div style={{ background: "#0f1e3c", padding: "10px 24px", display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
-          <a href="/" style={{ background: "rgba(255,255,255,0.1)", color: "#7eb5e8", borderRadius: 7, padding: "6px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>← MarkItNow</a>
+          <a href="/" style={{ background: "rgba(255,255,255,0.1)", color: "#555", borderRadius: 7, padding: "6px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>← MarkItNow</a>
           <form onSubmit={handleNewSearch} style={{ flex: 1, display: "flex", gap: 8, maxWidth: 540 }}>
             <input value={newSearchInput} onChange={e => setNewSearchInput(e.target.value)}
-              style={{ flex: 1, padding: "7px 14px", borderRadius: 7, border: "1.5px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 14, fontFamily: "inherit", outline: "none" }}
+              style={{ flex: 1, padding: "7px 14px", borderRadius: 7, border: "1.5px solid rgba(255,255,255,0.15)", background: "#f4f4f4", color: "#111", fontSize: 14, fontFamily: "inherit", outline: "none" }}
               placeholder="Search another mark..." />
             <button type="submit" style={{ padding: "7px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 7, fontWeight: 800, fontSize: 13 }}>Search</button>
           </form>
@@ -500,7 +500,7 @@ export default function SearchPage() {
                     background: usptoStatus === "loading" ? "#f1c40f" : usptoStatus === "done" ? "#2ecc71" : "#e74c3c",
                     animation: usptoStatus === "loading" ? "mni-pulse 1s infinite" : "none" }} />
                   <span style={{ fontWeight: 800, fontSize: 15, color: "#0f1e3c" }}>USPTO Database</span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: "#7eb5e8", background: "#0f1e3c", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2 }}>LIVE</span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: "#555", background: "#0f1e3c", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2 }}>LIVE</span>
                 </div>
                 {usptoStatus === "done" && (
                   <div style={{ textAlign: "right" }}>

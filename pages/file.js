@@ -161,13 +161,13 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
         {/* Header */}
         <div style={{ background: "#0f1e3c", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <button onClick={() => router.push("/")} style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#7eb5e8", borderRadius: 8, padding: "6px 14px", fontSize: 13, fontWeight: 600 }}>← Home</button>
+            <button onClick={() => router.push("/")} style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#555", borderRadius: 8, padding: "6px 14px", fontSize: 13, fontWeight: 600 }}>← Home</button>
             <div>
-              <div style={{ color: "#7eb5e8", fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>MarkItNow.ai</div>
-              <div style={{ color: "#fff", fontSize: 18, fontWeight: 900 }}>USPTO Filing Intake</div>
+              <div style={{ color: "#555", fontSize: 10, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>MarkItNow.ai</div>
+              <div style={{ color: "#111", fontSize: 18, fontWeight: 900 }}>USPTO Filing Intake</div>
             </div>
           </div>
-          <div style={{ color: "#7eb5e8", fontSize: 13 }}>Attorney-reviewed · TEAS Plus eligible · $399 flat</div>
+          <div style={{ color: "#555", fontSize: 13 }}>Attorney-reviewed · TEAS Plus eligible · $399 flat</div>
         </div>
 
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px" }}>
@@ -301,7 +301,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                 )}
                 {error && (
                   <div style={{ background: "#fdf2f1", border: "1px solid #e8b4b0", borderRadius: 10, padding: 14, color: "#c0392b", fontSize: 13 }}>
-                    {error} <button onClick={runAnalysis} style={{ marginLeft: 10, background: "#c0392b", color: "#fff", border: "none", borderRadius: 6, padding: "4px 12px", cursor: "pointer" }}>Retry</button>
+                    {error} <button onClick={runAnalysis} style={{ marginLeft: 10, background: "#c0392b", color: "#111", border: "none", borderRadius: 6, padding: "4px 12px", cursor: "pointer" }}>Retry</button>
                   </div>
                 )}
                 {analysis && (
@@ -323,7 +323,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                     <div style={{ marginBottom: 20 }}>
                       <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c", marginBottom: 10, display: "flex", alignItems: "center", gap: 8 }}>
                         Nice Classes
-                        <span style={{ background: "#0f1e3c", color: "#7eb5e8", fontSize: 10, padding: "2px 8px", borderRadius: 10 }}>{analysis.niceClasses?.length}</span>
+                        <span style={{ background: "#0f1e3c", color: "#555", fontSize: 10, padding: "2px 8px", borderRadius: 10 }}>{analysis.niceClasses?.length}</span>
                       </div>
                       {analysis.niceClasses?.map((nc, i) => (
                         <div key={i} style={{ border: "1.5px solid #d4e3d9", borderRadius: 10, padding: 14, marginBottom: 10 }}>
@@ -354,7 +354,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                         {analysis.riskFlags.map((r, i) => (
                           <div key={i} style={{ background: riskBg[r.level], borderLeft: `4px solid ${riskColor[r.level]}`, borderRadius: "0 10px 10px 0", padding: 14, marginBottom: 10 }}>
                             <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
-                              <span style={{ background: riskColor[r.level], color: "#fff", fontSize: 9, fontWeight: 800, padding: "2px 7px", borderRadius: 4 }}>{r.level}</span>
+                              <span style={{ background: riskColor[r.level], color: "#111", fontSize: 9, fontWeight: 800, padding: "2px 7px", borderRadius: 4 }}>{r.level}</span>
                               <span style={{ fontWeight: 700, color: "#0f1e3c", fontSize: 13 }}>{r.category}</span>
                             </div>
                             <div style={{ fontSize: 13, color: "#444", marginBottom: 4 }}>{r.issue}</div>
@@ -366,7 +366,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
 
                     {/* Attorney recommendation */}
                     <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 20, marginBottom: 20 }}>
-                      <div style={{ color: "#7eb5e8", fontWeight: 700, fontSize: 12, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>Attorney Recommendation</div>
+                      <div style={{ color: "#555", fontWeight: 700, fontSize: 12, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>Attorney Recommendation</div>
                       <div style={{ color: "#e8f5ee", fontSize: 13, lineHeight: 1.8 }}>{analysis.overallRecommendation}</div>
                     </div>
 
@@ -385,7 +385,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
                       <button onClick={downloadSummary} style={{ flex: 1, padding: "14px", background: "#f4f7f5", color: "#0f1e3c", border: "1px solid #d0e4d8", borderRadius: 10, fontWeight: 700, fontSize: 14 }}>
                         Download Filing Packet
                       </button>
-                      <button onClick={() => router.push(`/search?mark=${encodeURIComponent(form.markText)}`)} style={{ flex: 1, padding: "14px", background: "#0f1e3c", color: "#fff", border: "none", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
+                      <button onClick={() => router.push(`/search?mark=${encodeURIComponent(form.markText)}`)} style={{ flex: 1, padding: "14px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
                         View Full Search Report
                       </button>
                     </div>

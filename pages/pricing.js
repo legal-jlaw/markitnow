@@ -6,134 +6,36 @@ const SERVICES = [
   {
     category: "Search & Analysis",
     items: [
-      {
-        name: "Trademark Search",
-        ourFee: "Free",
-        usptoFee: null,
-        totalNote: "Always free",
-        description: "Search the live USPTO database of 4M+ marks instantly. See active conflicts, dead marks, and status.",
-        features: ["Live USPTO database", "Active & dead marks", "No account required", "Results in seconds"],
-        cta: "Search Free",
-        ctaAction: "search",
-        highlight: false,
-        badge: null,
-      },
-      {
-        name: "AI Analysis Report",
-        ourFee: "$99",
-        usptoFee: null,
-        totalNote: "No USPTO fee",
-        description: "Full AI-powered conflict analysis with risk scoring, DuPont factor breakdown, and filing recommendations.",
-        features: ["Likelihood of confusion analysis", "Risk score (0–100)", "Class-by-class breakdown", "Filing strategy recommendations"],
-        cta: "Get Report",
-        ctaAction: "search",
-        highlight: true,
-        badge: "Most Popular",
-      },
-      {
-        name: "Attorney Memo",
-        ourFee: "$149",
-        usptoFee: null,
-        totalNote: "No USPTO fee",
-        description: "A formal attorney-reviewed legal memo covering all 13 DuPont factors with prosecution strategy.",
-        features: ["All 13 DuPont factors analyzed", "Attorney-signed memo", "Risk matrix", "Prosecution strategy"],
-        cta: "Get Memo",
-        ctaAction: "search",
-        highlight: false,
-        badge: null,
-      },
+      { name: "Trademark Search", ourFee: "Free", usptoFee: null, totalNote: "Always free", description: "Search the live USPTO database of 4M+ marks instantly.", features: ["Live USPTO database", "Active & dead marks", "No account required", "Results in seconds"], cta: "Search Free", ctaAction: "search", highlight: false, badge: null },
+      { name: "AI Analysis Report", ourFee: "$99", usptoFee: null, totalNote: "No USPTO fee", description: "Full AI-powered conflict analysis with risk scoring and DuPont factor breakdown.", features: ["Likelihood of confusion analysis", "Risk score (0–100)", "Class-by-class breakdown", "Filing strategy recommendations"], cta: "Get Report", ctaAction: "search", highlight: true, badge: "Most Popular" },
+      { name: "Attorney Memo", ourFee: "$149", usptoFee: null, totalNote: "No USPTO fee", description: "Formal attorney-reviewed memo covering all 13 DuPont factors.", features: ["All 13 DuPont factors analyzed", "Attorney-signed memo", "Risk matrix", "Prosecution strategy"], cta: "Get Memo", ctaAction: "search", highlight: false, badge: null },
     ],
   },
   {
     category: "Filing Services",
     items: [
-      {
-        name: "Attorney-Filed Application",
-        ourFee: "$399",
-        usptoFee: "$350/class",
-        totalNote: "Total: $749+ per class",
-        description: "Full trademark application filed by a U.S.-licensed DC attorney. Includes specimen review and class strategy.",
-        features: ["Licensed DC attorney files", "Specimen review included", "Class strategy consultation", "Our fee: $399 + USPTO: $350/class"],
-        cta: "Start Filing",
-        ctaAction: "file",
-        highlight: true,
-        badge: "$100 less than Trademarkia",
-      },
-      {
-        name: "Statement of Use",
-        ourFee: "$249",
-        usptoFee: "$150/class",
-        totalNote: "Total: $399+ per class",
-        description: "Filed when your intent-to-use application is approved and you're ready to show use in commerce.",
-        features: ["Specimen preparation review", "Attorney-filed SOU", "Use in commerce guidance", "Our fee: $249 + USPTO: $150/class"],
-        cta: "File SOU",
-        ctaAction: "contact",
-        highlight: false,
-        badge: null,
-      },
-      {
-        name: "Trademark Revival",
-        ourFee: "$349",
-        usptoFee: "Varies",
-        totalNote: "USPTO fee varies by type",
-        description: "Revive an abandoned trademark application with a petition to the USPTO. Time-sensitive — act fast.",
-        features: ["Petition to revive drafted", "Attorney-filed", "Urgency analysis included", "Our fee: $349 + USPTO fees"],
-        cta: "Revive Now",
-        ctaAction: "contact",
-        highlight: false,
-        badge: "Time Sensitive",
-      },
+      { name: "Attorney-Filed Application", ourFee: "$399", usptoFee: "$350/class", totalNote: "Total: $749+ per class", description: "Full trademark application filed by a U.S.-licensed DC attorney.", features: ["Licensed DC attorney files", "Specimen review included", "Class strategy consultation", "USPTO fee: $350/class"], cta: "Start Filing", ctaAction: "file", highlight: true, badge: "$100 less than Trademarkia" },
+      { name: "DIY Guided Filing", ourFee: "$69", usptoFee: "$350/class", totalNote: "Total: $419+ per class", description: "AI walks you through every step. You file directly on USPTO.gov.", features: ["Step-by-step wizard", "AI class recommendations", "USPTO-compliant description", "Direct USPTO.gov instructions"], cta: "Start DIY", ctaAction: "diy", highlight: false, badge: null },
+      { name: "Statement of Use", ourFee: "$249", usptoFee: "$150/class", totalNote: "Total: $399+ per class", description: "Filed when your intent-to-use application is approved.", features: ["Specimen preparation review", "Attorney-filed SOU", "Use in commerce guidance", "USPTO fee: $150/class"], cta: "File SOU", ctaAction: "contact", highlight: false, badge: null },
+      { name: "Trademark Revival", ourFee: "$349", usptoFee: "Varies", totalNote: "USPTO fee varies", description: "Revive an abandoned trademark application. Time-sensitive.", features: ["Petition to revive drafted", "Attorney-filed", "Urgency analysis", "USPTO fees extra"], cta: "Revive Now", ctaAction: "contact", highlight: false, badge: "Time Sensitive" },
     ],
   },
   {
     category: "Ongoing Protection",
     items: [
-      {
-        name: "Portfolio Monitor",
-        ourFee: "$49/yr",
-        usptoFee: null,
-        totalNote: "Per mark, no USPTO fee",
-        description: "We watch your trademark 24/7 and alert you to status changes, office actions, and upcoming deadlines.",
-        features: ["Weekly USPTO status checks", "Deadline alerts (renewals, SOU)", "Office action notifications", "Client dashboard access"],
-        cta: "Start Monitoring",
-        ctaAction: "contact",
-        highlight: false,
-        badge: "Coming Soon",
-      },
-      {
-        name: "Renewal Filing",
-        ourFee: "$199",
-        usptoFee: "$325/class",
-        totalNote: "Total: $524+ per class",
-        description: "Section 8 & 15 declarations (years 5–6) and Section 9 renewals (year 10+) filed by a licensed attorney.",
-        features: ["Section 8 & 15 declarations", "Section 9 renewals", "Attorney-filed", "Our fee: $199 + USPTO: $325/class"],
-        cta: "File Renewal",
-        ctaAction: "contact",
-        highlight: false,
-        badge: null,
-      },
-      {
-        name: "Office Action Response",
-        ourFee: "$499+",
-        usptoFee: null,
-        totalNote: "Quoted per case, no USPTO fee",
-        description: "Attorney-drafted response to USPTO office actions. Complexity varies — contact us for a quote.",
-        features: ["Attorney analysis of OA", "Full response drafted", "Likelihood of confusion arguments", "Quoted based on complexity"],
-        cta: "Get Quote",
-        ctaAction: "contact",
-        highlight: false,
-        badge: "Attorney Required",
-      },
+      { name: "Portfolio Monitor", ourFee: "$49/yr", usptoFee: null, totalNote: "Per mark, no USPTO fee", description: "Weekly USPTO status checks with deadline alerts and notifications.", features: ["Weekly USPTO checks", "Deadline alerts", "Office action notifications", "Client dashboard"], cta: "Start Monitoring", ctaAction: "contact", highlight: false, badge: "Coming Soon" },
+      { name: "Renewal Filing", ourFee: "$199", usptoFee: "$325/class", totalNote: "Total: $524+ per class", description: "Section 8 & 15 declarations and Section 9 renewals filed by attorney.", features: ["Section 8 & 15 declarations", "Section 9 renewals", "Attorney-filed", "USPTO fee: $325/class"], cta: "File Renewal", ctaAction: "contact", highlight: false, badge: null },
+      { name: "Office Action Response", ourFee: "$499+", usptoFee: null, totalNote: "Quoted per case", description: "Attorney-drafted response to USPTO office actions.", features: ["Attorney OA analysis", "Full response drafted", "DuPont arguments", "Quoted by complexity"], cta: "Get Quote", ctaAction: "contact", highlight: false, badge: "Attorney Required" },
     ],
   },
 ];
 
 const FAQS = [
-  { q: "What are USPTO filing fees?", a: "USPTO fees are government fees paid directly to the U.S. Patent and Trademark Office — separate from our service fee. The base application fee is $350/class (as of January 2025). Statement of Use is $150/class. Renewals (Section 8 & 9) are $325/class. We always show you the total cost before you pay anything." },
+  { q: "What are USPTO filing fees?", a: "USPTO fees are government fees paid directly to the U.S. Patent and Trademark Office — separate from our service fee. The base application fee is $350/class (as of January 2025). Statement of Use is $150/class. Renewals (Section 8 & 9) are $325/class. We always show you the total before you pay." },
   { q: "Who is the attorney?", a: "All filings are handled by a U.S.-licensed attorney in the District of Columbia with experience in trademark prosecution and entertainment industry clients." },
-  { q: "What if I get an Office Action?", a: "Office Action responses are quoted per case starting at $499. Contact us after receiving your OA and we'll give you a quote within 24 hours. There is no additional USPTO fee to respond to most office actions." },
+  { q: "What's the difference between DIY and Attorney Filing?", a: "With DIY ($69), our AI guides you through every step and you file directly on USPTO.gov yourself. With Attorney Filing ($399), our licensed DC attorney handles everything from start to finish, signs the application, and manages the relationship with the USPTO." },
+  { q: "What if I get an Office Action?", a: "Office Action responses are quoted per case starting at $499. Contact us after receiving your OA and we'll give you a quote within 24 hours." },
   { q: "What's the difference between the $99 report and the $149 memo?", a: "The $99 AI Report is a consumer-friendly risk analysis with a confidence score and plain-English explanation. The $149 Attorney Memo is a formal legal document covering all 13 DuPont factors, suitable for business decisions or sharing with investors." },
-  { q: "When do I need a Statement of Use?", a: "If you filed an intent-to-use application, you'll need to file a Statement of Use once the USPTO approves your application and you begin using the mark in commerce. The USPTO fee is $150/class plus our $249 service fee. Deadlines are strict — this is a good reason to use Portfolio Monitor." },
 ];
 
 export default function Pricing() {
@@ -144,6 +46,7 @@ export default function Pricing() {
   function handleCTA(action) {
     if (action === "search") router.push("/");
     else if (action === "file") router.push("/file");
+    else if (action === "diy") router.push("/diy");
     else window.location.href = "mailto:legal@jarralslaw.com?subject=MarkItNow Inquiry";
   }
 
@@ -151,130 +54,97 @@ export default function Pricing() {
     <>
       <Head>
         <title>Pricing — MarkItNow.ai</title>
-        <meta name="description" content="Transparent trademark pricing. Search free, AI report $99, attorney filing $399 + $350 USPTO fee." />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
-      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0a0f1e 0%, #0f1e3c 50%, #0a0f1e 100%)", fontFamily: "Poppins, sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
 
         {/* Nav */}
-        <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-          <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 24, color: "#c9a84c", letterSpacing: -0.5, cursor: "pointer" }}>
-            MarkItNow<span style={{ color: "#7eb5e8" }}>.ai</span>
+        <nav style={{ background: "#fff", borderBottom: "1px solid #e0e0e0", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 48px", height: 64 }}>
+          <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 22, color: "#111", letterSpacing: -0.5, cursor: "pointer" }}>
+            MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span>
           </div>
           <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
             {["How It Works", "Pricing", "For Attorneys"].map(item => (
-              <span key={item} onClick={() => item === "Pricing" ? null : router.push("/")} style={{ color: item === "Pricing" ? "#c9a84c" : "#7eb5e8", fontSize: 14, fontWeight: item === "Pricing" ? 700 : 500, cursor: "pointer", opacity: item === "Pricing" ? 1 : 0.8 }}>{item}</span>
+              <span key={item} style={{ color: item === "Pricing" ? "#c9a84c" : "#555", fontSize: 14, fontWeight: item === "Pricing" ? 700 : 500, cursor: "pointer" }}>{item}</span>
             ))}
-            <button onClick={() => router.push("/file")} style={{ background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
-              File Now
-            </button>
+            <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>File Now</button>
           </div>
         </nav>
 
         {/* Hero */}
-        <div style={{ maxWidth: 700, margin: "0 auto", padding: "72px 24px 56px", textAlign: "center" }}>
-          <h1 style={{ fontSize: "clamp(36px, 6vw, 56px)", fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: 16, letterSpacing: -2 }}>
-            Simple, transparent<br /><span style={{ color: "#c9a84c" }}>pricing.</span>
+        <div style={{ background: "#fff", borderBottom: "1px solid #e0e0e0", padding: "64px 24px", textAlign: "center" }}>
+          <h1 style={{ fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 900, color: "#111", lineHeight: 1.1, marginBottom: 14, letterSpacing: -1.5 }}>
+            Simple, transparent pricing.
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: 500, margin: "0 auto 0" }}>
-            Our service fee plus USPTO government fees — always shown separately so you know exactly what you're paying.
+          <p style={{ fontSize: 17, color: "#777", maxWidth: 480, margin: "0 auto" }}>
+            Our service fee plus USPTO government fees — always shown separately.
           </p>
-        </div>
-
-        {/* Fee Legend */}
-        <div style={{ maxWidth: 600, margin: "0 auto 56px", padding: "0 24px" }}>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.25)", borderRadius: 8, padding: "8px 16px" }}>
+          {/* Fee legend */}
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 28, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 8, padding: "7px 14px" }}>
               <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#c9a84c" }} />
-              <span style={{ fontSize: 13, color: "#c9a84c", fontWeight: 600 }}>Our service fee</span>
+              <span style={{ fontSize: 13, color: "#b8860b", fontWeight: 600 }}>Our service fee</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px" }}>
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "rgba(255,255,255,0.4)" }} />
-              <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>USPTO government fee (paid to USPTO)</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#f4f4f4", border: "1px solid #e0e0e0", borderRadius: 8, padding: "7px 14px" }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#aaa" }} />
+              <span style={{ fontSize: 13, color: "#777", fontWeight: 600 }}>USPTO government fee (paid to USPTO)</span>
             </div>
           </div>
         </div>
 
-        {/* Service Categories */}
-        {SERVICES.map((category) => (
-          <div key={category.category} style={{ maxWidth: 1200, margin: "0 auto 72px", padding: "0 24px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
-              <div style={{ width: 4, height: 24, background: "#c9a84c", borderRadius: 2 }} />
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: "#fff", margin: 0 }}>{category.category}</h2>
-              <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
+        {/* Services */}
+        {SERVICES.map(category => (
+          <div key={category.category} style={{ maxWidth: 1200, margin: "0 auto 56px", padding: "48px 24px 0" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
+              <div style={{ width: 4, height: 22, background: "#c9a84c", borderRadius: 2 }} />
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#111", margin: 0 }}>{category.category}</h2>
+              <div style={{ flex: 1, height: 1, background: "#e8e8e8" }} />
             </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
               {category.items.map((service, idx) => {
                 const cardKey = `${category.category}-${idx}`;
                 const isHovered = hoveredCard === cardKey;
                 return (
-                  <div
-                    key={service.name}
-                    onMouseEnter={() => setHoveredCard(cardKey)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                    style={{
-                      background: service.highlight ? "linear-gradient(135deg, rgba(201,168,76,0.15) 0%, rgba(201,168,76,0.05) 100%)" : "rgba(255,255,255,0.04)",
-                      border: service.highlight ? "1px solid rgba(201,168,76,0.4)" : "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 16, padding: 28, position: "relative",
-                      transition: "transform 0.2s, box-shadow 0.2s",
-                      transform: isHovered ? "translateY(-4px)" : "translateY(0)",
-                      boxShadow: isHovered ? "0 20px 40px rgba(0,0,0,0.3)" : "none",
-                    }}
-                  >
+                  <div key={service.name} onMouseEnter={() => setHoveredCard(cardKey)} onMouseLeave={() => setHoveredCard(null)}
+                    style={{ background: "#fff", border: `1px solid ${service.highlight ? "#c9a84c" : "#e8e8e8"}`, borderRadius: 14, padding: 24, position: "relative", transition: "box-shadow 0.2s, transform 0.2s", boxShadow: isHovered ? "0 8px 32px rgba(0,0,0,0.1)" : "0 2px 8px rgba(0,0,0,0.04)", transform: isHovered ? "translateY(-2px)" : "none" }}>
                     {service.badge && (
-                      <div style={{
-                        position: "absolute", top: -12, right: 20,
-                        background: service.badge === "Coming Soon" ? "#0f1e3c" : service.badge === "Time Sensitive" ? "#7c2d12" : "#c9a84c",
-                        border: service.badge === "Coming Soon" ? "1px solid rgba(201,168,76,0.4)" : "none",
-                        color: service.badge === "Coming Soon" ? "#c9a84c" : service.badge === "Time Sensitive" ? "#fca5a5" : "#0a0a0a",
-                        fontSize: 11, fontWeight: 800, padding: "4px 12px", borderRadius: 20, letterSpacing: 0.5, textTransform: "uppercase"
-                      }}>{service.badge}</div>
+                      <div style={{ position: "absolute", top: -11, right: 16, background: service.badge === "Coming Soon" ? "#f4f4f4" : service.badge === "Time Sensitive" ? "#fef2f2" : service.badge === "Attorney Required" ? "#f0f4ff" : "#111", border: service.badge === "Coming Soon" ? "1px solid #e0e0e0" : "none", color: service.badge === "Coming Soon" ? "#999" : service.badge === "Time Sensitive" ? "#dc2626" : service.badge === "Attorney Required" ? "#3b5bdb" : "#fff", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5, textTransform: "uppercase" }}>{service.badge}</div>
                     )}
+                    <h3 style={{ fontSize: 15, fontWeight: 800, color: "#111", margin: "0 0 14px" }}>{service.name}</h3>
 
-                    <h3 style={{ fontSize: 17, fontWeight: 800, color: "#fff", margin: "0 0 16px" }}>{service.name}</h3>
-
-                    {/* Fee Breakdown */}
-                    <div style={{ background: "rgba(0,0,0,0.2)", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: service.usptoFee ? 8 : 0 }}>
-                        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)" }}>Our fee</span>
+                    {/* Fee Box */}
+                    <div style={{ background: "#f9f9f9", border: "1px solid #efefef", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: service.usptoFee ? 6 : 0 }}>
+                        <span style={{ fontSize: 12, color: "#999" }}>Our fee</span>
                         <span style={{ fontSize: 22, fontWeight: 900, color: "#c9a84c" }}>{service.ourFee}</span>
                       </div>
                       {service.usptoFee && (
                         <>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)" }}>USPTO fee</span>
-                            <span style={{ fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.45)" }}>{service.usptoFee}</span>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                            <span style={{ fontSize: 12, color: "#999" }}>USPTO fee</span>
+                            <span style={{ fontSize: 15, fontWeight: 700, color: "#aaa" }}>{service.usptoFee}</span>
                           </div>
-                          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>Total</span>
-                            <span style={{ fontSize: 14, fontWeight: 800, color: "rgba(255,255,255,0.6)" }}>{service.totalNote}</span>
+                          <div style={{ borderTop: "1px solid #e8e8e8", paddingTop: 8, display: "flex", justifyContent: "space-between" }}>
+                            <span style={{ fontSize: 11, color: "#bbb", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>Total</span>
+                            <span style={{ fontSize: 13, fontWeight: 800, color: "#555" }}>{service.totalNote}</span>
                           </div>
                         </>
                       )}
-                      {!service.usptoFee && (
-                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>{service.totalNote}</div>
-                      )}
+                      {!service.usptoFee && <div style={{ fontSize: 11, color: "#bbb", marginTop: 2 }}>{service.totalNote}</div>}
                     </div>
 
-                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, marginBottom: 18 }}>{service.description}</p>
+                    <p style={{ fontSize: 13, color: "#777", lineHeight: 1.6, marginBottom: 14 }}>{service.description}</p>
 
-                    <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 8 }}>
-                      {service.features.filter(f => !f.includes("Our fee:")).map(f => (
-                        <li key={f} style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 8 }}>
-                          <span style={{ color: "#7eb5e8" }}>✓</span> {f}
+                    <ul style={{ listStyle: "none", padding: 0, margin: "0 0 18px", display: "flex", flexDirection: "column", gap: 6 }}>
+                      {service.features.filter(f => !f.includes("USPTO fee:")).map(f => (
+                        <li key={f} style={{ fontSize: 12, color: "#666", display: "flex", alignItems: "center", gap: 7 }}>
+                          <span style={{ color: "#c9a84c", fontWeight: 800 }}>✓</span> {f}
                         </li>
                       ))}
                     </ul>
 
-                    <button onClick={() => handleCTA(service.ctaAction)} style={{
-                      width: "100%", background: service.highlight ? "#c9a84c" : "rgba(255,255,255,0.08)",
-                      color: service.highlight ? "#0a0a0a" : "#fff",
-                      border: service.highlight ? "none" : "1px solid rgba(255,255,255,0.15)",
-                      borderRadius: 10, padding: "12px 20px", fontWeight: 800, fontSize: 14,
-                      cursor: "pointer", fontFamily: "Poppins, sans-serif",
-                    }}>
+                    <button onClick={() => handleCTA(service.ctaAction)} style={{ width: "100%", background: service.highlight ? "#111" : "#f4f4f4", color: service.highlight ? "#fff" : "#111", border: service.highlight ? "none" : "1px solid #e0e0e0", borderRadius: 8, padding: "11px 16px", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                       {service.cta} →
                     </button>
                   </div>
@@ -285,41 +155,36 @@ export default function Pricing() {
         ))}
 
         {/* FAQ */}
-        <div style={{ maxWidth: 720, margin: "0 auto 100px", padding: "0 24px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 36 }}>
-            <div style={{ width: 4, height: 24, background: "#c9a84c", borderRadius: 2 }} />
-            <h2 style={{ fontSize: 20, fontWeight: 800, color: "#fff", margin: 0 }}>FAQ</h2>
-            <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
+        <div style={{ maxWidth: 720, margin: "60px auto 80px", padding: "0 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28 }}>
+            <div style={{ width: 4, height: 22, background: "#c9a84c", borderRadius: 2 }} />
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: "#111", margin: 0 }}>FAQ</h2>
+            <div style={{ flex: 1, height: 1, background: "#e8e8e8" }} />
           </div>
-
           {FAQS.map(({ q, a }, i) => (
-            <div key={q} onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: 20, marginBottom: 20, cursor: "pointer" }}>
+            <div key={q} onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "18px 22px", marginBottom: 10, cursor: "pointer" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: "#fff", margin: 0 }}>{q}</h3>
-                <span style={{ color: "#c9a84c", fontSize: 20, fontWeight: 300, flexShrink: 0, marginLeft: 16 }}>{openFaq === i ? "−" : "+"}</span>
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111", margin: 0 }}>{q}</h3>
+                <span style={{ color: "#c9a84c", fontSize: 18, fontWeight: 300, flexShrink: 0, marginLeft: 16 }}>{openFaq === i ? "−" : "+"}</span>
               </div>
-              {openFaq === i && (
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: "12px 0 0" }}>{a}</p>
-              )}
+              {openFaq === i && <p style={{ fontSize: 13, color: "#777", lineHeight: 1.7, margin: "12px 0 0" }}>{a}</p>}
             </div>
           ))}
         </div>
 
-        {/* CTA */}
-        <div style={{ maxWidth: 900, margin: "0 auto 80px", padding: "0 24px" }}>
-          <div style={{ background: "linear-gradient(135deg, rgba(201,168,76,0.2) 0%, rgba(126,203,161,0.1) 100%)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 20, padding: "56px 48px", textAlign: "center" }}>
-            <h2 style={{ fontSize: 32, fontWeight: 900, color: "#fff", marginBottom: 14, letterSpacing: -1 }}>Start with a free search</h2>
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", marginBottom: 28 }}>No account required. See your conflicts in seconds.</p>
-            <button onClick={() => router.push("/")} style={{ background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 12, padding: "14px 36px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
-              Search Free →
-            </button>
-          </div>
+        {/* CTA Banner */}
+        <div style={{ background: "#111", padding: "64px 24px", textAlign: "center" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 900, color: "#fff", marginBottom: 12, letterSpacing: -1 }}>Start with a free search</h2>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", marginBottom: 28 }}>No account required. See your conflicts in seconds.</p>
+          <button onClick={() => router.push("/")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 10, padding: "14px 36px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+            Search Free →
+          </button>
         </div>
 
         {/* Footer */}
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "32px 40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ fontWeight: 900, fontSize: 18, color: "#c9a84c" }}>MarkItNow<span style={{ color: "#7eb5e8" }}>.ai</span></div>
-          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.3)" }}>© 2026 Aggressive Counsel PLLC. Not legal advice until retained.</div>
+        <div style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ fontWeight: 900, fontSize: 18, color: "#111" }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
+          <div style={{ fontSize: 13, color: "#aaa" }}>© 2026 Aggressive Counsel PLLC. Not legal advice until retained.</div>
         </div>
       </div>
     </>

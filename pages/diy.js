@@ -91,14 +91,14 @@ export default function DIY() {
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 
-      <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0a0f1e 0%, #0f1e3c 50%, #0a0f1e 100%)", fontFamily: "Poppins, sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
 
         {/* Nav */}
-        <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-          <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 24, color: "#c9a84c", letterSpacing: -0.5, cursor: "pointer" }}>
-            MarkItNow<span style={{ color: "#7eb5e8" }}>.ai</span>
+        <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 40px", borderBottom: "1px solid #e0e0e0", background: "#fff" }}>
+          <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 24, color: "#111", letterSpacing: -0.5, cursor: "pointer" }}>
+            MarkItNow<span style={{ color: "#555" }}>.ai</span>
           </div>
-          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>DIY Filing Guide · $69</div>
+          <div style={{ fontSize: 13, color: "#999" }}>DIY Filing Guide · $69</div>
         </nav>
 
         <div style={{ maxWidth: 780, margin: "0 auto", padding: "48px 24px 80px" }}>
@@ -122,7 +122,7 @@ export default function DIY() {
                 </div>
               ))}
             </div>
-            <div style={{ height: 3, background: "rgba(255,255,255,0.08)", borderRadius: 2, position: "relative" }}>
+            <div style={{ height: 3, background: "#f4f4f4", borderRadius: 2, position: "relative" }}>
               <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${progress}%`, background: "linear-gradient(90deg, #7eb5e8, #c9a84c)", borderRadius: 2, transition: "width 0.4s ease" }} />
             </div>
           </div>
@@ -130,36 +130,36 @@ export default function DIY() {
           {/* Step Header */}
           <div style={{ marginBottom: 36 }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: "#c9a84c", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8 }}>Step {step} of {STEPS.length}</div>
-            <h1 style={{ fontSize: 32, fontWeight: 900, color: "#fff", margin: "0 0 8px", letterSpacing: -1 }}>{STEPS[step - 1].title}</h1>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", margin: 0 }}>{STEPS[step - 1].subtitle}</p>
+            <h1 style={{ fontSize: 32, fontWeight: 900, color: "#111", margin: "0 0 8px", letterSpacing: -1 }}>{STEPS[step - 1].title}</h1>
+            <p style={{ fontSize: 16, color: "#888", margin: 0 }}>{STEPS[step - 1].subtitle}</p>
           </div>
 
           {/* STEP 1 — Your Trademark */}
           {step === 1 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.7)", marginBottom: 10 }}>Your brand name or logo text</label>
-                <input value={form.mark} onChange={e => updateForm("mark", e.target.value)} placeholder="e.g. PINEAPPLE SOL" style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "14px 18px", fontSize: 18, fontWeight: 800, color: "#fff", fontFamily: "Poppins, sans-serif", boxSizing: "border-box", outline: "none" }} />
+                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#555", marginBottom: 10 }}>Your brand name or logo text</label>
+                <input value={form.mark} onChange={e => updateForm("mark", e.target.value)} placeholder="e.g. PINEAPPLE SOL" style={{ width: "100%", background: "#fff", border: "1px solid #e0e0e0", borderRadius: 10, padding: "14px 18px", fontSize: 18, fontWeight: 800, color: "#111", fontFamily: "Poppins, sans-serif", boxSizing: "border-box", outline: "none" }} />
               </div>
               <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.7)", marginBottom: 10 }}>What type of mark?</label>
+                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#555", marginBottom: 10 }}>What type of mark?</label>
                 <div style={{ display: "flex", gap: 12 }}>
                   {[["word", "Word Mark", "Text only (most common)"], ["logo", "Logo / Design", "Image or stylized text"]].map(([val, label, sub]) => (
                     <div key={val} onClick={() => updateForm("markType", val)} style={{ flex: 1, padding: "16px 20px", borderRadius: 10, border: `1px solid ${form.markType === val ? "#c9a84c" : "rgba(255,255,255,0.1)"}`, background: form.markType === val ? "rgba(201,168,76,0.1)" : "rgba(255,255,255,0.04)", cursor: "pointer" }}>
                       <div style={{ fontWeight: 800, color: form.markType === val ? "#c9a84c" : "#fff", marginBottom: 4 }}>{label}</div>
-                      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{sub}</div>
+                      <div style={{ fontSize: 12, color: "#999" }}>{sub}</div>
                     </div>
                   ))}
                 </div>
               </div>
               <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.7)", marginBottom: 10 }}>Describe your business</label>
-                <textarea value={form.businessDescription} onChange={e => updateForm("businessDescription", e.target.value)} placeholder="e.g. A breakfast and brunch restaurant serving Caribbean-inspired dishes in Washington DC" rows={4} style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "14px 18px", fontSize: 15, color: "#fff", fontFamily: "Poppins, sans-serif", resize: "vertical", boxSizing: "border-box", outline: "none" }} />
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginTop: 8 }}>The more detail you give, the better the AI guidance.</div>
+                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#555", marginBottom: 10 }}>Describe your business</label>
+                <textarea value={form.businessDescription} onChange={e => updateForm("businessDescription", e.target.value)} placeholder="e.g. A breakfast and brunch restaurant serving Caribbean-inspired dishes in Washington DC" rows={4} style={{ width: "100%", background: "#fff", border: "1px solid #e0e0e0", borderRadius: 10, padding: "14px 18px", fontSize: 15, color: "#111", fontFamily: "Poppins, sans-serif", resize: "vertical", boxSizing: "border-box", outline: "none" }} />
+                <div style={{ fontSize: 12, color: "#aaa", marginTop: 8 }}>The more detail you give, the better the AI guidance.</div>
               </div>
               <div style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 10, padding: "16px 20px" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#c9a84c", marginBottom: 6 }}>💡 Word marks are the strongest protection</div>
-                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>A word mark protects the text itself in any font or style. A logo mark only protects that specific design. Most attorneys recommend filing a word mark first.</div>
+                <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>A word mark protects the text itself in any font or style. A logo mark only protects that specific design. Most attorneys recommend filing a word mark first.</div>
               </div>
             </div>
           )}
@@ -167,25 +167,25 @@ export default function DIY() {
           {/* STEP 2 — Class Selection */}
           {step === 2 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px" }}>
-                <div style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", marginBottom: 4 }}>Filing for</div>
+              <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "20px 24px" }}>
+                <div style={{ fontSize: 14, color: "#888", marginBottom: 4 }}>Filing for</div>
                 <div style={{ fontSize: 20, fontWeight: 900, color: "#c9a84c" }}>{form.mark}</div>
-                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>{form.businessDescription}</div>
+                <div style={{ fontSize: 13, color: "#999", marginTop: 4 }}>{form.businessDescription}</div>
               </div>
 
-              <button onClick={suggestClasses} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#7eb5e8", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+              <button onClick={suggestClasses} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#555", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                 {aiLoading ? "⏳ AI is analyzing your business..." : "✨ Get AI Class Recommendations"}
               </button>
 
               {aiSuggestion && (
                 <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 12, padding: "20px 24px" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#7eb5e8", marginBottom: 12 }}>AI Recommendation</div>
-                  <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{aiSuggestion}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#555", marginBottom: 12 }}>AI Recommendation</div>
+                  <div style={{ fontSize: 14, color: "#555", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{aiSuggestion}</div>
                 </div>
               )}
 
               <div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.7)", marginBottom: 14 }}>Select your class(es) — USPTO fee is $350 per class</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#555", marginBottom: 14 }}>Select your class(es) — USPTO fee is $350 per class</div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 }}>
                   {NICE_CLASSES.map(cls => (
                     <div key={cls.num} onClick={() => toggleClass(cls.num)} style={{ padding: "12px 16px", borderRadius: 10, border: `1px solid ${form.selectedClasses.includes(cls.num) ? "#c9a84c" : "rgba(255,255,255,0.08)"}`, background: form.selectedClasses.includes(cls.num) ? "rgba(201,168,76,0.12)" : "rgba(255,255,255,0.03)", cursor: "pointer", transition: "all 0.2s" }}>
@@ -198,7 +198,7 @@ export default function DIY() {
 
               {form.selectedClasses.length > 0 && (
                 <div style={{ background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.25)", borderRadius: 10, padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>{form.selectedClasses.length} class{form.selectedClasses.length > 1 ? "es" : ""} selected</div>
+                  <div style={{ fontSize: 14, color: "#555" }}>{form.selectedClasses.length} class{form.selectedClasses.length > 1 ? "es" : ""} selected</div>
                   <div style={{ fontSize: 16, fontWeight: 900, color: "#c9a84c" }}>USPTO fee: ${form.selectedClasses.length * 350}</div>
                 </div>
               )}
@@ -208,35 +208,35 @@ export default function DIY() {
           {/* STEP 3 — Goods & Services */}
           {step === 3 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "16px 20px" }}>
-                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginBottom: 4 }}>Selected classes</div>
+              <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "16px 20px" }}>
+                <div style={{ fontSize: 13, color: "#999", marginBottom: 4 }}>Selected classes</div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: "#c9a84c" }}>
                   {form.selectedClasses.map(n => `Class ${n} — ${NICE_CLASSES.find(c => c.num === n)?.label}`).join(" · ")}
                 </div>
               </div>
 
-              <button onClick={suggestDescription} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#7eb5e8", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+              <button onClick={suggestDescription} disabled={aiLoading} style={{ background: "rgba(126,203,161,0.15)", border: "1px solid rgba(126,203,161,0.3)", borderRadius: 10, padding: "14px 20px", color: "#555", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                 {aiLoading ? "⏳ Writing your description..." : "✨ Generate USPTO-Compliant Description"}
               </button>
 
               {aiSuggestion && (
                 <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 12, padding: "20px 24px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "#7eb5e8" }}>AI Generated Description</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "#555" }}>AI Generated Description</div>
                     <button onClick={() => updateForm("goodsServices", aiSuggestion)} style={{ background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 6, padding: "6px 14px", fontSize: 12, fontWeight: 800, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>Use This →</button>
                   </div>
-                  <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{aiSuggestion}</div>
+                  <div style={{ fontSize: 14, color: "#555", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{aiSuggestion}</div>
                 </div>
               )}
 
               <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.7)", marginBottom: 10 }}>Your goods & services description</label>
-                <textarea value={form.goodsServices} onChange={e => updateForm("goodsServices", e.target.value)} placeholder="Paste or edit your description here..." rows={6} style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "14px 18px", fontSize: 14, color: "#fff", fontFamily: "Poppins, sans-serif", resize: "vertical", boxSizing: "border-box", outline: "none", lineHeight: 1.7 }} />
+                <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#555", marginBottom: 10 }}>Your goods & services description</label>
+                <textarea value={form.goodsServices} onChange={e => updateForm("goodsServices", e.target.value)} placeholder="Paste or edit your description here..." rows={6} style={{ width: "100%", background: "#fff", border: "1px solid #e0e0e0", borderRadius: 10, padding: "14px 18px", fontSize: 14, color: "#111", fontFamily: "Poppins, sans-serif", resize: "vertical", boxSizing: "border-box", outline: "none", lineHeight: 1.7 }} />
               </div>
 
               <div style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 10, padding: "16px 20px" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#c9a84c", marginBottom: 6 }}>💡 Use ID Manual language when possible</div>
-                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>Using exact language from the USPTO ID Manual avoids a $200/class surcharge and speeds up examination. The AI description above is designed to match ID Manual language.</div>
+                <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>Using exact language from the USPTO ID Manual avoids a $200/class surcharge and speeds up examination. The AI description above is designed to match ID Manual language.</div>
               </div>
             </div>
           )}
@@ -244,7 +244,7 @@ export default function DIY() {
           {/* STEP 4 — Filing Basis */}
           {step === 4 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              <div style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>
+              <div style={{ fontSize: 15, color: "#666", lineHeight: 1.7 }}>
                 Your filing basis tells the USPTO whether you're already using the mark in commerce or plan to use it in the future.
               </div>
 
@@ -271,9 +271,9 @@ export default function DIY() {
                     </div>
                     <div>
                       <div style={{ fontSize: 16, fontWeight: 800, color: form.basis === opt.val ? "#c9a84c" : "#fff", marginBottom: 4 }}>{opt.label}</div>
-                      <div style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", marginBottom: 12 }}>{opt.subtitle}</div>
+                      <div style={{ fontSize: 14, color: "#666", marginBottom: 12 }}>{opt.subtitle}</div>
                       <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, marginBottom: 10 }}>{opt.detail}</div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#7eb5e8" }}>✓ {opt.good}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#555" }}>✓ {opt.good}</div>
                     </div>
                   </div>
                 </div>
@@ -282,7 +282,7 @@ export default function DIY() {
               {form.basis === "itu" && (
                 <div style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 10, padding: "16px 20px" }}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: "#c9a84c", marginBottom: 6 }}>📋 ITU reminder</div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>You'll skip the specimen step for now. After USPTO approves your application, you'll file a Statement of Use ($249 our fee + $150 USPTO fee) to complete registration. We can help you with that when the time comes.</div>
+                  <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>You'll skip the specimen step for now. After USPTO approves your application, you'll file a Statement of Use ($249 our fee + $150 USPTO fee) to complete registration. We can help you with that when the time comes.</div>
                 </div>
               )}
             </div>
@@ -294,12 +294,12 @@ export default function DIY() {
               {form.basis === "itu" ? (
                 <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 14, padding: "32px", textAlign: "center" }}>
                   <div style={{ fontSize: 32, marginBottom: 16 }}>✓</div>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: "#7eb5e8", marginBottom: 12 }}>No specimen needed yet</div>
-                  <div style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>Since you're filing Intent-to-Use, you don't need a specimen now. You'll submit one later when you file your Statement of Use after you launch your business.</div>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: "#555", marginBottom: 12 }}>No specimen needed yet</div>
+                  <div style={{ fontSize: 15, color: "#777", lineHeight: 1.7 }}>Since you're filing Intent-to-Use, you don't need a specimen now. You'll submit one later when you file your Statement of Use after you launch your business.</div>
                 </div>
               ) : (
                 <>
-                  <div style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>
+                  <div style={{ fontSize: 15, color: "#666", lineHeight: 1.7 }}>
                     A specimen is proof that you're using the trademark in commerce. The USPTO requires one for use-based applications. Choose the type that matches your business:
                   </div>
 
@@ -313,8 +313,8 @@ export default function DIY() {
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div>
                           <div style={{ fontSize: 15, fontWeight: 800, color: form.specimenType === opt.val ? "#c9a84c" : "#fff", marginBottom: 6 }}>{opt.label}</div>
-                          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6, marginBottom: 8 }}>{opt.detail}</div>
-                          <div style={{ fontSize: 12, fontWeight: 700, color: "#7eb5e8" }}>✓ Good for: {opt.ok}</div>
+                          <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6, marginBottom: 8 }}>{opt.detail}</div>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#555" }}>✓ Good for: {opt.ok}</div>
                         </div>
                         <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${form.specimenType === opt.val ? "#c9a84c" : "rgba(255,255,255,0.2)"}`, background: form.specimenType === opt.val ? "#c9a84c" : "transparent", flexShrink: 0, marginLeft: 16 }} />
                       </div>
@@ -324,7 +324,7 @@ export default function DIY() {
                   {form.specimenType && (
                     <div style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 10, padding: "16px 20px" }}>
                       <div style={{ fontSize: 13, fontWeight: 700, color: "#c9a84c", marginBottom: 6 }}>📸 What to prepare</div>
-                      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+                      <div style={{ fontSize: 13, color: "#888", lineHeight: 1.7 }}>
                         {form.specimenType === "website" && "Take a screenshot of your website showing your trademark name/logo near a 'buy now', 'order', or 'book' button. Save as JPG or PNG under 5MB."}
                         {form.specimenType === "label" && "Take a clear photo of the product label or packaging showing your trademark. The mark must be legible. Save as JPG or PNG under 5MB."}
                         {form.specimenType === "menu" && "Take a photo of your physical menu or signage clearly showing your trademark. Good lighting, mark must be readable. Save as JPG or PNG under 5MB."}
@@ -352,15 +352,15 @@ export default function DIY() {
                     ["USPTO Fee", `$${form.selectedClasses.length * 350} (${form.selectedClasses.length} class${form.selectedClasses.length > 1 ? "es" : ""} × $350)`],
                   ].map(([label, val]) => (
                     <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
-                      <span style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", minWidth: 80 }}>{label}</span>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", textAlign: "right" }}>{val}</span>
+                      <span style={{ fontSize: 13, color: "#999", minWidth: 80 }}>{label}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: "#111", textAlign: "right" }}>{val}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Step by step instructions */}
-              <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginTop: 8 }}>How to file on USPTO.gov</div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: "#111", marginTop: 8 }}>How to file on USPTO.gov</div>
 
               {[
                 { num: 1, title: "Go to the TEAS filing system", body: "Visit teas.uspto.gov and click 'File a new application'. Create a USPTO.gov account if you don't have one (free)." },
@@ -371,18 +371,18 @@ export default function DIY() {
                 ...(form.basis === "use" ? [{ num: 6, title: "Upload your specimen", body: `Upload your ${form.specimenType === "website" ? "website screenshot" : form.specimenType === "label" ? "product label photo" : form.specimenType === "menu" ? "menu or signage photo" : "social media screenshot"} as a JPG or PNG under 5MB. Add a brief description of what the image shows.` }] : []),
                 { num: form.basis === "use" ? 7 : 6, title: "Review and pay", body: `Review everything carefully. The USPTO fee is $${form.selectedClasses.length * 350} (${form.selectedClasses.length} class${form.selectedClasses.length > 1 ? "es" : ""} × $350). Pay by credit card. You'll get a confirmation email with your serial number immediately.` },
               ].map(item => (
-                <div key={item.num} style={{ display: "flex", gap: 16, padding: "20px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12 }}>
+                <div key={item.num} style={{ display: "flex", gap: 16, padding: "20px", background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12 }}>
                   <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#c9a84c", color: "#0a0a0a", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{item.num}</div>
                   <div>
-                    <div style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 6 }}>{item.title}</div>
-                    <div style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>{item.body}</div>
+                    <div style={{ fontSize: 15, fontWeight: 800, color: "#111", marginBottom: 6 }}>{item.title}</div>
+                    <div style={{ fontSize: 14, color: "#777", lineHeight: 1.7 }}>{item.body}</div>
                   </div>
                 </div>
               ))}
 
               {/* What happens after */}
               <div style={{ background: "rgba(126,203,161,0.08)", border: "1px solid rgba(126,203,161,0.2)", borderRadius: 14, padding: "24px", marginTop: 8 }}>
-                <div style={{ fontSize: 15, fontWeight: 800, color: "#7eb5e8", marginBottom: 16 }}>What happens after you file</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: "#555", marginBottom: 16 }}>What happens after you file</div>
                 {[
                   ["1–3 days", "You receive a filing receipt with your serial number. Your priority date is locked in."],
                   ["3–4 months", "USPTO assigns an examining attorney who reviews your application."],
@@ -391,15 +391,15 @@ export default function DIY() {
                   ["~13–18 months", "If no opposition, your mark registers. You receive your certificate."],
                 ].map(([time, desc]) => (
                   <div key={time} style={{ display: "flex", gap: 16, marginBottom: 14 }}>
-                    <div style={{ fontSize: 12, fontWeight: 800, color: "#7eb5e8", minWidth: 90, paddingTop: 2 }}>{time}</div>
-                    <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.6 }}>{desc}</div>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: "#555", minWidth: 90, paddingTop: 2 }}>{time}</div>
+                    <div style={{ fontSize: 13, color: "#777", lineHeight: 1.6 }}>{desc}</div>
                   </div>
                 ))}
               </div>
 
               <div style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 12, padding: "20px 24px" }}>
                 <div style={{ fontSize: 14, fontWeight: 700, color: "#c9a84c", marginBottom: 8 }}>Got an Office Action?</div>
-                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, marginBottom: 14 }}>Don't panic — they're common. Our attorney can draft a response starting at $499. Contact us within 30 days of receiving your OA.</div>
+                <div style={{ fontSize: 13, color: "#777", lineHeight: 1.6, marginBottom: 14 }}>Don't panic — they're common. Our attorney can draft a response starting at $499. Contact us within 30 days of receiving your OA.</div>
                 <button onClick={() => window.location.href = "mailto:legal@jarralslaw.com?subject=Office Action Response"} style={{ background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, padding: "10px 20px", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
                   Get OA Help →
                 </button>
@@ -413,7 +413,7 @@ export default function DIY() {
 
           {/* Navigation */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 40, paddingTop: 32, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-            <button onClick={() => setStep(s => Math.max(1, s - 1))} style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "12px 24px", color: "rgba(255,255,255,0.6)", fontWeight: 700, fontSize: 14, cursor: step === 1 ? "not-allowed" : "pointer", opacity: step === 1 ? 0.3 : 1, fontFamily: "Poppins, sans-serif" }} disabled={step === 1}>
+            <button onClick={() => setStep(s => Math.max(1, s - 1))} style={{ background: "transparent", border: "1px solid #e0e0e0", borderRadius: 10, padding: "12px 24px", color: "#666", fontWeight: 700, fontSize: 14, cursor: step === 1 ? "not-allowed" : "pointer", opacity: step === 1 ? 0.3 : 1, fontFamily: "Poppins, sans-serif" }} disabled={step === 1}>
               ← Back
             </button>
             {step < STEPS.length ? (
