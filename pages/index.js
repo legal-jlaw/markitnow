@@ -101,12 +101,10 @@ export default function Home() {
         </div>
 
         {/* Already filed? Protect bar */}
-        <div className="protect-bar" style={{ background: "#111", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "32px 64px", gap: 24 }}>
-          <div>
-            <div style={{ fontSize: 18, fontWeight: 900, color: "#fff", marginBottom: 6 }}>Already filed your trademark?</div>
-            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>Filing is the beginning, not the end. Monitor your mark 24/7 and never miss a deadline.</div>
-          </div>
-          <button onClick={() => router.push("/protect")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 12, padding: "14px 32px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>
+        <div className="protect-bar" style={{ background: "#111", textAlign: "center", padding: "52px 24px" }}>
+          <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 10 }}>Already filed your trademark?</div>
+          <div style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginBottom: 28, maxWidth: 460, margin: "0 auto 28px" }}>Filing is the beginning, not the end. Monitor your mark 24/7 and never miss a deadline.</div>
+          <button onClick={() => router.push("/protect")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 12, padding: "14px 36px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
             Protect My Brand →
           </button>
         </div>
@@ -143,15 +141,7 @@ export default function Home() {
         {/* Footer */}
         <div className="footer" style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111", flexShrink: 0 }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
-          <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
-            <span onClick={() => router.push("/protect")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>Protect My Brand</span>
-            <span style={{ fontSize: 12, color: "#ddd" }}>·</span>
-            <span onClick={() => router.push("/pricing")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>Pricing</span>
-            <span style={{ fontSize: 12, color: "#ddd" }}>·</span>
-            <span onClick={() => router.push("/faq")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>FAQ</span>
-            <span style={{ fontSize: 12, color: "#ddd" }}>·</span>
-            <span style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Not legal advice · Attorney services by licensed partner law firms</span>
-          </div>
+          <div style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Not legal advice · Attorney services by licensed partner law firms</div>
         </div>
       </div>
       <ChatWidget />
