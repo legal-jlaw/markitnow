@@ -35,10 +35,9 @@ export default function Pricing() {
           <h1 style={{ fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 900, color: "#111", marginBottom: 12, letterSpacing: -1.5 }}>
             Simple, transparent pricing
           </h1>
-          <p style={{ fontSize: 16, color: "#777", maxWidth: 480, margin: "0 auto 12px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: 16, color: "#777", maxWidth: 480, margin: "0 auto 28px", lineHeight: 1.7, textAlign: "center" }}>
             One-time filing services. Ongoing protection plans. USPTO fees always shown separately.
           </p>
-          <p style={{ fontSize: 13, color: "#bbb", maxWidth: 400, margin: "0 auto 28px" }}>Built by a practicing U.S. trademark attorney. Every price reflects what real protection actually costs.</p>
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13 }}>
               <div style={{ width: 9, height: 9, borderRadius: "50%", background: "#c9a84c", flexShrink: 0 }} />
@@ -46,7 +45,7 @@ export default function Pricing() {
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13 }}>
               <div style={{ width: 9, height: 9, borderRadius: "50%", background: "#ccc", flexShrink: 0 }} />
-              <span style={{ color: "#888", fontWeight: 600 }}>USPTO government fee (paid directly to USPTO)</span>
+              <span style={{ color: "#888", fontWeight: 600 }}>USPTO government fee</span>
             </div>
           </div>
         </div>
