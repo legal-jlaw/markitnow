@@ -77,7 +77,11 @@ export default function ChatWidget() {
 
           {/* Header */}
           <div style={{ background: "#111", padding: "18px 20px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
-            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>⚖️</div>
+            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <div>
               <div style={{ fontWeight: 800, fontSize: 14, color: "#fff" }}>MarkitBot</div>
               <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)" }}>Trademark support · Instant answers</div>
@@ -99,7 +103,11 @@ export default function ChatWidget() {
             {/* Welcome message */}
             {messages.length === 0 && (
               <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, flexShrink: 0 }}>⚖️</div>
+                <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
                 <div style={{ background: "#f4f4f4", borderRadius: "4px 16px 16px 16px", padding: "12px 14px", maxWidth: "85%", fontSize: 13, color: "#333", lineHeight: 1.6 }}>
                   Hi! I'm MarkitBot 👋 I can answer questions about trademark registration, USPTO fees, the filing process, and MarkItNow's services. What can I help you with?
                 </div>
@@ -125,7 +133,11 @@ export default function ChatWidget() {
             {messages.map((msg, i) => (
               <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", flexDirection: msg.role === "user" ? "row-reverse" : "row" }}>
                 {msg.role === "assistant" && (
-                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, flexShrink: 0 }}>⚖️</div>
+                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
                 )}
                 <div style={{
                   background: msg.role === "user" ? "#111" : "#f4f4f4",
@@ -142,7 +154,11 @@ export default function ChatWidget() {
             {/* Typing indicator */}
             {loading && (
               <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, flexShrink: 0 }}>⚖️</div>
+                <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
                 <div style={{ background: "#f4f4f4", borderRadius: "4px 16px 16px 16px", padding: "14px 18px", display: "flex", gap: 4, alignItems: "center" }}>
                   {[0,1,2].map(i => (
                     <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: "#aaa", animation: `blink 1.2s ${i * 0.2}s infinite` }} />
