@@ -199,22 +199,21 @@ export default function Protect() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
             {[
-              { icon: "", title: "Real-time conflict detection", desc: "The moment a similar mark is filed anywhere in the USPTO database, you get an alert. Not next week. Not next month. Immediately.", highlight: false },
-              { icon: "", title: "AI conflict analysis - always on", desc: "Our AI evaluates every new filing against your mark using the same DuPont factors a trademark attorney would apply - automatically, continuously, 24/7.", highlight: false },
-              { icon: "", title: "Deadline tracking", desc: "Section 8, Section 15, renewals, Statement of Use deadlines - all tracked automatically. You get reminders weeks before anything is due.", highlight: false },
-              { icon: "", title: "Monthly brand health report", desc: "Every month, a clean summary of your mark's status, any new conflicts detected, and recommended actions - delivered to your inbox.", highlight: false },
-              { icon: "‍️", title: "Attorney review - on demand", desc: "The AI flags it. A U.S. Licensed Attorney reviews it. Human judgment applied to every serious conflict - not just automated alerts.", highlight: false },
-              { icon: "", title: "Escalation when it matters", desc: "When a real threat is identified, your plan determines how fast an attorney responds - from priority email access to same-day C&D drafting.", highlight: false },
+              { title: "Real-time conflict detection", desc: "The moment a similar mark is filed anywhere in the USPTO database, you get an alert. Not next week. Not next month. Immediately." },
+              { title: "AI conflict analysis, always on", desc: "Our AI evaluates every new filing against your mark using the same DuPont factors a trademark attorney would apply, automatically, continuously, 24/7." },
+              { title: "Deadline tracking", desc: "Section 8, Section 15, renewals, Statement of Use deadlines, all tracked automatically. You get reminders weeks before anything is due." },
+              { title: "Monthly brand health report", desc: "Every month, a clean summary of your mark's status, any new conflicts detected, and recommended actions, delivered to your inbox." },
+              { title: "Attorney review on demand", desc: "The AI flags it. A U.S. Licensed Attorney reviews it. Human judgment applied to every serious conflict, not just automated alerts." },
+              { title: "Escalation when it matters", desc: "When a real threat is identified, your plan determines how fast an attorney responds, from priority email access to same-day C&D drafting." },
             ].map(f => (
               <div key={f.title} style={{
-                background: f.highlight ? "#111" : "#fff",
-                border: f.highlight ? "none" : "1px solid #e8e8e8",
+                background: "#fff",
+                border: "1px solid #e8e8e8",
                 borderRadius: 16, padding: "28px 24px",
-                boxShadow: f.highlight ? "0 8px 32px rgba(0,0,0,0.15)" : "0 2px 8px rgba(0,0,0,0.04)",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
               }}>
-                <div style={{ fontSize: 24, marginBottom: 14 }}>{f.icon}</div>
-                <div style={{ fontSize: 15, fontWeight: 800, color: f.highlight ? "#fff" : "#111", marginBottom: 8 }}>{f.title}</div>
-                <div style={{ fontSize: 13, color: f.highlight ? "rgba(255,255,255,0.55)" : "#777", lineHeight: 1.7 }}>{f.desc}</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: "#111", marginBottom: 8 }}>{f.title}</div>
+                <div style={{ fontSize: 13, color: "#777", lineHeight: 1.7 }}>{f.desc}</div>
               </div>
             ))}
           </div>
