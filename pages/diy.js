@@ -434,9 +434,31 @@ export default function DIY() {
                 </button>
               </div>
 
-              <a href="https://teas.uspto.gov" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "#7eb5e8", color: "#0a0a0a", border: "none", borderRadius: 12, padding: "18px", fontWeight: 900, fontSize: 16, cursor: "pointer", fontFamily: "Poppins, sans-serif", textAlign: "center", textDecoration: "none", marginTop: 8 }}>
-                File on USPTO.gov Now →
-              </a>
+              {/* IKEA Effect upsell — they built it, now protect it */}
+              <div style={{ background: "#111", borderRadius: 16, padding: "28px 28px", marginTop: 8 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#c9a84c", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10 }}>You built this application. Now protect it.</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 10, lineHeight: 1.4 }}>What happens to your application after you file?</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+                  {[
+                    "A competitor could file a similar mark in your class this week",
+                    "An Office Action could arrive in 4-6 months — you have 30 days to respond",
+                    "Your Section 8 filing is due between years 5-6 or your mark gets cancelled",
+                    "You won't know about any of this unless someone is watching",
+                  ].map(item => (
+                    <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
+                      <span style={{ color: "#f87171", fontWeight: 900, flexShrink: 0, marginTop: 1 }}>✗</span>{item}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <button onClick={() => window.location.href = "/protect"} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 10, padding: "12px 20px", fontWeight: 900, fontSize: 13, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+                    Add Monitoring from $79/month →
+                  </button>
+                  <a href="https://teas.uspto.gov" target="_blank" rel="noopener noreferrer" style={{ background: "rgba(255,255,255,0.1)", color: "#fff", border: "none", borderRadius: 10, padding: "12px 20px", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "Poppins, sans-serif", textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
+                    File on USPTO.gov first →
+                  </a>
+                </div>
+              </div>
             </div>
           )}
 

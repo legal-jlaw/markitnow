@@ -261,19 +261,19 @@ export default function Protect() {
                 name: "Monitor", tagline: "Stay aware", price: "$79", period: "/month per mark",
                 annual: "$399/yr - save $189", highlight: false, badge: null,
                 features: ["24/7 AI conflict monitoring", "Renewal & deadline alerts", "Instant alerts when similar marks are filed", "Monthly brand health summary", "Free $99 AI Report on signup"],
-                cta: "Start Monitoring",
+                cta: "Start Monitoring →",
               },
               {
                 name: "Protect", tagline: "Stay defended", price: "$99", period: "/month per mark",
                 annual: "$799/yr - save $389", highlight: true, badge: "Most Popular",
                 features: ["Everything in Monitor", "Quarterly attorney review of AI-flagged conflicts", "Written attorney assessment each quarter", "1 Office Action response/year included", "Priority attorney email access"],
-                cta: "Start Protecting",
+                cta: "Stop Flying Blind →",
               },
               {
                 name: "Shield", tagline: "Stay untouchable", price: "$249", period: "/month per mark",
                 annual: "$1,999/yr - save $989", highlight: false, badge: "Enterprise",
                 features: ["Everything in Protect", "Unlimited attorney reviews - no waiting", "C&D letter drafting when conflicts arise", "Dedicated attorney on file", "Portfolio-wide mark coverage"],
-                cta: "Get Full Shield",
+                cta: "Lock It Down →",
               },
             ].map(plan => (
               <div key={plan.name} className="plan-card" style={{
@@ -289,7 +289,7 @@ export default function Protect() {
                 )}
                 <div style={{ marginBottom: 16 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#aaa", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 2 }}>{plan.name}</div>
-                  <div style={{ fontSize: 13, color: "#888", marginBottom: 10 }}>{plan.tagline}</div>
+                  <div style={{ fontSize: 13, color: plan.highlight ? "#c9a84c" : "#888", marginBottom: 10, fontWeight: plan.highlight ? 700 : 400 }}>{plan.tagline}{plan.highlight ? " — most attorneys recommend this" : ""}</div>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 3 }}>
                     <span style={{ fontSize: 40, fontWeight: 900, color: "#111", lineHeight: 1 }}>{plan.price}</span>
                     <span style={{ fontSize: 13, color: "#aaa" }}>{plan.period}</span>

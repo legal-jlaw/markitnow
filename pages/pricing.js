@@ -35,9 +35,10 @@ export default function Pricing() {
           <h1 style={{ fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 900, color: "#111", marginBottom: 12, letterSpacing: -1.5 }}>
             Simple, transparent pricing
           </h1>
-          <p style={{ fontSize: 16, color: "#777", maxWidth: 460, margin: "0 auto 28px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: 16, color: "#777", maxWidth: 480, margin: "0 auto 12px", lineHeight: 1.7 }}>
             One-time filing services. Ongoing protection plans. USPTO fees always shown separately.
           </p>
+          <p style={{ fontSize: 13, color: "#bbb", maxWidth: 400, margin: "0 auto 28px" }}>Built by a practicing U.S. trademark attorney. Every price reflects what real protection actually costs.</p>
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13 }}>
               <div style={{ width: 9, height: 9, borderRadius: "50%", background: "#c9a84c", flexShrink: 0 }} />
@@ -140,9 +141,9 @@ export default function Pricing() {
 
         {/* CTA */}
         <div style={{ textAlign: "center", padding: "64px 24px 80px" }}>
-          <p style={{ fontSize: 14, color: "#aaa", marginBottom: 20 }}>Not sure where to start?</p>
+          <p style={{ fontSize: 14, color: "#aaa", marginBottom: 20 }}>Don't file blind. It's free to check.</p>
           <button onClick={() => router.push("/")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 12, padding: "14px 36px", fontWeight: 800, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
-            Start with a Free Search →
+            Search Free Before You Spend a Dollar →
           </button>
         </div>
 

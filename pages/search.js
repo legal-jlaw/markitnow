@@ -153,8 +153,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>AI Analysis</div>
           <h3 style={{ fontSize: 18, fontWeight: 900, color: "#0f1e3c", margin: "0 0 6px" }}>
             {loading ? "Searching USPTO..." : trademarks.length > 0
-              ? `${trademarks.filter(t => t.isActive).length} active conflicts found`
-              : `"${mark}" looks clear`}
+              ? `${trademarks.filter(t => t.isActive).length} active conflicts found — review before filing`
+              : `"${mark}" looks clear — confirm before filing`}
           </h3>
           <p style={{ fontSize: 12, color: "#6b8a78", margin: 0, lineHeight: 1.6 }}>
             {loading ? "Run AI analysis while we search the USPTO database." : trademarks.length > 0
@@ -552,7 +552,7 @@ export default function SearchPage() {
               placeholder="Search another mark..." />
             <button type="submit" style={{ padding: "7px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 7, fontWeight: 800, fontSize: 13 }}>Search</button>
           </form>
-          <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>File $399</a>
+          <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>Don't file blind — Get Analysis</a>
         </div>
 
         {/* Split pane */}
