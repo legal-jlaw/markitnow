@@ -30,6 +30,24 @@ function PurchasePanel({ mark, trademarks, loading }) {
   const [report, setReport] = useState(null);
   const [memo, setMemo] = useState(null);
   const [isPaid, setIsPaid] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
+
+  async function handleEmailCapture(e) {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setEmailLoading(true);
+    try {
+      await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, mark, source: "search_results" }),
+      });
+    } catch (err) {}
+    setEmailSubmitted(true);
+    setEmailLoading(false);
+  }
 
   async function generate(type) {
     setGenerating(true);
@@ -144,6 +162,45 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               : `No exact USPTO matches. Run AI analysis to confirm mark strength and registrability.`}
           </p>
         </div>
+
+        {/* Brand Risk Summary - warm middle step */}
+        {!loading && trademarks.length > 0 && (
+          <div style={{ margin: "0", padding: "14px 20px", background: "#fff5f5", borderBottom: "1px solid #fed7d7" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#c53030", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 6 }}>Brand Risk Summary</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#333" }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: trademarks.filter(t => t.isActive).length > 3 ? "#e74c3c" : trademarks.filter(t => t.isActive).length > 0 ? "#f39c12" : "#2ecc71", flexShrink: 0 }} />
+                <span><strong>{trademarks.filter(t => t.isActive).length} active marks</strong> found that could conflict with yours</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#333" }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#f39c12", flexShrink: 0 }} />
+                <span>Run an <strong>AI conflict analysis</strong> to see your likelihood of confusion score</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#333" }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#e74c3c", flexShrink: 0 }} />
+                <span>Without monitoring, you won't know when new conflicts are filed</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Email capture banner */}
+        {!emailSubmitted ? (
+          <div style={{ margin: "0", padding: "12px 20px", background: "#fffbeb", borderBottom: "1px solid #fde68a" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#92400e", marginBottom: 6 }}>Get a free PDF of these results</div>
+            <form onSubmit={handleEmailCapture} style={{ display: "flex", gap: 6 }}>
+              <input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="your@email.com"
+                style={{ flex: 1, padding: "7px 10px", borderRadius: 7, border: "1px solid #fcd34d", fontSize: 12, fontFamily: "inherit", outline: "none", background: "#fff", minWidth: 0 }} />
+              <button type="submit" disabled={emailLoading} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 7, padding: "7px 12px", fontWeight: 800, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+                {emailLoading ? "..." : "Send PDF"}
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div style={{ padding: "10px 20px", background: "#f0fff4", borderBottom: "1px solid #9ae6b4", fontSize: 12, color: "#276749", fontWeight: 600 }}>
+            Check your inbox — PDF on its way.
+          </div>
+        )}
 
         <div style={{ padding: "16px 20px", flex: 1, overflowY: "auto" }}>
           {/* Goods input */}

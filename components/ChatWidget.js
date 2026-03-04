@@ -1,18 +1,60 @@
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const SUGGESTED = [
-  "How much does it cost to trademark a name?",
-  "What's the difference between DIY and attorney filing?",
-  "How long does trademark registration take?",
-  "What is an Office Action?",
+  "Is my brand name available to trademark?",
+  "What does an Office Action mean?",
+  "How much does it cost to file a trademark?",
+  "What happens if I miss a trademark deadline?",
 ];
 
+const BOT_ICON = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+function BotAvatar() {
+  return (
+    <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      {BOT_ICON}
+    </div>
+  );
+}
+
+// Proactive closing card shown after 2nd user message
+function ClosingCard({ router }) {
+  const [dismissed, setDismissed] = useState(false);
+  if (dismissed) return null;
+  return (
+    <div style={{ margin: "4px 0 4px 38px", background: "#fff", border: "1.5px solid #c9a84c", borderRadius: "4px 16px 16px 16px", padding: "14px 16px" }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Based on your question</div>
+      <p style={{ fontSize: 12, color: "#555", margin: "0 0 12px", lineHeight: 1.6 }}>
+        The fastest way to know exactly where your brand stands is a free USPTO search followed by an AI conflict analysis. Most people have their answer in under 5 minutes.
+      </p>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button onClick={() => router.push("/")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 8, padding: "7px 14px", fontSize: 11, fontWeight: 800, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+          Search Free
+        </button>
+        <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "7px 14px", fontSize: 11, fontWeight: 800, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
+          Get AI Report $99
+        </button>
+        <button onClick={() => setDismissed(true)} style={{ background: "none", color: "#ccc", border: "none", fontSize: 11, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "7px 4px" }}>
+          Dismiss
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function ChatWidget() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showSuggested, setShowSuggested] = useState(true);
+  const [showClosingCard, setShowClosingCard] = useState(false);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -22,7 +64,15 @@ export default function ChatWidget() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+  }, [messages, loading, showClosingCard]);
+
+  // Count user messages — show closing card after 2nd
+  const userMessageCount = messages.filter(m => m.role === "user").length;
+  useEffect(() => {
+    if (userMessageCount >= 2 && !showClosingCard) {
+      setShowClosingCard(true);
+    }
+  }, [userMessageCount]);
 
   async function sendMessage(text) {
     const userText = text || input.trim();
@@ -57,7 +107,7 @@ export default function ChatWidget() {
       {/* Tooltip bubble */}
       {!open && messages.length === 0 && (
         <div style={{ position: "fixed", bottom: 96, right: 28, zIndex: 1001, background: "#fff", border: "1px solid #e0e0e0", borderRadius: 20, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: "#333", fontFamily: "Poppins, sans-serif", boxShadow: "0 2px 12px rgba(0,0,0,0.1)", whiteSpace: "nowrap" }}>
-          Questions? Ask MarkitBot 
+          Questions? Ask MarkitBot
         </div>
       )}
 
@@ -78,9 +128,7 @@ export default function ChatWidget() {
           {/* Header */}
           <div style={{ background: "#111", padding: "18px 20px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
             <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              {BOT_ICON}
             </div>
             <div>
               <div style={{ fontWeight: 800, fontSize: 14, color: "#fff" }}>MarkitBot</div>
@@ -94,7 +142,7 @@ export default function ChatWidget() {
 
           {/* Disclaimer */}
           <div style={{ background: "#fff8e6", borderBottom: "1px solid #f0d080", padding: "8px 16px", fontSize: 11, color: "#b8860b", flexShrink: 0 }}>
-            ️ AI assistant only not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
+            AI assistant only — not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
           </div>
 
           {/* Messages */}
@@ -103,13 +151,9 @@ export default function ChatWidget() {
             {/* Welcome message */}
             {messages.length === 0 && (
               <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
+                <BotAvatar />
                 <div style={{ background: "#f4f4f4", borderRadius: "4px 16px 16px 16px", padding: "12px 14px", maxWidth: "85%", fontSize: 13, color: "#333", lineHeight: 1.6 }}>
-                  Hi! I'm MarkitBot  I can answer questions about trademark registration, USPTO fees, the filing process, and MarkItNow's services. What can I help you with?
+                  Hi, I'm MarkitBot. I can answer questions about trademark registration, USPTO fees, deadlines, and MarkItNow's services. What can I help you with?
                 </div>
               </div>
             )}
@@ -129,36 +173,32 @@ export default function ChatWidget() {
               </div>
             )}
 
-            {/* Conversation messages */}
+            {/* Conversation messages + closing card injection */}
             {messages.map((msg, i) => (
-              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", flexDirection: msg.role === "user" ? "row-reverse" : "row" }}>
-                {msg.role === "assistant" && (
-                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-                )}
-                <div style={{
-                  background: msg.role === "user" ? "#111" : "#f4f4f4",
-                  color: msg.role === "user" ? "#fff" : "#333",
-                  borderRadius: msg.role === "user" ? "16px 4px 16px 16px" : "4px 16px 16px 16px",
-                  padding: "12px 14px", maxWidth: "85%", fontSize: 13, lineHeight: 1.7,
-                  whiteSpace: "pre-wrap",
-                }}>
-                  {msg.content}
+              <div key={i}>
+                <div style={{ display: "flex", gap: 10, alignItems: "flex-start", flexDirection: msg.role === "user" ? "row-reverse" : "row" }}>
+                  {msg.role === "assistant" && <BotAvatar />}
+                  <div style={{
+                    background: msg.role === "user" ? "#111" : "#f4f4f4",
+                    color: msg.role === "user" ? "#fff" : "#333",
+                    borderRadius: msg.role === "user" ? "16px 4px 16px 16px" : "4px 16px 16px 16px",
+                    padding: "12px 14px", maxWidth: "85%", fontSize: 13, lineHeight: 1.7,
+                    whiteSpace: "pre-wrap",
+                  }}>
+                    {msg.content}
+                  </div>
                 </div>
+                {/* Show closing card after 2nd assistant reply */}
+                {msg.role === "assistant" && i === 3 && showClosingCard && (
+                  <ClosingCard router={router} />
+                )}
               </div>
             ))}
 
             {/* Typing indicator */}
             {loading && (
               <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#c9a84c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 19V5L12 13L21 5V19" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
+                <BotAvatar />
                 <div style={{ background: "#f4f4f4", borderRadius: "4px 16px 16px 16px", padding: "14px 18px", display: "flex", gap: 4, alignItems: "center" }}>
                   {[0,1,2].map(i => (
                     <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: "#aaa", animation: `blink 1.2s ${i * 0.2}s infinite` }} />
