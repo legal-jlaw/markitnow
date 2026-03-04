@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 
 const NAV_LINKS = [
   { label: "Search", path: "/" },
-  { label: "Protect My Brand", path: "/protect", gold: true },
   { label: "Pricing", path: "/pricing" },
-  { label: "FAQ", path: "/faq" },
+  { label: "Protect My Brand", path: "/protect", gold: true },
+  { label: "How It Works", path: "/how-it-works" },
 ];
 
 
