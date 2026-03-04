@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 const NAV_LINKS = [
-  { label: "How It Works", path: "/how-it-works" },
+  { label: "Search", path: "/" },
+  { label: "Protect My Brand", path: "/protect", gold: true },
   { label: "Pricing", path: "/pricing" },
   { label: "FAQ", path: "/faq" },
 ];
@@ -17,12 +18,23 @@ export default function Nav() {
         <div onClick={() => router.push("/")} style={{ fontWeight: 900, fontSize: 22, color: "#111", letterSpacing: -0.5, cursor: "pointer", flexShrink: 0 }}>
           MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span>
         </div>
-        <div className="desktop-nav" style={{ display: "flex", gap: 8, alignItems: "center" }}>
+
+        {/* Desktop */}
+        <div className="desktop-nav" style={{ display: "flex", gap: 4, alignItems: "center" }}>
           {NAV_LINKS.map(l => (
-            <button key={l.label} onClick={() => router.push(l.path)} style={{ background: "none", border: "none", color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "8px 12px", borderRadius: 8 }}>{l.label}</button>
+            <button key={l.label} onClick={() => router.push(l.path)} style={{
+              background: l.gold ? "#fff8e6" : "none",
+              border: l.gold ? "1px solid #f0d080" : "none",
+              color: l.gold ? "#b8860b" : "#555",
+              fontSize: 14, fontWeight: l.gold ? 700 : 500,
+              cursor: "pointer", fontFamily: "Poppins, sans-serif",
+              padding: "8px 14px", borderRadius: 8,
+            }}>{l.label}</button>
           ))}
           <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif", marginLeft: 8 }}>File Now</button>
         </div>
+
+        {/* Mobile hamburger */}
         <button className="mobile-menu-btn" onClick={() => setMenuOpen(o => !o)} style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 8 }}>
           {menuOpen
             ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -30,14 +42,24 @@ export default function Nav() {
           }
         </button>
       </div>
+
+      {/* Mobile dropdown */}
       {menuOpen && (
         <div style={{ background: "#fff", borderTop: "1px solid #f0f0f0", padding: "12px 24px 20px" }}>
           {NAV_LINKS.map(l => (
-            <button key={l.label} onClick={() => { router.push(l.path); setMenuOpen(false); }} style={{ display: "block", width: "100%", textAlign: "left", background: "none", border: "none", color: "#333", fontSize: 15, fontWeight: 500, cursor: "pointer", fontFamily: "Poppins, sans-serif", padding: "12px 0", borderBottom: "1px solid #f4f4f4" }}>{l.label}</button>
+            <button key={l.label} onClick={() => { router.push(l.path); setMenuOpen(false); }} style={{
+              display: "block", width: "100%", textAlign: "left",
+              background: "none", border: "none",
+              color: l.gold ? "#b8860b" : "#333",
+              fontSize: 15, fontWeight: l.gold ? 700 : 500,
+              cursor: "pointer", fontFamily: "Poppins, sans-serif",
+              padding: "12px 0", borderBottom: "1px solid #f4f4f4",
+            }}>{l.label}</button>
           ))}
           <button onClick={() => { router.push("/file"); setMenuOpen(false); }} style={{ display: "block", width: "100%", background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "12px 0", fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif", marginTop: 12 }}>File Now</button>
         </div>
       )}
+
       <style>{`
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
