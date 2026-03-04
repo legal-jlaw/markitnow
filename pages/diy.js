@@ -130,7 +130,7 @@ export default function DIY() {
       <div style={{ minHeight: "100vh", background: "#f4f4f4", fontFamily: "Poppins, sans-serif" }}>
         <Nav />
 
-        {/* Risk disclaimer — steers toward attorney filing */}
+        {/* Risk disclaimer - steers toward attorney filing */}
         <div style={{ background: "#fff8f0", borderBottom: "1px solid #fde8c8", padding: "14px 24px" }}>
           <div style={{ maxWidth: 780, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
             <div style={{ fontSize: 13, color: "#92400e", lineHeight: 1.6 }}>
@@ -446,14 +446,14 @@ export default function DIY() {
                 </button>
               </div>
 
-              {/* IKEA Effect upsell — they built it, now protect it */}
+              {/* IKEA Effect upsell - they built it, now protect it */}
               <div style={{ background: "#111", borderRadius: 16, padding: "28px 28px", marginTop: 8 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "#c9a84c", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10 }}>You built this application. Now protect it.</div>
                 <div style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 10, lineHeight: 1.4 }}>What happens to your application after you file?</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
                   {[
                     "A competitor could file a similar mark in your class this week",
-                    "An Office Action could arrive in 4-6 months — you have 30 days to respond",
+                    "An Office Action could arrive in 4-6 months - you have 30 days to respond",
                     "Your Section 8 filing is due between years 5-6 or your mark gets cancelled",
                     "You won't know about any of this unless someone is watching",
                   ].map(item => (

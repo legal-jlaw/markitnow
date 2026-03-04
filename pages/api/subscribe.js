@@ -1,7 +1,7 @@
 // pages/api/subscribe.js
 // Captures email, stores lead data, triggers Day 1 email immediately via Resend
 // Set RESEND_API_KEY in Vercel environment variables
-// Get your free API key at resend.com — free tier: 3,000 emails/month
+// Get your free API key at resend.com - free tier: 3,000 emails/month
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   console.log("EMAIL CAPTURE:", { email, mark, source, timestamp: new Date().toISOString() });
 
   if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — email not sent");
+    console.warn("RESEND_API_KEY not set - email not sent");
     return res.status(200).json({ success: true, warning: "Email provider not configured" });
   }
 
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     });
 
     // Schedule remaining drip emails via Resend's scheduled sends
-    // Day 3, 7, 14, 30 — each triggered via the /api/drip route with a delay
+    // Day 3, 7, 14, 30 - each triggered via the /api/drip route with a delay
     const drip = [
       { day: 3, subject: `A competitor could file "${mark}" this week` },
       { day: 7, subject: `What happens if your trademark application gets rejected` },
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       { day: 30, subject: `Final reminder: your brand is still unprotected` },
     ];
 
-    // Fire and forget — schedule each drip
+    // Fire and forget - schedule each drip
     for (const d of drip) {
       fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "https://markitnow-two.vercel.app"}/api/drip`, {
         method: "POST",
@@ -93,13 +93,13 @@ function buildDay1Email(mark, email) {
       <tr><td style="padding:40px;">
         <p style="font-size:15px;color:#888;margin:0 0 8px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Your Search Results</p>
         <h1 style="font-size:28px;font-weight:900;color:#111;margin:0 0 20px;line-height:1.2;">You searched for <span style="color:#c9a84c;">"${mark}"</span></h1>
-        <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 28px;">Here's what you need to know about your search — and what to do next.</p>
+        <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 28px;">Here's what you need to know about your search - and what to do next.</p>
 
         <!-- Risk box -->
         <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff8f0;border:1px solid #fde8c8;border-radius:12px;margin:0 0 28px;">
           <tr><td style="padding:24px;">
             <p style="font-size:13px;font-weight:700;color:#92400e;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;">What you're up against</p>
-            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 8px;">The USPTO database has over 4 million active and dead marks. A single conflicting registration in your class can block your application — even if your brand is already in use.</p>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 8px;">The USPTO database has over 4 million active and dead marks. A single conflicting registration in your class can block your application - even if your brand is already in use.</p>
             <p style="font-size:14px;color:#555;line-height:1.7;margin:0;">The free search shows you what's there. The AI analysis tells you what it means for <strong>"${mark}"</strong> specifically.</p>
           </td></tr>
         </table>
@@ -107,7 +107,7 @@ function buildDay1Email(mark, email) {
         <!-- CTA -->
         <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
           <tr><td align="center">
-            <a href="https://markitnow.ai/file?mark=${encodeURIComponent(mark)}" style="display:inline-block;background:#c9a84c;color:#111;font-size:15px;font-weight:900;padding:16px 36px;border-radius:12px;text-decoration:none;letter-spacing:-0.3px;">Get Your AI Analysis Report — $99 →</a>
+            <a href="https://markitnow.ai/file?mark=${encodeURIComponent(mark)}" style="display:inline-block;background:#c9a84c;color:#111;font-size:15px;font-weight:900;padding:16px 36px;border-radius:12px;text-decoration:none;letter-spacing:-0.3px;">Get Your AI Analysis Report - $99 →</a>
           </td></tr>
         </table>
 
@@ -129,7 +129,7 @@ function buildDay1Email(mark, email) {
           </tr>
         </table>
 
-        <p style="font-size:14px;color:#555;line-height:1.7;margin:0;">Questions? Reply to this email — a real person reads every response.</p>
+        <p style="font-size:14px;color:#555;line-height:1.7;margin:0;">Questions? Reply to this email - a real person reads every response.</p>
       </td></tr>
 
       <!-- Footer -->

@@ -66,7 +66,7 @@ export default function ChatWidget() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading, showClosingCard]);
 
-  // Count user messages — show closing card after 2nd
+  // Count user messages - show closing card after 2nd
   const userMessageCount = messages.filter(m => m.role === "user").length;
   useEffect(() => {
     if (userMessageCount >= 2 && !showClosingCard) {
@@ -142,7 +142,7 @@ export default function ChatWidget() {
 
           {/* Disclaimer */}
           <div style={{ background: "#fff8e6", borderBottom: "1px solid #f0d080", padding: "8px 16px", fontSize: 11, color: "#b8860b", flexShrink: 0 }}>
-            AI assistant only — not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
+            AI assistant only - not legal advice. For legal counsel, use our <strong>Attorney Filing</strong> service.
           </div>
 
           {/* Messages */}

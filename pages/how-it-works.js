@@ -162,14 +162,14 @@ export default function HowItWorks() {
               </thead>
               <tbody>
                 {[
-                  { label: "Trademark Search", our: "Free", uspto: "—" },
-                  { label: "AI Analysis Report", our: "$99", uspto: "—" },
-                  { label: "Attorney Memo", our: "$149", uspto: "—" },
+                  { label: "Trademark Search", our: "Free", uspto: "-" },
+                  { label: "AI Analysis Report", our: "$99", uspto: "-" },
+                  { label: "Attorney Memo", our: "$149", uspto: "-" },
                   { label: "DIY Guided Filing", our: "$69", uspto: "$350/class" },
                   { label: "Attorney Filing", our: "$399", uspto: "$350/class" },
                   { label: "Statement of Use", our: "$249", uspto: "$150/class" },
                   { label: "Renewal (Sec. 8 & 9)", our: "$199", uspto: "$325/class" },
-                  { label: "Office Action Response", our: "$499+", uspto: "—" },
+                  { label: "Office Action Response", our: "$499+", uspto: "-" },
                 ].map((item, i, arr) => (
                   <tr key={item.label} style={{ borderBottom: i < arr.length - 1 ? "1px solid #f4f4f4" : "none" }}>
                     <td style={{ padding: "14px 32px", fontSize: 14, color: "#333", fontWeight: 500 }}>{item.label}</td>

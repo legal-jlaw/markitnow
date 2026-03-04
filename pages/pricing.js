@@ -9,7 +9,7 @@ export default function Pricing() {
   return (
     <>
       <Head>
-        <title>Pricing — Brand Protection Plans & Filing Services | MarkItNow.ai</title>
+        <title>Pricing - Brand Protection Plans & Filing Services | MarkItNow.ai</title>
         <meta name="description" content="Transparent trademark pricing. Brand Protection Plans from $79/month. One-time filing services from free to $399. USPTO fees always shown separately." />
         <meta name="keywords" content="trademark filing cost, brand protection plan, trademark monitoring price, USPTO filing fee 2025, trademark attorney fee" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -88,7 +88,6 @@ export default function Pricing() {
                 { name: "Renewal Filing (Sec. 8 & 9)", desc: "Required between years 5-6 and every 10 years.", our: "$199", uspto: "$325/class", path: "/file" },
                 { name: "Section 15 Incontestability", desc: "Strengthen your rights after 5 years of continuous use.", our: "$149", uspto: "$250/class", path: "/file" },
                 { name: "Portfolio Audit", desc: "Full review of all marks, classes, deadlines, and risk.", our: "$299", uspto: null, path: "/file" },
-                { name: "Emergency Trademark Audit", desc: "Same-day attorney review. Full conflict analysis, risk assessment, and action plan. For time-sensitive situations.", our: "$999", uspto: null, path: "/file" },
               ],
             },
           ].map(group => (
@@ -129,7 +128,7 @@ export default function Pricing() {
         <div style={{ maxWidth: 1100, margin: "24px auto 0", padding: "0 24px" }}>
           <div style={{ background: "#111", borderRadius: 16, padding: "32px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#c9a84c", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 8 }}>Brand Protection Plans — from $79/month</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#c9a84c", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 8 }}>Brand Protection Plans - from $79/month</div>
               <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", marginBottom: 8, letterSpacing: -0.5 }}>Looking for ongoing protection?</div>
               <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6, maxWidth: 480 }}>24/7 AI monitoring, renewal alerts, attorney reviews, and more. All plans include a free $99 AI Analysis Report on signup.</div>
             </div>

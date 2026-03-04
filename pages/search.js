@@ -153,8 +153,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>AI Analysis</div>
           <h3 style={{ fontSize: 18, fontWeight: 900, color: "#0f1e3c", margin: "0 0 6px" }}>
             {loading ? "Searching USPTO..." : trademarks.length > 0
-              ? `${trademarks.filter(t => t.isActive).length} active conflicts found — review before filing`
-              : `"${mark}" looks clear — confirm before filing`}
+              ? `${trademarks.filter(t => t.isActive).length} active conflicts found - review before filing`
+              : `"${mark}" looks clear - confirm before filing`}
           </h3>
           <p style={{ fontSize: 12, color: "#6b8a78", margin: 0, lineHeight: 1.6 }}>
             {loading ? "Run AI analysis while we search the USPTO database." : trademarks.length > 0
@@ -198,7 +198,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           </div>
         ) : (
           <div style={{ padding: "10px 20px", background: "#f0fff4", borderBottom: "1px solid #9ae6b4", fontSize: 12, color: "#276749", fontWeight: 600 }}>
-            Check your inbox — PDF on its way.
+            Check your inbox - PDF on its way.
           </div>
         )}
 
@@ -552,7 +552,7 @@ export default function SearchPage() {
               placeholder="Search another mark..." />
             <button type="submit" style={{ padding: "7px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 7, fontWeight: 800, fontSize: 13 }}>Search</button>
           </form>
-          <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>Don't file blind — Get Analysis</a>
+          <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>Don't file blind - Get Analysis</a>
         </div>
 
         {/* Split pane */}
@@ -641,9 +641,9 @@ export default function SearchPage() {
                           <div style={{ fontSize: 9, color: "#b0bcb8", marginTop: 1 }}>#{t.serialNumber}{t.filingDate ? ` · ${t.filingDate}` : ""}</div>
                         </div>
                         <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.4 }}>
-                          {t.description ? t.description.slice(0, 90) + (t.description.length > 90 ? "…" : "") : "—"}
+                          {t.description ? t.description.slice(0, 90) + (t.description.length > 90 ? "…" : "") : "-"}
                         </div>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: "#0f1e3c" }}>{t.classCode || "—"}</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#0f1e3c" }}>{t.classCode || "-"}</div>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
                             <div style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot, flexShrink: 0 }} />

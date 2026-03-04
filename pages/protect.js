@@ -90,13 +90,10 @@ export default function Protect() {
             Brand Protection Score
           </div>
           <h1 style={{ fontSize: "clamp(32px, 6vw, 58px)", fontWeight: 900, color: "#111", lineHeight: 1.05, marginBottom: 16, letterSpacing: -2 }}>
-            You could lose your trademark<br />and not know it for months.
+            How protected<br />is your brand?
           </h1>
-          <p style={{ fontSize: 16, color: "#777", maxWidth: 500, margin: "0 auto 12px", lineHeight: 1.7 }}>
-            Competitors file similar marks. Deadlines pass. Office Actions go unanswered. Most business owners find out too late — after the damage is done.
-          </p>
-          <p style={{ fontSize: 14, color: "#aaa", maxWidth: 420, margin: "0 auto 40px", lineHeight: 1.6 }}>
-            Enter your brand name. We'll show you exactly where you stand.
+          <p style={{ fontSize: 16, color: "#777", maxWidth: 460, margin: "0 auto 40px", lineHeight: 1.7 }}>
+            Enter your brand name and we'll check the USPTO database, find conflicts, and give you a protection score in seconds.
           </p>
 
           {/* Score checker input */}
@@ -289,7 +286,7 @@ export default function Protect() {
                 )}
                 <div style={{ marginBottom: 16 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#aaa", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 2 }}>{plan.name}</div>
-                  <div style={{ fontSize: 13, color: plan.highlight ? "#c9a84c" : "#888", marginBottom: 10, fontWeight: plan.highlight ? 700 : 400 }}>{plan.tagline}{plan.highlight ? " — most attorneys recommend this" : ""}</div>
+                  <div style={{ fontSize: 13, color: plan.highlight ? "#c9a84c" : "#888", marginBottom: 10, fontWeight: plan.highlight ? 700 : 400 }}>{plan.tagline}{plan.highlight ? " - most attorneys recommend this" : ""}</div>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 3 }}>
                     <span style={{ fontSize: 40, fontWeight: 900, color: "#111", lineHeight: 1 }}>{plan.price}</span>
                     <span style={{ fontSize: 13, color: "#aaa" }}>{plan.period}</span>

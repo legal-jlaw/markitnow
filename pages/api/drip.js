@@ -1,5 +1,5 @@
 // pages/api/drip.js
-// Handles scheduled drip emails — called internally from subscribe.js
+// Handles scheduled drip emails - called internally from subscribe.js
 // In production, replace setTimeout with a real queue (Resend Scheduled, Inngest, QStash)
 // For MVP: this endpoint is called immediately but uses Resend's scheduledAt param
 
@@ -80,19 +80,19 @@ function ctaButton(href, text) {
   </table>`;
 }
 
-// DAY 3 — Competitor urgency
+// DAY 3 - Competitor urgency
 function buildDay3Email(mark, email) {
   const content = `
     <p style="font-size:13px;color:#888;margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Day 3 Follow-up</p>
     <h1 style="font-size:26px;font-weight:900;color:#111;margin:0 0 20px;line-height:1.2;">A competitor could file <span style="color:#c9a84c;">"${mark}"</span> this week.</h1>
 
-    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 20px;">Trademark law is first to file, not first to use. That means whoever submits their application first gets the priority date — even if you've been using your brand longer.</p>
+    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 20px;">Trademark law is first to file, not first to use. That means whoever submits their application first gets the priority date - even if you've been using your brand longer.</p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff5f5;border:1px solid #fed7d7;border-radius:12px;margin:0 0 24px;">
       <tr><td style="padding:24px;">
         <p style="font-size:13px;font-weight:700;color:#c53030;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;">What happens if they file first</p>
         <table width="100%" cellpadding="0" cellspacing="0">
-          ${["Your application gets blocked by their prior filing", "You receive a likelihood of confusion refusal", "You may be forced to rebrand — even years in", "You have no legal basis to make them stop"].map(item =>
+          ${["Your application gets blocked by their prior filing", "You receive a likelihood of confusion refusal", "You may be forced to rebrand - even years in", "You have no legal basis to make them stop"].map(item =>
             `<tr><td style="padding:5px 0;font-size:14px;color:#555;"><span style="color:#e74c3c;font-weight:900;margin-right:8px;">✗</span>${item}</td></tr>`
           ).join("")}
         </table>
@@ -108,13 +108,13 @@ function buildDay3Email(mark, email) {
   return emailWrapper(mark, content, `<a href="https://markitnow.ai/unsubscribe?email=${encodeURIComponent(email)}" style="color:#ddd;">Unsubscribe</a>`);
 }
 
-// DAY 7 — Office Action education
+// DAY 7 - Office Action education
 function buildDay7Email(mark, email) {
   const content = `
     <p style="font-size:13px;color:#888;margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">What most applicants don't know</p>
     <h1 style="font-size:26px;font-weight:900;color:#111;margin:0 0 20px;line-height:1.2;">Most first-time trademark filers get rejected. Here's why.</h1>
 
-    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 20px;">The USPTO issues an <strong>Office Action</strong> — a formal objection — on the majority of applications filed without attorney review. Most applicants don't know this until they're staring at a legal document with a 3-month response deadline.</p>
+    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 20px;">The USPTO issues an <strong>Office Action</strong> - a formal objection - on the majority of applications filed without attorney review. Most applicants don't know this until they're staring at a legal document with a 3-month response deadline.</p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f8f8;border-radius:12px;margin:0 0 24px;">
       <tr><td style="padding:24px;">
@@ -134,7 +134,7 @@ function buildDay7Email(mark, email) {
       </td></tr>
     </table>
 
-    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 8px;">An AI conflict analysis identifies these issues <em>before</em> you file — so your application is built to get through, not bounce back.</p>
+    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 8px;">An AI conflict analysis identifies these issues <em>before</em> you file - so your application is built to get through, not bounce back.</p>
 
     ${ctaButton(`https://markitnow.ai/file?mark=${encodeURIComponent(mark)}`, "Check \"${mark}\" Before You File →")}
 
@@ -143,13 +143,13 @@ function buildDay7Email(mark, email) {
   return emailWrapper(mark, content, `<a href="https://markitnow.ai/unsubscribe?email=${encodeURIComponent(email)}" style="color:#ddd;">Unsubscribe</a>`);
 }
 
-// DAY 14 — Still unprotected, direct close
+// DAY 14 - Still unprotected, direct close
 function buildDay14Email(mark, email) {
   const content = `
     <p style="font-size:13px;color:#888;margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Two weeks since your search</p>
     <h1 style="font-size:26px;font-weight:900;color:#111;margin:0 0 20px;line-height:1.2;"><span style="color:#c9a84c;">"${mark}"</span> still isn't protected.</h1>
 
-    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 24px;">You searched two weeks ago. In that time, new trademark applications have been filed every business day. We don't know if any of them conflict with yours — and neither do you.</p>
+    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 24px;">You searched two weeks ago. In that time, new trademark applications have been filed every business day. We don't know if any of them conflict with yours - and neither do you.</p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="border:2px solid #c9a84c;border-radius:12px;margin:0 0 24px;">
       <tr><td style="padding:28px;">
@@ -181,13 +181,13 @@ function buildDay14Email(mark, email) {
   return emailWrapper(mark, content, `<a href="https://markitnow.ai/unsubscribe?email=${encodeURIComponent(email)}" style="color:#ddd;">Unsubscribe</a>`);
 }
 
-// DAY 30 — Final, loss framing, scarcity
+// DAY 30 - Final, loss framing, scarcity
 function buildDay30Email(mark, email) {
   const content = `
     <p style="font-size:13px;color:#888;margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Final message</p>
     <h1 style="font-size:26px;font-weight:900;color:#111;margin:0 0 20px;line-height:1.2;">This is the last time we'll reach out about <span style="color:#c9a84c;">"${mark}"</span>.</h1>
 
-    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 20px;">Thirty days ago you searched your brand name. We don't know what you decided — maybe you filed elsewhere, maybe you're still thinking about it. Either way, this is our last reminder.</p>
+    <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 20px;">Thirty days ago you searched your brand name. We don't know what you decided - maybe you filed elsewhere, maybe you're still thinking about it. Either way, this is our last reminder.</p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#111;border-radius:12px;margin:0 0 24px;">
       <tr><td style="padding:28px;">

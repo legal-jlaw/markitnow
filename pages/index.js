@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-// Live search counter — specific number builds social proof
+// Live search counter - specific number builds social proof
 const BASE_COUNT = 14382;
 const BASE_TIME = new Date("2026-03-01T00:00:00Z").getTime();
 function useLiveCount() {
@@ -35,10 +35,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>MarkItNow.ai — Don't File Blind. Search Free.</title>
+        <title>MarkItNow.ai - Don't File Blind. Search Free.</title>
         <meta name="description" content="Search 4M+ USPTO trademarks free. Instant results, no account required. Then get an AI conflict analysis or file with a U.S. Licensed Attorney." />
         <meta name="keywords" content="free trademark search, USPTO trademark search, trademark lookup, trademark registration, file a trademark, brand name search" />
-        <meta property="og:title" content="MarkItNow.ai — Don't File Blind. Search Free." />
+        <meta property="og:title" content="MarkItNow.ai - Don't File Blind. Search Free." />
         <meta property="og:description" content="Search 4M+ USPTO trademarks free. Instant results, no account required." />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MarkItNow.ai" />
@@ -77,12 +77,12 @@ export default function Home() {
           <div style={{ display: "inline-block", background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 20, padding: "6px 16px", fontSize: 11, fontWeight: 700, color: "#b8860b", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 32 }}>
             Free Search. No Account. Results in Seconds.
           </div>
-          <h1 style={{ fontSize: "clamp(34px, 6vw, 60px)", fontWeight: 900, color: "#111", lineHeight: 1.05, marginBottom: 20, letterSpacing: -2 }}>
-            Don't file blind.<br />
-            <span style={{ color: "#c9a84c" }}>Search free before you build.</span>
+          <h1 style={{ fontSize: "clamp(36px, 6vw, 62px)", fontWeight: 900, color: "#111", lineHeight: 1.05, marginBottom: 20, letterSpacing: -2 }}>
+            Trademark Search.<br />
+            <span style={{ color: "#c9a84c" }}>Actually Free.</span>
           </h1>
           <p style={{ fontSize: 17, color: "#666", marginBottom: 44, lineHeight: 1.7, maxWidth: 480, margin: "0 auto 44px" }}>
-            A conflicting mark in the USPTO database could block your application, force a rebrand, or cost you everything you've built. Search takes 10 seconds. Finding out too late costs far more.
+            Search 4M+ USPTO trademarks instantly. No account. No credit card. Know what you're up against before you build, file, or spend a dollar.
           </p>
 
           <form onSubmit={handleSearch} className="search-form" style={{ display: "flex", gap: 10, maxWidth: 560, margin: "0 auto", background: "#fff", border: "1px solid #e0e0e0", borderRadius: 14, padding: 8, boxShadow: "0 4px 24px rgba(0,0,0,0.07)" }}>
@@ -99,7 +99,7 @@ export default function Home() {
           <div style={{ marginTop: 14, fontSize: 13, color: "#bbb" }}>No account required. Results in seconds.</div>
         </div>
 
-        {/* Ambiguity aversion — insurance math */}
+        {/* Ambiguity aversion - insurance math */}
         <div style={{ maxWidth: 800, margin: "0 auto 64px", padding: "0 24px" }}>
           <div className="insurance-grid" style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
             <div style={{ padding: "32px 28px", borderRight: "1px solid #f0f0f0" }}>
@@ -115,18 +115,18 @@ export default function Home() {
           </div>
         </div>
 
-        {/* What happens next — Completion Effect progress steps */}
+        {/* What happens next - Completion Effect progress steps */}
         <div style={{ maxWidth: 1000, margin: "0 auto 80px", padding: "0 24px" }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "#aaa", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 8 }}>Your path to a protected brand</div>
             <h2 style={{ fontSize: "clamp(18px, 3vw, 24px)", fontWeight: 900, color: "#111", margin: 0, letterSpacing: -0.5 }}>Three steps. Most people stop at one.</h2>
           </div>
 
-          {/* Progress steps — open loop psychology */}
+          {/* Progress steps - open loop psychology */}
           <div style={{ display: "flex", gap: 0, marginBottom: 24, maxWidth: 700, margin: "0 auto 24px", position: "relative" }}>
             {[
-              { step: "1", label: "Search", sub: "Free — takes 10 seconds", done: false, active: true },
-              { step: "2", label: "Analyze", sub: "AI conflict report — $99", done: false, active: false },
+              { step: "1", label: "Search", sub: "Free - takes 10 seconds", done: false, active: true },
+              { step: "2", label: "Analyze", sub: "AI conflict report - $99", done: false, active: false },
               { step: "3", label: "File & Protect", sub: "From $79/month", done: false, active: false },
             ].map((s, i) => (
               <div key={s.step} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
@@ -142,9 +142,9 @@ export default function Home() {
 
           <div className="cards-grid" style={{ marginTop: 32 }}>
             {[
-              { step: "01", title: "Search free — don't file blind", desc: "See every active and dead mark, owner info, filing dates, and class coverage. Know your risk before you spend anything.", tag: "Free", cta: "Search Now →", action: () => router.push("/"), loss: false },
+              { step: "01", title: "Search free - don't file blind", desc: "See every active and dead mark, owner info, filing dates, and class coverage. Know your risk before you spend anything.", tag: "Free", cta: "Search Now →", action: () => router.push("/"), loss: false },
               { step: "02", title: "Don't guess. Get the AI analysis.", desc: "Risk score, DuPont factor breakdown, class-by-class conflict analysis. The $99 report has stopped clients from spending $50,000 in disputes.", tag: "$99", cta: "Get the Report →", action: () => router.push("/file"), loss: true },
-              { step: "03", title: "File with an attorney — not alone.", desc: "U.S. Licensed Attorney prepares and files your TEAS Plus application. Most DIY filers get an Office Action. Most attorney-filed applications do not.", tag: "$399", cta: "File With an Attorney →", action: () => router.push("/file"), loss: false },
+              { step: "03", title: "File with an attorney - not alone.", desc: "U.S. Licensed Attorney prepares and files your TEAS Plus application. Most DIY filers get an Office Action. Most attorney-filed applications do not.", tag: "$399", cta: "File With an Attorney →", action: () => router.push("/file"), loss: false },
             ].map(card => (
               <div key={card.title} onClick={card.action} style={{ background: card.loss ? "#fffdf5" : "#fff", border: card.loss ? "1.5px solid #c9a84c" : "1px solid #e8e8e8", borderRadius: 16, padding: "28px", boxShadow: card.loss ? "0 4px 16px rgba(201,168,76,0.1)" : "0 2px 8px rgba(0,0,0,0.04)", cursor: "pointer", display: "flex", flexDirection: "column", gap: 10, position: "relative" }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#c9a84c"; }}
