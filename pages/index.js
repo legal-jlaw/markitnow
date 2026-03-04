@@ -83,6 +83,65 @@ export default function Home() {
           ))}
         </div>
 
+        {/* Testimonials */}
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 24px 80px" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, justifyContent: "center", marginBottom: 16 }}>
+              <div style={{ width: 4, height: 22, background: "#c9a84c", borderRadius: 2 }} />
+              <h2 style={{ fontSize: 28, fontWeight: 900, color: "#111", margin: 0, letterSpacing: -0.5 }}>Trusted by founders, artists & brands</h2>
+              <div style={{ width: 4, height: 22, background: "#c9a84c", borderRadius: 2 }} />
+            </div>
+            <p style={{ fontSize: 15, color: "#777", margin: 0 }}>Real people protecting real brands.</p>
+          </div>
+
+          {/* Row 1 */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16, marginBottom: 16 }}>
+            {[
+              { quote: "Our lead investor flagged trademark risk in due diligence. MarkItNow had a full conflict analysis in my inbox within minutes. We closed the round with our IP locked down.", name: "Marcus T.", title: "Co-Founder, Series A SaaS", seed: "marcus", gender: "male" },
+              { quote: "I've been building my artist name for three years. Didn't realize someone had a similar mark until MarkItNow flagged it. Saved me from a serious rebrand down the road.", name: "DJ Korvell", title: "Electronic Music Producer", seed: "korvell", gender: "male" },
+              { quote: "We run three festivals a year. MarkItNow monitors all our marks and files our renewals automatically. One less thing to think about.", name: "Devon Clarke", title: "Festival Director, City of Gods", seed: "devon", gender: "male" },
+            ].map(t => (
+              <div key={t.name} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: 28, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
+                  <img src={`https://randomuser.me/api/portraits/${t.gender === "female" ? "women" : "men"}/${Math.abs(t.seed.charCodeAt(0) + t.seed.charCodeAt(1)) % 70 + 1}.jpg`} alt={t.name} style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", border: "2px solid #f0d080" }} />
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>{t.name}</div>
+                    <div style={{ fontSize: 12, color: "#aaa", marginTop: 2 }}>{t.title}</div>
+                  </div>
+                </div>
+                <p style={{ fontSize: 14, color: "#555", lineHeight: 1.8, margin: 0, fontStyle: "italic" }}>"{t.quote}"</p>
+                <div style={{ display: "flex", gap: 2, marginTop: 16 }}>
+                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: "#c9a84c", fontSize: 14 }}>★</span>)}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Row 2 */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
+            {[
+              { quote: "I thought trademarks were only for big companies. MarkItNow made it simple and affordable. My bakery brand is protected and I didn't need a law firm.", name: "Sandra M.", title: "Owner, Sweet Proof Bakery", seed: "sandra", gender: "female" },
+              { quote: "I build companies and sell them. A registered trademark adds real value at exit. MarkItNow is the fastest and cheapest way I've found to get it done.", name: "Chris B.", title: "4x Founder", seed: "chris", gender: "male" },
+              { quote: "We were about to pitch at Demo Day when our attorney said we needed a trademark opinion. MarkItNow gave us a DuPont analysis for $99 that satisfied our investors.", name: "Priya S.", title: "Founder, HealthTech Startup", seed: "priya", gender: "female" },
+            ].map(t => (
+              <div key={t.name} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: 28, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
+                  <img src={`https://randomuser.me/api/portraits/${t.gender === "female" ? "women" : "men"}/${Math.abs(t.seed.charCodeAt(0) + t.seed.charCodeAt(1)) % 70 + 1}.jpg`} alt={t.name} style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", border: "2px solid #f0d080" }} />
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>{t.name}</div>
+                    <div style={{ fontSize: 12, color: "#aaa", marginTop: 2 }}>{t.title}</div>
+                  </div>
+                </div>
+                <p style={{ fontSize: 14, color: "#555", lineHeight: 1.8, margin: 0, fontStyle: "italic" }}>"{t.quote}"</p>
+                <div style={{ display: "flex", gap: 2, marginTop: 16 }}>
+                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: "#c9a84c", fontSize: 14 }}>★</span>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
         {/* Footer */}
         <div style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111" }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
