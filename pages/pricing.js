@@ -14,7 +14,7 @@ const SERVICES = [
   {
     category: "Filing Services",
     items: [
-      { name: "Attorney-Filed Application", ourFee: "$399", usptoFee: "$350/class", totalNote: "Total: $749+ per class", description: "Full trademark application filed by a U.S.-licensed DC attorney.", features: ["Licensed DC attorney files", "Specimen review included", "Class strategy consultation", "USPTO fee: $350/class"], cta: "Start Filing", ctaAction: "file", highlight: true, badge: "$100 less than Trademarkia" },
+      { name: "Attorney-Filed Application", ourFee: "$399", usptoFee: "$350/class", totalNote: "Total: $749+ per class", description: "Full trademark application filed by a U.S.-U.S. Licensed Attorney.", features: ["U.S. Licensed Attorney files", "Specimen review included", "Class strategy consultation", "USPTO fee: $350/class"], cta: "Start Filing", ctaAction: "file", highlight: true, badge: "$100 less than Trademarkia" },
       { name: "DIY Guided Filing", ourFee: "$69", usptoFee: "$350/class", totalNote: "Total: $419+ per class", description: "AI walks you through every step. You file directly on USPTO.gov.", features: ["Step-by-step wizard", "AI class recommendations", "USPTO-compliant description", "Direct USPTO.gov instructions"], cta: "Start DIY", ctaAction: "diy", highlight: false, badge: null },
       { name: "Statement of Use", ourFee: "$249", usptoFee: "$150/class", totalNote: "Total: $399+ per class", description: "Filed when your intent-to-use application is approved.", features: ["Specimen preparation review", "Attorney-filed SOU", "Use in commerce guidance", "USPTO fee: $150/class"], cta: "File SOU", ctaAction: "contact", highlight: false, badge: null },
       { name: "Trademark Revival", ourFee: "$349", usptoFee: "Varies", totalNote: "USPTO fee varies", description: "Revive an abandoned trademark application. Time-sensitive.", features: ["Petition to revive drafted", "Attorney-filed", "Urgency analysis", "USPTO fees extra"], cta: "Revive Now", ctaAction: "contact", highlight: false, badge: "Time Sensitive" },
@@ -32,8 +32,8 @@ const SERVICES = [
 
 const FAQS = [
   { q: "What are USPTO filing fees?", a: "USPTO fees are government fees paid directly to the U.S. Patent and Trademark Office — separate from our service fee. The base application fee is $350/class (as of January 2025). Statement of Use is $150/class. Renewals (Section 8 & 9) are $325/class. We always show you the total before you pay." },
-  { q: "Who is the attorney?", a: "All filings are handled by a U.S.-licensed attorney in the District of Columbia with experience in trademark prosecution and entertainment industry clients." },
-  { q: "What's the difference between DIY and Attorney Filing?", a: "With DIY ($69), our AI guides you through every step and you file directly on USPTO.gov yourself. With Attorney Filing ($399), our licensed DC attorney handles everything from start to finish, signs the application, and manages the relationship with the USPTO." },
+  { q: "Who is the attorney?", a: "All filings are handled by a U.S. Licensed Attorney in the District of Columbia with experience in trademark prosecution and entertainment industry clients." },
+  { q: "What's the difference between DIY and Attorney Filing?", a: "With DIY ($69), our AI guides you through every step and you file directly on USPTO.gov yourself. With Attorney Filing ($399), our U.S. Licensed Attorney handles everything from start to finish, signs the application, and manages the relationship with the USPTO." },
   { q: "What if I get an Office Action?", a: "Office Action responses are quoted per case starting at $499. Contact us after receiving your OA and we'll give you a quote within 24 hours." },
   { q: "What's the difference between the $99 report and the $149 memo?", a: "The $99 AI Report is a consumer-friendly risk analysis with a confidence score and plain-English explanation. The $149 Attorney Memo is a formal legal document covering all 13 DuPont factors, suitable for business decisions or sharing with investors." },
 ];
@@ -184,7 +184,7 @@ export default function Pricing() {
         {/* Footer */}
         <div style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111" }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
-          <div style={{ fontSize: 13, color: "#aaa" }}>© 2026 Aggressive Counsel PLLC. Not legal advice until retained.</div>
+          <div style={{ fontSize: 13, color: "#aaa" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</div>
         </div>
       </div>
     </>

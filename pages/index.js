@@ -30,7 +30,7 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
             {["How It Works", "Pricing", "For Attorneys"].map(item => (
-              <span key={item} onClick={() => item === "Pricing" ? router.push("/pricing") : null} style={{ color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer" }}>{item}</span>
+              <span key={item} onClick={() => item === "Pricing" ? router.push("/pricing") : item === "How It Works" ? router.push("/how-it-works") : item === "For Attorneys" ? router.push("/for-attorneys") : null} style={{ color: "#555", fontSize: 14, fontWeight: 500, cursor: "pointer" }}>{item}</span>
             ))}
             <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
               File Now
@@ -48,7 +48,7 @@ export default function Home() {
             <span style={{ color: "#c9a84c" }}>Actually Free.</span>
           </h1>
           <p style={{ fontSize: 18, color: "#666", marginBottom: 48, lineHeight: 1.7, maxWidth: 520, margin: "0 auto 48px" }}>
-            Search the live USPTO database free. Get a full AI analysis report for $99. File with a U.S.-licensed attorney for $399.
+            Search the live USPTO database free. Get a full AI analysis report for $99. File with a U.S. Licensed Attorney for $399.
           </p>
 
           <form onSubmit={handleSearch} style={{ display: "flex", gap: 12, maxWidth: 580, margin: "0 auto", background: "#fff", border: "1px solid #e0e0e0", borderRadius: 12, padding: 8, boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
@@ -70,7 +70,7 @@ export default function Home() {
           {[
             { icon: "🔍", title: "Free USPTO Search", desc: "Live database of 4M+ marks. See active conflicts, dead marks, and owner info instantly.", tag: "Free" },
             { icon: "🤖", title: "AI Analysis Report", desc: "Risk score, DuPont factor breakdown, and class-by-class conflict analysis.", tag: "$99" },
-            { icon: "⚖️", title: "Attorney Filing", desc: "Licensed DC attorney files your TEAS application. $100 less than Trademarkia.", tag: "$399 + USPTO fees" },
+            { icon: "⚖️", title: "Attorney Filing", desc: "U.S. Licensed Attorney files your TEAS application. Attorney-reviewed from start to finish.", tag: "$399 + USPTO fees" },
           ].map(card => (
             <div key={card.title} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, padding: 32, boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
               <div style={{ fontSize: 28, marginBottom: 16 }}>{card.icon}</div>
@@ -83,21 +83,10 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Compare bar */}
-        <div style={{ background: "#111", padding: "48px 24px", textAlign: "center" }}>
-          <div style={{ maxWidth: 700, margin: "0 auto" }}>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>Trademarkia charges $499 for attorney filing.</p>
-            <p style={{ fontSize: 28, fontWeight: 900, color: "#fff" }}>We charge <span style={{ color: "#c9a84c" }}>$399</span>. Same service. Licensed attorney. Lower price.</p>
-            <button onClick={() => router.push("/pricing")} style={{ marginTop: 24, background: "#c9a84c", color: "#111", border: "none", borderRadius: 10, padding: "14px 32px", fontWeight: 800, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>
-              See All Pricing →
-            </button>
-          </div>
-        </div>
-
         {/* Footer */}
         <div style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111" }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
-          <div style={{ fontSize: 13, color: "#aaa" }}>© 2026 Aggressive Counsel PLLC. Not legal advice until retained.</div>
+          <div style={{ fontSize: 13, color: "#aaa" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</div>
         </div>
       </div>
     </>
