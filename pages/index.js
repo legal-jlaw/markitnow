@@ -79,8 +79,8 @@ export default function Home() {
             Free Search. No Account. Results in Seconds.
           </div>
           <h1 style={{ fontSize: "clamp(36px, 6vw, 62px)", fontWeight: 900, color: "#111", lineHeight: 1.05, marginBottom: 20, letterSpacing: -2 }}>
-            Trademark Search.<br />
-            <span style={{ color: "#c9a84c" }}>Actually Free.</span>
+            Trademark Search<br />
+            <span style={{ color: "#c9a84c" }}>Actually Free</span>
           </h1>
           <p style={{ fontSize: 17, color: "#666", marginBottom: 44, lineHeight: 1.7, maxWidth: 480, margin: "0 auto 44px" }}>
             Search 4M+ USPTO trademarks instantly. No account. No credit card. Know what you're up against before you build, file, or spend a dollar.
