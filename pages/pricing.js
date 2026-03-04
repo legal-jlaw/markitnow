@@ -186,27 +186,27 @@ export default function Pricing() {
             {
               category: "Search & Analysis",
               items: [
-                { name: "USPTO Trademark Search", desc: "Live search of 4M+ active and dead marks.", our: "Free", uspto: null },
-                { name: "AI Analysis Report", desc: "DuPont breakdown, risk score, class-by-class conflicts. PDF delivered instantly.", our: "$99", uspto: null },
-                { name: "Attorney Legal Memo", desc: "Full written legal opinion from a U.S. Licensed Attorney.", our: "$149", uspto: null },
+                { name: "USPTO Trademark Search", desc: "Live search of 4M+ active and dead marks.", our: "Free", uspto: null, path: "/" },
+                { name: "AI Analysis Report", desc: "DuPont breakdown, risk score, class-by-class conflicts. PDF delivered instantly.", our: "$99", uspto: null, path: "/file" },
+                { name: "Attorney Legal Memo", desc: "Full written legal opinion from a U.S. Licensed Attorney.", our: "$149", uspto: null, path: "/file" },
               ],
             },
             {
               category: "Filing Services",
               items: [
-                { name: "DIY Guided Filing", desc: "Step-by-step AI-guided TEAS application.", our: "$69", uspto: "$350/class" },
-                { name: "Attorney-Filed Application", desc: "U.S. Licensed Attorney prepares and files your TEAS Plus application.", our: "$399", uspto: "$350/class" },
-                { name: "Statement of Use", desc: "File after your Intent-to-Use mark goes live in commerce.", our: "$249", uspto: "$150/class" },
-                { name: "Trademark Revival", desc: "Petition to revive an abandoned application.", our: "$349", uspto: "$150" },
+                { name: "DIY Guided Filing", desc: "Step-by-step AI-guided TEAS application.", our: "$69", uspto: "$350/class", path: "/diy" },
+                { name: "Attorney-Filed Application", desc: "U.S. Licensed Attorney prepares and files your TEAS Plus application.", our: "$399", uspto: "$350/class", path: "/file" },
+                { name: "Statement of Use", desc: "File after your Intent-to-Use mark goes live in commerce.", our: "$249", uspto: "$150/class", path: "/file" },
+                { name: "Trademark Revival", desc: "Petition to revive an abandoned application.", our: "$349", uspto: "$150", path: "/file" },
               ],
             },
             {
               category: "Maintenance & Protection",
               items: [
-                { name: "Office Action Response", desc: "Attorney-drafted response to USPTO refusals.", our: "$499+", uspto: null },
-                { name: "Renewal Filing (Sec. 8 & 9)", desc: "Required between years 5-6 and every 10 years.", our: "$199", uspto: "$325/class" },
-                { name: "Section 15 Incontestability", desc: "Strengthen your rights after 5 years of continuous use.", our: "$149", uspto: "$250/class" },
-                { name: "Portfolio Audit", desc: "Full review of all marks, classes, deadlines, and risk.", our: "$299", uspto: null },
+                { name: "Office Action Response", desc: "Attorney-drafted response to USPTO refusals.", our: "$499+", uspto: null, path: "/file" },
+                { name: "Renewal Filing (Sec. 8 & 9)", desc: "Required between years 5-6 and every 10 years.", our: "$199", uspto: "$325/class", path: "/file" },
+                { name: "Section 15 Incontestability", desc: "Strengthen your rights after 5 years of continuous use.", our: "$149", uspto: "$250/class", path: "/file" },
+                { name: "Portfolio Audit", desc: "Full review of all marks, classes, deadlines, and risk.", our: "$299", uspto: null, path: "/file" },
               ],
             },
           ].map(group => (
@@ -214,7 +214,7 @@ export default function Pricing() {
               <div style={{ fontSize: 11, fontWeight: 700, color: "#bbb", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 14, paddingLeft: 2 }}>{group.category}</div>
               <div className="services-grid">
                 {group.items.map(s => (
-                  <div key={s.name} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
+                  <div key={s.name} onClick={() => router.push(s.path)} onMouseEnter={e => e.currentTarget.style.borderColor = "#c9a84c"} onMouseLeave={e => e.currentTarget.style.borderColor = "#e8e8e8"} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, cursor: "pointer" }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 3 }}>{s.name}</div>
                       <div style={{ fontSize: 12, color: "#999", lineHeight: 1.5 }}>{s.desc}</div>
