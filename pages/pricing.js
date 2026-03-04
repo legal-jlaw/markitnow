@@ -18,16 +18,13 @@ export default function Pricing() {
 
       <style>{`
         * { box-sizing: border-box; }
-        .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         @media (max-width: 900px) {
-          .plans-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
           .services-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 600px) {
           .page-hero { padding: 48px 20px 40px !important; }
           .content-wrap { padding: 0 16px !important; }
-          .plan-card { padding: 28px 20px !important; }
           .footer { flex-direction: column !important; gap: 10px !important; padding: 24px 16px !important; text-align: center !important; }
         }
       `}</style>
@@ -55,123 +52,21 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* Section 1 — Protection Plans */}
-        <div className="content-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 24px 0" }}>
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
-              <div style={{ width: 4, height: 24, background: "#c9a84c", borderRadius: 2, flexShrink: 0 }} />
-              <h2 style={{ fontSize: 20, fontWeight: 900, color: "#111", margin: 0 }}>Brand Protection Plans</h2>
-              <div style={{ background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 20, padding: "3px 12px", fontSize: 10, fontWeight: 700, color: "#b8860b", letterSpacing: 1, textTransform: "uppercase", whiteSpace: "nowrap" }}>RECURRING</div>
+        {/* Protection Plans Callout */}
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 0" }}>
+          <div style={{ background: "#111", borderRadius: 16, padding: "32px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#c9a84c", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 8 }}>Brand Protection Plans — from $49/month</div>
+              <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", marginBottom: 8, letterSpacing: -0.5 }}>Looking for ongoing protection?</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6, maxWidth: 480 }}>24/7 AI monitoring, renewal alerts, attorney reviews, and more. All plans include a free $99 AI Analysis Report on signup.</div>
             </div>
-            <p style={{ fontSize: 13, color: "#999", margin: "0 0 0 16px" }}>Ongoing monitoring, alerts, and attorney access. All plans include a free $99 AI Analysis Report on signup.</p>
-          </div>
-
-          <div className="plans-grid">
-            {[
-              {
-                name: "Monitor",
-                tagline: "Stay aware",
-                price: "$49",
-                period: "/month",
-                annual: "$399/yr — save $189",
-                highlight: false,
-                badge: null,
-                features: [
-                  "24/7 AI conflict monitoring",
-                  "Renewal & deadline alerts",
-                  "Instant alerts when similar marks are filed",
-                  "Monthly brand health summary",
-                ],
-                cta: "Start Monitoring",
-              },
-              {
-                name: "Protect",
-                tagline: "Stay defended",
-                price: "$99",
-                period: "/month",
-                annual: "$799/yr — save $389",
-                highlight: true,
-                badge: "Most Popular",
-                features: [
-                  "Everything in Monitor",
-                  "Quarterly attorney review of AI-flagged conflicts",
-                  "Written attorney assessment each quarter",
-                  "1 Office Action response/year included",
-                  "Priority attorney email access",
-                ],
-                cta: "Start Protecting",
-              },
-              {
-                name: "Shield",
-                tagline: "Stay untouchable",
-                price: "$249",
-                period: "/month",
-                annual: "$1,999/yr — save $989",
-                highlight: false,
-                badge: "Enterprise",
-                features: [
-                  "Everything in Protect",
-                  "Unlimited attorney reviews — no waiting",
-                  "C&D letter drafting when conflicts arise",
-                  "Dedicated attorney on file",
-                  "Portfolio-wide mark coverage",
-                ],
-                cta: "Get Full Shield",
-              },
-            ].map(plan => (
-              <div key={plan.name} className="plan-card" style={{
-                background: plan.highlight ? "#fffdf5" : "#fff",
-                border: plan.highlight ? "2px solid #c9a84c" : "1px solid #e8e8e8",
-                borderRadius: 18, padding: "32px 28px",
-                display: "flex", flexDirection: "column",
-                boxShadow: plan.highlight ? "0 8px 32px rgba(201,168,76,0.12)" : "0 2px 8px rgba(0,0,0,0.04)",
-                position: "relative",
-              }}>
-                {plan.badge && (
-                  <div style={{ position: "absolute", top: -12, left: 24, background: plan.highlight ? "#c9a84c" : "#111", color: plan.highlight ? "#111" : "#fff", fontSize: 10, fontWeight: 800, padding: "4px 12px", borderRadius: 20, letterSpacing: 1, textTransform: "uppercase" }}>{plan.badge}</div>
-                )}
-                <div style={{ marginBottom: 16 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#aaa", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 2 }}>{plan.name}</div>
-                  <div style={{ fontSize: 13, color: "#888", marginBottom: 10 }}>{plan.tagline}</div>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 3 }}>
-                    <span style={{ fontSize: 40, fontWeight: 900, color: "#111", lineHeight: 1 }}>{plan.price}</span>
-                    <span style={{ fontSize: 13, color: "#aaa" }}>{plan.period} per mark</span>
-                  </div>
-                  <div style={{ fontSize: 12, color: "#c9a84c", fontWeight: 600 }}>{plan.annual}</div>
-                </div>
-
-                <div style={{ background: "#f0fff4", border: "1px solid #9ae6b4", borderRadius: 8, padding: "9px 12px", marginBottom: 20, fontSize: 12, color: "#276749", fontWeight: 600 }}>
-                  🎁 Free $99 AI Report on signup
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1, marginBottom: 24 }}>
-                  {plan.features.map(f => (
-                    <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: 13, color: "#444", lineHeight: 1.5 }}>
-                      <span style={{ color: "#c9a84c", fontWeight: 900, fontSize: 14, flexShrink: 0, lineHeight: 1.5 }}>✓</span>
-                      {f}
-                    </div>
-                  ))}
-                </div>
-
-                <button onClick={() => router.push("/protect")} style={{
-                  background: plan.highlight ? "#c9a84c" : "#111",
-                  color: plan.highlight ? "#111" : "#fff",
-                  border: "none", borderRadius: 10, padding: "13px 0",
-                  fontWeight: 800, fontSize: 14, cursor: "pointer",
-                  fontFamily: "Poppins, sans-serif", width: "100%",
-                }}>{plan.cta} →</button>
-                <div style={{ textAlign: "center", fontSize: 11, color: "#ccc", marginTop: 8 }}>Cancel anytime</div>
-              </div>
-            ))}
+            <button onClick={() => router.push("/protect")} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 12, padding: "14px 32px", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Poppins, sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>
+              See Protection Plans →
+            </button>
           </div>
         </div>
 
-        {/* Divider */}
-        <div style={{ maxWidth: 1100, margin: "56px auto 0", padding: "0 24px" }}>
-          <div style={{ borderTop: "1px solid #e0e0e0" }} />
-        </div>
-
-        {/* Section 2 — One-Time Services */}
+                {/* Section 2 — One-Time Services */}
         <div className="content-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 24px 0" }}>
           <div style={{ marginBottom: 32 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
