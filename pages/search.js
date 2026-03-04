@@ -1,3 +1,4 @@
+import ChatWidget from "../components/ChatWidget";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -604,6 +605,7 @@ export default function SearchPage() {
           </div>
         </div>
       </div>
+      <ChatWidget />
     </>
   );
 }

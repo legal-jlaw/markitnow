@@ -1,3 +1,4 @@
+import ChatWidget from "../components/ChatWidget";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -198,6 +199,7 @@ export default function HowItWorks() {
           <div style={{ display: "flex", gap: 24, alignItems: "center" }}><span onClick={() => router.push("/faq")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>FAQ</span><span style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</span></div>
         </div>
       </div>
+      <ChatWidget />
     </>
   );
 }

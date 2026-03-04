@@ -1,3 +1,4 @@
+import ChatWidget from "../components/ChatWidget";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -428,6 +429,7 @@ export default function DIY() {
           </div>
         </div>
       </div>
+      <ChatWidget />
     </>
   );
 }

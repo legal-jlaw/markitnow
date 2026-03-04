@@ -1,3 +1,4 @@
+import ChatWidget from "../components/ChatWidget";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -148,6 +149,7 @@ export default function Home() {
           <div style={{ fontSize: 13, color: "#aaa" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</div>
         </div>
       </div>
+      <ChatWidget />
     </>
   );
 }

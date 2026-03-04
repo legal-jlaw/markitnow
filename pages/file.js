@@ -1,3 +1,4 @@
+import ChatWidget from "../components/ChatWidget";
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -444,6 +445,7 @@ BASIS: ${form.basis === "1a" ? "Section 1(a) Use in Commerce" : form.basis === "
           </div>
         </div>
       </div>
+      <ChatWidget />
     </>
   );
 }
