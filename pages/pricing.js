@@ -30,19 +30,11 @@ const SERVICES = [
   },
 ];
 
-const FAQS = [
-  { q: "What are USPTO filing fees?", a: "USPTO fees are government fees paid directly to the U.S. Patent and Trademark Office — separate from our service fee. The base application fee is $350/class (as of January 2025). Statement of Use is $150/class. Renewals (Section 8 & 9) are $325/class. We always show you the total before you pay." },
-  { q: "Who is the attorney?", a: "All filings are handled by a U.S. Licensed Attorney in the District of Columbia with experience in trademark prosecution and entertainment industry clients." },
-  { q: "What's the difference between DIY and Attorney Filing?", a: "With DIY ($69), our AI guides you through every step and you file directly on USPTO.gov yourself. With Attorney Filing ($399), our U.S. Licensed Attorney handles everything from start to finish, signs the application, and manages the relationship with the USPTO." },
-  { q: "What if I get an Office Action?", a: "Office Action responses are quoted per case starting at $499. Contact us after receiving your OA and we'll give you a quote within 24 hours." },
-  { q: "What's the difference between the $99 report and the $149 memo?", a: "The $99 AI Report is a consumer-friendly risk analysis with a confidence score and plain-English explanation. The $149 Attorney Memo is a formal legal document covering all 13 DuPont factors, suitable for business decisions or sharing with investors." },
-];
 
 export default function Pricing() {
   const router = useRouter();
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [openFaq, setOpenFaq] = useState(null);
-
+  
   function handleCTA(action) {
     if (action === "search") router.push("/");
     else if (action === "file") router.push("/file");
@@ -65,7 +57,7 @@ export default function Pricing() {
             MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span>
           </div>
           <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-            {["How It Works", "Pricing", "For Attorneys"].map(item => (
+            {["How It Works", "Pricing"].map(item => (
               <span key={item} style={{ color: item === "Pricing" ? "#c9a84c" : "#555", fontSize: 14, fontWeight: item === "Pricing" ? 700 : 500, cursor: "pointer" }}>{item}</span>
             ))}
             <button onClick={() => router.push("/file")} style={{ background: "#111", color: "#fff", border: "none", borderRadius: 8, padding: "9px 20px", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Poppins, sans-serif" }}>File Now</button>
@@ -153,24 +145,6 @@ export default function Pricing() {
             </div>
           </div>
         ))}
-
-        {/* FAQ */}
-        <div style={{ maxWidth: 720, margin: "60px auto 80px", padding: "0 24px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28 }}>
-            <div style={{ width: 4, height: 22, background: "#c9a84c", borderRadius: 2 }} />
-            <h2 style={{ fontSize: 18, fontWeight: 800, color: "#111", margin: 0 }}>FAQ</h2>
-            <div style={{ flex: 1, height: 1, background: "#e8e8e8" }} />
-          </div>
-          {FAQS.map(({ q, a }, i) => (
-            <div key={q} onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 12, padding: "18px 22px", marginBottom: 10, cursor: "pointer" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111", margin: 0 }}>{q}</h3>
-                <span style={{ color: "#c9a84c", fontSize: 18, fontWeight: 300, flexShrink: 0, marginLeft: 16 }}>{openFaq === i ? "−" : "+"}</span>
-              </div>
-              {openFaq === i && <p style={{ fontSize: 13, color: "#777", lineHeight: 1.7, margin: "12px 0 0" }}>{a}</p>}
-            </div>
-          ))}
-        </div>
 
         {/* CTA Banner */}
         <div style={{ background: "#111", padding: "64px 24px", textAlign: "center" }}>
