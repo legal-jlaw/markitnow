@@ -74,7 +74,8 @@ export default function Home() {
         {/* Hero */}
         <div className="hero" style={{ maxWidth: 700, margin: "0 auto", padding: "100px 24px 64px", textAlign: "center" }}>
 
-          <div style={{ display: "inline-block", background: "#fff8e6", border: "1px solid #f0d080", borderRadius: 20, padding: "6px 16px", fontSize: 11, fontWeight: 700, color: "#b8860b", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 32 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #e8e8e8", borderRadius: 20, padding: "6px 16px", fontSize: 12, fontWeight: 600, color: "#555", marginBottom: 32, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#2ecc71", flexShrink: 0 }} />
             Free Search. No Account. Results in Seconds.
           </div>
           <h1 style={{ fontSize: "clamp(36px, 6vw, 62px)", fontWeight: 900, color: "#111", lineHeight: 1.05, marginBottom: 20, letterSpacing: -2 }}>
@@ -99,21 +100,7 @@ export default function Home() {
           <div style={{ marginTop: 14, fontSize: 13, color: "#bbb" }}>No account required. Results in seconds.</div>
         </div>
 
-        {/* Ambiguity aversion - insurance math */}
-        <div style={{ maxWidth: 800, margin: "0 auto 64px", padding: "0 24px" }}>
-          <div className="insurance-grid" style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-            <div style={{ padding: "32px 28px", borderRight: "1px solid #f0f0f0" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#c0392b", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12 }}>The cost of doing nothing</div>
-              <div style={{ fontSize: 36, fontWeight: 900, color: "#c0392b", marginBottom: 6 }}>$50,000+</div>
-              <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>Average cost of a trademark dispute. That's before appeals, rebrand costs, or lost revenue while your application is blocked.</div>
-            </div>
-            <div style={{ padding: "32px 28px" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#2d7a4f", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12 }}>The cost of knowing now</div>
-              <div style={{ fontSize: 36, fontWeight: 900, color: "#2d7a4f", marginBottom: 6 }}>$0</div>
-              <div style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>Full USPTO database search. No account. No credit card. Know exactly what you're up against before you build, file, or spend another dollar.</div>
-            </div>
-          </div>
-        </div>
+
 
         {/* What happens next - Completion Effect progress steps */}
         <div style={{ maxWidth: 1000, margin: "0 auto 80px", padding: "0 24px" }}>
