@@ -120,24 +120,47 @@ export default function HowItWorks() {
 
         {/* Cost Summary */}
         <div style={{ maxWidth: 860, margin: "0 auto 64px", padding: "0 24px" }}>
-          <div style={{ background: "#111", borderRadius: 20, padding: "40px 48px" }}>
-            <h2 style={{ fontSize: 24, fontWeight: 900, color: "#fff", marginBottom: 8, letterSpacing: -0.5 }}>Total cost breakdown</h2>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, marginBottom: 28 }}>Our fees + USPTO government fees — always shown separately</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
-              {[
-                { label: "Search", our: "Free", uspto: "—" },
-                { label: "AI Report", our: "$99", uspto: "—" },
-                { label: "DIY Filing", our: "$69", uspto: "$350/class" },
-                { label: "Attorney Filing", our: "$399", uspto: "$350/class" },
-                { label: "Statement of Use", our: "$249", uspto: "$150/class" },
-                { label: "Renewal", our: "$199", uspto: "$325/class" },
-              ].map(item => (
-                <div key={item.label} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "16px 18px" }}>
-                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginBottom: 8, fontWeight: 600 }}>{item.label}</div>
-                  <div style={{ fontSize: 20, fontWeight: 900, color: "#c9a84c", marginBottom: 4 }}>{item.our}</div>
-                  {item.uspto !== "—" && <div style={{ fontSize: 12, color: "rgba(255,255,255,0.35)" }}>+ {item.uspto} USPTO</div>}
+          <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <div style={{ padding: "28px 32px 20px", borderBottom: "1px solid #f0f0f0" }}>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#111", margin: "0 0 6px" }}>Total cost breakdown</h2>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#b8860b" }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#c9a84c" }} /> Our service fee
                 </div>
-              ))}
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#999" }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ccc" }} /> USPTO government fee
+                </div>
+              </div>
+            </div>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ background: "#fafafa" }}>
+                  <th style={{ padding: "12px 32px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#aaa", letterSpacing: 1, textTransform: "uppercase", borderBottom: "1px solid #f0f0f0" }}>Service</th>
+                  <th style={{ padding: "12px 16px", textAlign: "right", fontSize: 11, fontWeight: 700, color: "#b8860b", letterSpacing: 1, textTransform: "uppercase", borderBottom: "1px solid #f0f0f0" }}>Our Fee</th>
+                  <th style={{ padding: "12px 32px 12px 16px", textAlign: "right", fontSize: 11, fontWeight: 700, color: "#aaa", letterSpacing: 1, textTransform: "uppercase", borderBottom: "1px solid #f0f0f0" }}>USPTO Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { label: "Trademark Search", our: "Free", uspto: "—" },
+                  { label: "AI Analysis Report", our: "$99", uspto: "—" },
+                  { label: "Attorney Memo", our: "$149", uspto: "—" },
+                  { label: "DIY Guided Filing", our: "$69", uspto: "$350/class" },
+                  { label: "Attorney Filing", our: "$399", uspto: "$350/class" },
+                  { label: "Statement of Use", our: "$249", uspto: "$150/class" },
+                  { label: "Renewal (Sec. 8 & 9)", our: "$199", uspto: "$325/class" },
+                  { label: "Office Action Response", our: "$499+", uspto: "—" },
+                ].map((item, i, arr) => (
+                  <tr key={item.label} style={{ borderBottom: i < arr.length - 1 ? "1px solid #f4f4f4" : "none" }}>
+                    <td style={{ padding: "14px 32px", fontSize: 14, color: "#333", fontWeight: 500 }}>{item.label}</td>
+                    <td style={{ padding: "14px 16px", textAlign: "right", fontSize: 15, fontWeight: 800, color: "#c9a84c" }}>{item.our}</td>
+                    <td style={{ padding: "14px 32px 14px 16px", textAlign: "right", fontSize: 13, color: "#aaa", fontWeight: 500 }}>{item.uspto}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ padding: "16px 32px", background: "#fafafa", borderTop: "1px solid #f0f0f0" }}>
+              <span style={{ fontSize: 12, color: "#bbb" }}>USPTO fees are paid directly to the U.S. Patent and Trademark Office and are separate from our service fee.</span>
             </div>
           </div>
         </div>
