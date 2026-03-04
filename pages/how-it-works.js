@@ -22,9 +22,9 @@ const STEPS = [
     num: "03",
     title: "Choose Your Path",
     desc: "Based on your results, decide how to proceed. File yourself with our DIY guide, or have a U.S. Licensed Attorney handle everything for you.",
-    tag: "$69 or $399",
+    tag: "$199 or $399",
     icon: "️",
-    detail: ["DIY guided filing ($69 + USPTO fees)", "Attorney filing ($399 + USPTO fees)", "Attorney memo for investors ($149)", "No pressure move at your pace"],
+    detail: ["DIY guided filing ($199 + USPTO fees)", "Attorney filing ($399 + USPTO fees)", "AI Legal Memo for deeper analysis ($149)", "No pressure - move at your pace"],
   },
   {
     num: "04",
@@ -164,8 +164,8 @@ export default function HowItWorks() {
                 {[
                   { label: "Trademark Search", our: "Free", uspto: "-" },
                   { label: "AI Analysis Report", our: "$99", uspto: "-" },
-                  { label: "Attorney Memo", our: "$149", uspto: "-" },
-                  { label: "DIY Guided Filing", our: "$69", uspto: "$350/class" },
+                  { label: "AI Legal Memo", our: "$149", uspto: "-" },
+                  { label: "DIY Guided Filing", our: "$199", uspto: "$350/class" },
                   { label: "Attorney Filing", our: "$399", uspto: "$350/class" },
                   { label: "Statement of Use", our: "$249", uspto: "$150/class" },
                   { label: "Renewal (Sec. 8 & 9)", our: "$199", uspto: "$325/class" },
@@ -215,7 +215,7 @@ export default function HowItWorks() {
         {/* Footer */}
         <div style={{ background: "#fff", borderTop: "1px solid #e0e0e0", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 900, fontSize: 18, color: "#111" }}>MarkItNow<span style={{ color: "#c9a84c" }}>.ai</span></div>
-          <div style={{ display: "flex", gap: 24, alignItems: "center" }}><span onClick={() => router.push("/faq")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>FAQ</span><span style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</span></div>
+          <div style={{ display: "flex", gap: 24, alignItems: "center" }}><span onClick={() => router.push("/how-it-works")} style={{ fontSize: 13, color: "#aaa", cursor: "pointer", fontWeight: 500 }}>How It Works</span><span style={{ fontSize: 12, color: "#bbb" }}>© 2026 MarkItNow.ai · Search and AI reports are informational only and do not constitute legal advice · Attorney filing services provided by licensed partner law firms</span></div>
         </div>
       </div>
       <ChatWidget />
