@@ -499,6 +499,12 @@ function PurchasePanel({ mark, trademarks, loading }) {
             <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ width: "100%", padding: "10px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
               Generate AI Legal Memo — $149 →
             </button>
+            <div style={{ borderTop: "1px solid #333", margin: "14px 0" }} />
+            <div style={{ fontWeight: 800, fontSize: 13, color: "#fff", marginBottom: 3 }}>Ready to file?</div>
+            <div style={{ fontSize: 11, color: "#999", marginBottom: 12, lineHeight: 1.6 }}>U.S. Licensed Attorney reviews your search results and files TEAS Plus. $399 flat — $100 less than Trademarkia.</div>
+            <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ display: "block", textAlign: "center", padding: "10px", background: "#fff", color: "#111", borderRadius: 8, fontWeight: 800, fontSize: 12, textDecoration: "none" }}>
+              File With Attorney — $399 →
+            </a>
           </div>
         </div>
       </div>
