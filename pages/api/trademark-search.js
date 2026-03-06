@@ -1,53 +1,61 @@
 // pages/api/trademark-search.js
 // ─────────────────────────────────────────────────────────────────────────────
-// Comprehensive USPTO trademark search proxy.
-// Runs MULTIPLE queries in parallel to get broad results like Trademarkia:
-//   1. Exact match / all statuses
-//   2. First word only (catches "STRANGE BREWERY", "STRANGE WATER WORKS", etc.)
-//   3. Active-only exact match (for risk highlighting)
-// Deduplicates by serial number. Returns normalized items.
+// USPTO trademark search via Marker API (markerapi.com)
+// Free tier: 1,000 searches/month. No quota issues.
+// Returns: mark name, serial, owner, status, filing date, class, goods/services
+//
+// Requires env vars: MARKER_USERNAME, MARKER_PASSWORD
 //
 // GET /api/trademark-search?mark=strange+water
-// GET /api/trademark-search?mark=strange+water&mode=active   (active only)
+// GET /api/trademark-search?mark=nike&_debug=1
 // ─────────────────────────────────────────────────────────────────────────────
 
-const RAPIDAPI_HOST = "uspto-trademark.p.rapidapi.com";
+const MARKER_BASE = "https://markerapi.com/api/v2/trademarks";
 
-function rapidHeaders(apiKey) {
-  return {
-    "x-rapidapi-key": apiKey,
-    "x-rapidapi-host": RAPIDAPI_HOST,
-  };
+function resolveStatus(item) {
+  const code = String(item.statuscode || "");
+  const desc = (item.statusdescription || "").toLowerCase();
+  const s = (item.status || "").toLowerCase();
+
+  if (s.includes("registered") || code === "1" || desc.includes("registered")) return "Live/Registered";
+  if (s.includes("pending") || code === "3" || desc.includes("pending"))       return "Live/Pending";
+  if (s.includes("abandon") || desc.includes("abandon"))                        return "Dead/Abandoned";
+  if (s.includes("cancel") || desc.includes("cancel"))                          return "Dead/Cancelled";
+  if (s.includes("expir") || desc.includes("expir"))                            return "Dead/Expired";
+  if (s.includes("dead") || code === "2")                                       return "Dead/Abandoned";
+  if (s.includes("live"))                                                        return "Live/Registered";
+  return item.status || "Unknown";
 }
 
 function normalizeItem(t) {
-  // Log raw fields on first call to debug
-  if (!normalizeItem._logged) { console.log('[USPTO raw fields]', JSON.stringify(Object.keys(t))); normalizeItem._logged = true; }
+  const statusLabel = resolveStatus(t);
+  const isActive = statusLabel.toLowerCase().startsWith("live");
   return {
-    markName: t.keyword || t.mark_identification || "",
-    serialNumber: t.serial_number || "",
-    owner: t.owners?.[0]?.name || "Unknown",
-    status: t.status_label || t.status || "",
-    filingDate: t.filing_date || "",
-    registrationDate: t.registration_date || "",
-    classCode: Array.isArray(t.class_codes)
-      ? t.class_codes.join(", ")
-      : t.class_codes || "",
-    description: t.description_set?.[0]?.description || "",
-    isActive:
-      (t.status_label || "").toLowerCase().includes("live") ||
-      (t.status_label || "").toLowerCase().includes("registered") ||
-      (t.status_label || "").toLowerCase().includes("pending"),
+    markName:         t.trademark || "",
+    serialNumber:     t.serialnumber || "",
+    owner:            t.owner || "Unknown",
+    status:           statusLabel,
+    filingDate:       t.filingdate || "",
+    registrationDate: t.registrationdate || "",
+    classCode:        t.code || "",
+    description:      t.description || "",
+    isActive,
   };
 }
 
-async function queryRapidAPI(keyword, status, apiKey) {
+async function queryMarker(keyword, status, username, password) {
   const encoded = encodeURIComponent(keyword.trim());
-  const url = `https://${RAPIDAPI_HOST}/v1/trademarkSearch/${encoded}/${status}`;
-  const res = await fetch(url, { headers: rapidHeaders(apiKey) });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return (data.items || []).map(normalizeItem);
+  const url = `${MARKER_BASE}/trademark/${encoded}/status/${status}/start/0/username/${username}/password/${password}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) { console.error(`[Marker] HTTP ${res.status}`); return []; }
+    const data = await res.json();
+    if (data.error) { console.error(`[Marker] error: ${data.error}`); return []; }
+    return (data.trademarks || []).map(normalizeItem);
+  } catch (err) {
+    console.error(`[Marker] fetch error: ${err.message}`);
+    return [];
+  }
 }
 
 export default async function handler(req, res) {
@@ -56,71 +64,58 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
 
-  const { mark, mode = "all" } = req.query;
+  const { mark } = req.query;
   if (!mark?.trim()) return res.status(400).json({ error: "mark parameter required" });
 
-  const apiKey = process.env.RAPIDAPI_KEY;
-  if (!apiKey) return res.status(500).json({ error: "RAPIDAPI_KEY not configured" });
+  const username = process.env.MARKER_USERNAME;
+  const password = process.env.MARKER_PASSWORD;
+  if (!username || !password) return res.status(500).json({ error: "MARKER_USERNAME / MARKER_PASSWORD not configured" });
 
   const trimmed = mark.trim();
-  const firstWord = trimmed.split(/\s+/)[0]; // "strange water" → "strange"
+  const firstWord = trimmed.split(/\s+/)[0];
 
-  // Debug mode - returns raw first item to inspect field names
+  // Debug mode
   if (req.query._debug) {
     const encoded = encodeURIComponent(trimmed);
-    const url = `https://${RAPIDAPI_HOST}/v1/trademarkSearch/${encoded}/all`;
-    const r = await fetch(url, { headers: rapidHeaders(apiKey) });
-    const raw = await r.json();
-    return res.status(200).json({ rawFirstItem: raw.items?.[0], rawKeys: Object.keys(raw.items?.[0] || {}), rawTotal: raw.total, rawCount: raw.count, rawError: raw.message || raw.error, rawStatus: r.status });
+    const url = `${MARKER_BASE}/trademark/${encoded}/status/all/start/0/username/${username}/password/${password}`;
+    try {
+      const r = await fetch(url);
+      const raw = await r.json();
+      const first = raw.trademarks?.[0];
+      return res.status(200).json({ rawStatus: r.status, rawCount: raw.count, rawError: raw.error || null, rawFirstItem: first, rawKeys: Object.keys(first || {}) });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
   }
 
   try {
-    // Run parallel queries for broad coverage
-    const queries = [
-      queryRapidAPI(trimmed, "all", apiKey),           // exact full mark, all statuses
-      queryRapidAPI(trimmed, "active", apiKey),        // exact, active only
-      queryRapidAPI(trimmed, "dead", apiKey),          // exact, dead only
-    ];
-
-    // If multi-word, also search first word for broader results
+    const queries = [queryMarker(trimmed, "all", username, password)];
     if (firstWord.length > 2 && firstWord.toLowerCase() !== trimmed.toLowerCase()) {
-      queries.push(queryRapidAPI(firstWord, "active", apiKey));
-      queries.push(queryRapidAPI(firstWord, "dead", apiKey));
+      queries.push(queryMarker(firstWord, "all", username, password));
     }
 
     const results = await Promise.allSettled(queries);
     const allItems = results.flatMap(r => r.status === "fulfilled" ? r.value : []);
 
-    // Deduplicate by serial number, prefer entries with more data
     const seen = new Map();
     for (const item of allItems) {
       const key = item.serialNumber || `${item.markName}__${item.owner}`;
-      if (!seen.has(key)) {
-        seen.set(key, item);
-      }
+      if (!seen.has(key)) seen.set(key, item);
     }
 
     const deduplicated = [...seen.values()];
-
-    // Sort: active marks first, then by filing date descending
     deduplicated.sort((a, b) => {
       if (a.isActive && !b.isActive) return -1;
       if (!a.isActive && b.isActive) return 1;
       return (b.filingDate || "").localeCompare(a.filingDate || "");
     });
 
-    // Stats
     const activeCount = deduplicated.filter(i => i.isActive).length;
     const totalCount = deduplicated.length;
 
-    return res.status(200).json({
-      count: totalCount,
-      activeCount,
-      totalCount,
-      items: deduplicated,
-    });
+    return res.status(200).json({ count: totalCount, activeCount, totalCount, items: deduplicated });
   } catch (err) {
-    console.error("USPTO proxy error:", err);
+    console.error("Trademark search error:", err);
     return res.status(500).json({ error: err.message });
   }
 }
