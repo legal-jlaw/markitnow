@@ -493,9 +493,13 @@ function PurchasePanel({ mark, trademarks, loading }) {
             </>
           )}
 
-          <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ marginTop: 4, width: "100%", padding: "9px", background: "#fffdf7", border: "2px solid #c9a84c", borderRadius: 8, fontWeight: 700, fontSize: 11, color: "#7a5c00" }}>
-            Also generate AI Legal Memo →
-          </button>
+          <div style={{ marginTop: 12, background: "#111", borderRadius: 10, padding: 14, border: "1px solid #333" }}>
+            <div style={{ fontWeight: 800, fontSize: 13, color: "#fff", marginBottom: 3 }}>Want attorney-grade analysis?</div>
+            <div style={{ fontSize: 11, color: "#999", marginBottom: 12, lineHeight: 1.6 }}>Generate a full AI Legal Memo with all 13 DuPont factors scored, conflict risk matrix, prosecution strategy, and case citations — $149</div>
+            <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ width: "100%", padding: "10px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+              Generate AI Legal Memo — $149 →
+            </button>
+          </div>
         </div>
       </div>
     );

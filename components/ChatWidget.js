@@ -246,7 +246,7 @@ export default function ChatWidget() {
     <>
       {/* Tooltip bubble */}
       {!open && messages.length === 0 && (
-        <div style={{ position: "fixed", bottom: 96, right: 28, zIndex: 1001, background: "#fff", border: "1px solid #e0e0e0", borderRadius: 20, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: "#333", fontFamily: "Poppins, sans-serif", boxShadow: "0 2px 12px rgba(0,0,0,0.1)", whiteSpace: "nowrap" }}>
+        <div style={{ position: "fixed", bottom: 96, right: 28, zIndex: 1001, background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 20, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: "#fff", fontFamily: "Poppins, sans-serif", boxShadow: "0 2px 12px rgba(0,0,0,0.2)", whiteSpace: "nowrap" }}>
           Questions? Ask MarkitBot
         </div>
       )}
