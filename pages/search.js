@@ -653,7 +653,7 @@ export default function SearchPage() {
         </div>
 
         {/* Split pane */}
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 35%", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 40%", overflow: "hidden" }}>
 
           {/* LEFT: USPTO results */}
           <div style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRight: "1px solid #d4e0da", background: "#fff" }}>
@@ -721,55 +721,55 @@ export default function SearchPage() {
               {usptoStatus === "done" && filteredMarks.length > 0 && (
                 <>
                   {/* Cards */}
-                  <div style={{ padding: "12px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+                  <div style={{ padding: "8px 10px", display: "flex", flexDirection: "column", gap: 6 }}>
                     {filteredMarks.map((t, i) => {
                       const ss = statusStyle(t.status);
                       return (
-                        <div key={i} style={{ border: "1px solid #e0e8e4", borderRadius: 10, background: "#fff", padding: "14px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
+                        <div key={i} style={{ border: "1px solid #e0e8e4", borderRadius: 8, background: "#fff", padding: "10px 12px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
                           {/* Wordmark header */}
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
                             <div>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 3 }}>Wordmark</div>
-                              <div style={{ fontWeight: 900, fontSize: 16, color: "#111", letterSpacing: 0.5, fontFamily: "Georgia, serif" }}>{t.markName}</div>
+                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Wordmark</div>
+                              <div style={{ fontWeight: 900, fontSize: 14, color: "#111", letterSpacing: 0.5, fontFamily: "Georgia, serif" }}>{t.markName}</div>
                             </div>
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-                              <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                                <div style={{ width: 7, height: 7, borderRadius: "50%", background: ss.dot }} />
-                                <span style={{ fontSize: 10, fontWeight: 800, color: ss.color, background: ss.bg, padding: "2px 8px", borderRadius: 5 }}>{ss.category === "live" ? "Live" : "Dead"} / {ss.label}</span>
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                                <div style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot }} />
+                                <span style={{ fontSize: 9, fontWeight: 800, color: ss.color, background: ss.bg, padding: "1px 6px", borderRadius: 4 }}>{ss.category === "live" ? "Live" : "Dead"} / {ss.label}</span>
                               </div>
-                              {t.registrationDate && <div style={{ fontSize: 9, color: "#aab8b2" }}>Reg. {t.registrationDate}</div>}
+                              {t.registrationDate && <div style={{ fontSize: 8, color: "#aab8b2" }}>Reg. {t.registrationDate}</div>}
                             </div>
                           </div>
 
                           {/* Detail grid */}
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px", fontSize: 11 }}>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5px 12px", fontSize: 10 }}>
                             <div>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Serial</div>
+                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Serial</div>
                               <div style={{ color: "#111", fontWeight: 600 }}>
                                 {t.serialNumber}
                                 {t.serialNumber && (
-                                  <a href={`https://tsdr.uspto.gov/#caseNumber=${t.serialNumber}&caseType=SERIAL_NO&searchType=statusSearch`} target="_blank" rel="noreferrer" style={{ marginLeft: 6, color: "#2d7a4f", fontWeight: 700, fontSize: 10 }}>USPTO ↗</a>
+                                  <a href={`https://tsdr.uspto.gov/#caseNumber=${t.serialNumber}&caseType=SERIAL_NO&searchType=statusSearch`} target="_blank" rel="noreferrer" style={{ marginLeft: 5, color: "#2d7a4f", fontWeight: 700, fontSize: 9 }}>USPTO ↗</a>
                                 )}
                               </div>
                             </div>
                             <div>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Filing Date</div>
+                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Filing Date</div>
                               <div style={{ color: "#111" }}>{t.filingDate || "—"}</div>
                             </div>
                             <div style={{ gridColumn: "1 / -1" }}>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Owner</div>
+                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Owner</div>
                               <div style={{ color: "#111" }}>{t.owner}</div>
                             </div>
                             {t.classCode && (
                               <div>
-                                <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Class</div>
+                                <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Class</div>
                                 <div style={{ color: "#111", fontWeight: 600 }}>{t.classCode}</div>
                               </div>
                             )}
                             {t.description && (
                               <div style={{ gridColumn: "1 / -1" }}>
-                                <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Goods &amp; Services</div>
-                                <div style={{ color: "#4a7060", lineHeight: 1.5 }}>{t.description}</div>
+                                <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Goods &amp; Services</div>
+                                <div style={{ color: "#4a7060", lineHeight: 1.4 }}>{t.description}</div>
                               </div>
                             )}
                           </div>
