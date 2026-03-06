@@ -240,11 +240,11 @@ function PurchasePanel({ mark, trademarks, loading }) {
             />
           </div>
 
-          {/* Client Report card */}
+          {/* AI Analysis Report card */}
           <div style={{ border: "1.5px solid #d4e3d9", borderRadius: 12, padding: 16, marginBottom: 12, background: "#fff" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}> Client Report</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}> AI Analysis Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>Plain English · Risk assessment · Conflict analysis</div>
               </div>
               <div style={{ background: "#f0f7f2", color: "#2d7a4f", fontWeight: 800, fontSize: 11, padding: "3px 8px", borderRadius: 5 }}>Free Preview</div>
@@ -253,7 +253,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
               Summary + pros/cons + conflict breakdown. Full PDF (with DuPont memo) unlocks for $99.
             </div>
             <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
-              Run Client Report →
+              Run AI Analysis Report →
             </button>
           </div>
 
@@ -312,19 +312,19 @@ function PurchasePanel({ mark, trademarks, loading }) {
     );
   }
 
-  //  Client Report result 
+  //  AI Analysis Report result 
   if (activeResult === "report" && report) {
     const sc = report.clientConfidenceScore || 50;
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         {/* Sticky header */}
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}> Client Report</div>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}> AI Analysis Report</div>
           <button onClick={() => { setActiveResult(null); setReport(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#111" }}>← Back</button>
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px" }}>
-          {/* Score card */}
+          {/* Score card - always visible */}
           <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
             <div style={{ flex: 1, background: "#f8faf9", borderRadius: 10, padding: 14 }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Bottom Line</div>
@@ -337,70 +337,102 @@ function PurchasePanel({ mark, trademarks, loading }) {
             </div>
           </div>
 
-          {/* Could work */}
+          {/* First "why it could work" item - always visible */}
           {report.whyItCouldWork?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Why It Could Work</div>
-              {report.whyItCouldWork.map((w, i) => (
-                <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{w.reason}</div>
-                  <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
-                  {w.legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{w.legalHook}</div>}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Risks */}
-          {report.whyItMightNotWork?.length > 0 && (
-            <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Risks</div>
-              {report.whyItMightNotWork.map((w, i) => (
-                <div key={i} style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{w.reason}</div>
-                  <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
-                  {w.legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{w.legalHook}</div>}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Conflicts */}
-          {report.conflictSnapshot?.length > 0 && (
-            <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 8 }}>Key Conflicts</div>
-              {report.conflictSnapshot.map((c, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 8, marginBottom: 5 }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, fontSize: 11 }}>{c.markName}</div>
-                    <div style={{ fontSize: 10, color: "#6b8a78" }}>{c.owner}</div>
-                    <div style={{ fontSize: 10, color: "#4a7060" }}>{c.reason}</div>
-                  </div>
-                  <span style={{ fontSize: 9, fontWeight: 800, padding: "2px 6px", borderRadius: 4, background: `${riskColor(c.risk)}11`, color: riskColor(c.risk), height: "fit-content" }}>{c.risk}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* PDF unlock */}
-          <div style={{ background: "#f4f7f5", borderRadius: 10, padding: 14, border: "1px solid #d0e4d8" }}>
-            {!isPaid ? (
-              <>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}> Full PDF Report</div>
-                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>DuPont analysis + attorney memo + prosecution strategy</div>
-                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
-                  Unlock PDF $99
-                </button>
-              </>
-            ) : (
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}> Report Unlocked</div>
-                <button style={{ padding: "9px 16px", background: "#2d7a4f", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>Download PDF</button>
+              <div style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{report.whyItCouldWork[0].reason}</div>
+                <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{report.whyItCouldWork[0].explanation}</div>
+                {report.whyItCouldWork[0].legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{report.whyItCouldWork[0].legalHook}</div>}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
-          <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ marginTop: 10, width: "100%", padding: "9px", background: "#fffdf7", border: "2px solid #c9a84c", borderRadius: 8, fontWeight: 700, fontSize: 11, color: "#7a5c00" }}>
+          {/* Locked content - blurred behind paywall */}
+          {!isPaid ? (
+            <div style={{ position: "relative", marginBottom: 14 }}>
+              {/* Blurred preview */}
+              <div style={{ filter: "blur(4px)", pointerEvents: "none", userSelect: "none", opacity: 0.7 }}>
+                {/* Risks preview */}
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Risks</div>
+                  {(report.whyItMightNotWork?.length > 0 
+                    ? report.whyItMightNotWork.slice(0, 2) 
+                    : [{ reason: "Potential conflict risk identified", explanation: "Unlock to see full risk breakdown." }, { reason: "Registrability issue detected", explanation: "Unlock to see detailed analysis." }]
+                  ).map((w, i) => (
+                    <div key={i} style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
+                      <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{w.reason}</div>
+                      <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
+                    </div>
+                  ))}
+                </div>
+                {/* Conflicts preview */}
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 8 }}>Key Conflicts</div>
+                  {(report.conflictSnapshot?.slice(0, 2) || []).map((c, i) => (
+                    <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 8, marginBottom: 5 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 700, fontSize: 11 }}>{c.markName}</div>
+                        <div style={{ fontSize: 10, color: "#6b8a78" }}>{c.owner}</div>
+                      </div>
+                      <span style={{ fontSize: 9, fontWeight: 800, padding: "2px 6px", borderRadius: 4, background: `${riskColor(c.risk)}11`, color: riskColor(c.risk), height: "fit-content" }}>{c.risk}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Paywall overlay */}
+              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.97) 40%)", borderRadius: 10, padding: 20, textAlign: "center" }}>
+                <div style={{ fontSize: 22, marginBottom: 8 }}>🔒</div>
+                <div style={{ fontWeight: 800, fontSize: 13, color: "#111", marginBottom: 4 }}>Full Report Locked</div>
+                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 14, lineHeight: 1.6 }}>
+                  Unlock all risks, key conflicts, DuPont analysis + full PDF for $99
+                </div>
+                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "10px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+                  Unlock Full Report — $99
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Risks - unlocked */}
+              {report.whyItMightNotWork?.length > 0 && (
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Risks</div>
+                  {report.whyItMightNotWork.map((w, i) => (
+                    <div key={i} style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
+                      <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{w.reason}</div>
+                      <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
+                      {w.legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{w.legalHook}</div>}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* Conflicts - unlocked */}
+              {report.conflictSnapshot?.length > 0 && (
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 8 }}>Key Conflicts</div>
+                  {report.conflictSnapshot.map((c, i) => (
+                    <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 8, marginBottom: 5 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 700, fontSize: 11 }}>{c.markName}</div>
+                        <div style={{ fontSize: 10, color: "#6b8a78" }}>{c.owner}</div>
+                        <div style={{ fontSize: 10, color: "#4a7060" }}>{c.reason}</div>
+                      </div>
+                      <span style={{ fontSize: 9, fontWeight: 800, padding: "2px 6px", borderRadius: 4, background: `${riskColor(c.risk)}11`, color: riskColor(c.risk), height: "fit-content" }}>{c.risk}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div style={{ background: "#f0fff4", borderRadius: 10, padding: 14, border: "1px solid #9ae6b4", display: "flex", gap: 10, alignItems: "center", marginBottom: 10 }}>
+                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}>✓ Report Unlocked</div>
+                <button style={{ padding: "9px 16px", background: "#2d7a4f", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>Download PDF</button>
+              </div>
+            </>
+          )}
+
+          <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ marginTop: 4, width: "100%", padding: "9px", background: "#fffdf7", border: "2px solid #c9a84c", borderRadius: 8, fontWeight: 700, fontSize: 11, color: "#7a5c00" }}>
             Also generate AI Legal Memo →
           </button>
         </div>
