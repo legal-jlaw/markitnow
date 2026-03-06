@@ -69,7 +69,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
         const res = await fetch("/api/analysis-agent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mark, goodsServices: goods, classCode: null }),
+          body: JSON.stringify({ mark, goodsServices: goods, classCode: null, prefetchedConflicts: trademarks }),
         });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
@@ -112,11 +112,11 @@ function PurchasePanel({ mark, trademarks, loading }) {
         setReport(mapped);
 
       } else {
-        // Step 1: Run analysis-agent to get conflict data
+        // Step 1: Run analysis-agent to get conflict data (pass already-loaded conflicts)
         const analysisRes = await fetch("/api/analysis-agent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mark, goodsServices: goods, classCode: null }),
+          body: JSON.stringify({ mark, goodsServices: goods, classCode: null, prefetchedConflicts: trademarks }),
         });
         const analysisData = await analysisRes.json();
         if (analysisData.error) throw new Error(analysisData.error);
@@ -263,12 +263,12 @@ function PurchasePanel({ mark, trademarks, loading }) {
 
         {/* Email capture banner */}
         {!emailSubmitted ? (
-          <div style={{ margin: "0", padding: "12px 20px", background: "#fffbeb", borderBottom: "1px solid #fde68a" }}>
+          <div style={{ margin: "0", padding: "10px 16px", background: "#fffbeb", borderBottom: "1px solid #fde68a" }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "#92400e", marginBottom: 6 }}>Get a free PDF of these results</div>
-            <form onSubmit={handleEmailCapture} style={{ display: "flex", gap: 6 }}>
+            <form onSubmit={handleEmailCapture} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="your@email.com"
-                style={{ flex: 1, padding: "7px 10px", borderRadius: 7, border: "1px solid #fcd34d", fontSize: 12, fontFamily: "inherit", outline: "none", background: "#fff", minWidth: 0 }} />
-              <button type="submit" disabled={emailLoading} style={{ background: "#c9a84c", color: "#111", border: "none", borderRadius: 7, padding: "7px 12px", fontWeight: 800, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+                style={{ width: "100%", padding: "7px 10px", borderRadius: 7, border: "1px solid #fcd34d", fontSize: 12, fontFamily: "inherit", outline: "none", background: "#fff", boxSizing: "border-box" }} />
+              <button type="submit" disabled={emailLoading} style={{ width: "100%", background: "#c9a84c", color: "#111", border: "none", borderRadius: 7, padding: "7px 12px", fontWeight: 800, fontSize: 11, cursor: "pointer" }}>
                 {emailLoading ? "..." : "Send PDF"}
               </button>
             </form>
@@ -619,11 +619,15 @@ export default function SearchPage() {
     if (!mark) return;
     setUsptoStatus("loading");
     setTrademarks([]);
-    fetch(`/api/trademark-search?mark=${encodeURIComponent(mark)}`)
+
+    // Call our server-side proxy which hits USPTO's own OpenSearch API directly
+    fetch(`/api/trademark-search?mark=${encodeURIComponent(mark.trim())}`)
       .then(r => r.json())
       .then(data => {
-        setTrademarks(data.items || []);
-        setUsptoCount(data.totalCount || 0);
+        if (data.error) throw new Error(data.error);
+        const items = data.items || [];
+        setTrademarks(items);
+        setUsptoCount(items.length);
         setActiveCount(data.activeCount || 0);
         setUsptoStatus("done");
       })

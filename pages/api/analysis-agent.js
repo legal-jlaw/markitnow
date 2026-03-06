@@ -13,12 +13,13 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const { mark, goodsServices, classCode, useType } = req.body;
+  const { mark, goodsServices, classCode, useType, prefetchedConflicts } = req.body;
   if (!mark?.trim()) return res.status(400).json({ error: "mark is required" });
 
   try {
-    console.log(`[Agent1] Running analysis for "${mark}"`);
-    const report = await runAnalysis(mark, goodsServices, classCode, useType);
+    const conflictCount = prefetchedConflicts?.length || 0;
+    console.log(`[Agent1] Running analysis for "${mark}" | prefetched conflicts: ${conflictCount}`);
+    const report = await runAnalysis(mark, goodsServices, classCode, useType, prefetchedConflicts);
     console.log(`[Agent1] Complete - Risk: ${report.scoring.overallRisk} | Conflicts: ${report.retrieval.totalFound}`);
     return res.status(200).json(report);
   } catch (err) {
