@@ -58,7 +58,6 @@ async function verifyStripeSignature(rawBody, signature, secret) {
 // ── Run Analysis Agent inline (avoids internal fetch latency) ─────────────────
 
 async function runAnalysisAgent(mark, goodsServices, classCode) {
-  const rapidKey = process.env.RAPIDAPI_KEY;
   const anthropicKey = process.env.NEXT_PUBLIC_ANTHROPIC_KEY;
 
   // Call our own analysis agent endpoint
