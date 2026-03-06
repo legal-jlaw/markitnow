@@ -26,7 +26,10 @@
 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://markitnow.ai";
+// Use VERCEL_URL in production (auto-set by Vercel), fallback to markitnow-two for testing
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+  || "https://markitnow-two.vercel.app";
 
 // ── Step 1: Get analysis report (run agent or use provided) ───────────────────
 

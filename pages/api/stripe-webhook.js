@@ -32,7 +32,9 @@ export const config = {
 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const RAPIDAPI_HOST = "uspto-trademark.p.rapidapi.com";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://markitnow.ai";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+  || "https://markitnow-two.vercel.app";
 
 // ── Raw body reader (required for Stripe signature verification) ──────────────
 
