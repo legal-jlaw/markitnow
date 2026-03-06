@@ -246,9 +246,9 @@ Respond ONLY with valid JSON (no markdown, no backticks):
 
           {/* File CTA */}
           <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 16 }}>
-            <div style={{ fontWeight: 800, fontSize: 13, color: "#555", marginBottom: 4 }}> Skip straight to filing?</div>
-            <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6, marginBottom: 10 }}>
-              U.S. Licensed Attorney reviews your application and files TEAS Plus. $399 flat $100 less than Trademarkia.
+            <div style={{ fontWeight: 800, fontSize: 13, color: "#fff", marginBottom: 4 }}> Skip straight to filing?</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, marginBottom: 10 }}>
+              U.S. Licensed Attorney reviews your application and files TEAS Plus. $399 flat - $100 less than Trademarkia.
             </div>
             <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ display: "block", textAlign: "center", padding: "9px", background: "#c9a84c", color: "#0a0a0a", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
               File With Attorney $399 →
