@@ -148,7 +148,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
             })),
           },
           prosecutionStrategy: (memo.sectionVI?.recommendations || []).slice(0, 2).map(r => ({ action: r, rationale: r, citation: "" })),
-          riskMatrix: (memo.sectionV?.conflicts || []).map(c => ({
+          riskMatrix: (memo.sectionV?.conflicts || []).slice(0, 1).map(c => ({
             risk: c.markName,
             likelihood: c.riskLevel || "MEDIUM",
             severity: c.riskLevel || "MEDIUM",
@@ -527,7 +527,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
           {memo.riskMatrix?.length > 0 && (
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>Risk Matrix</div>
-              {memo.riskMatrix.map((r, i) => (
+              {memo.riskMatrix.slice(0, 1).map((r, i) => (
                 <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 55px 55px", gap: 6, padding: "7px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 4 }}>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: 10 }}>{r.risk}</div>
