@@ -58,7 +58,13 @@ async function queryUSPTO(esQuery) {
   try {
     const res = await fetch(USPTO_API, {
       method:  "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Origin": "https://tmsearch.uspto.gov",
+        "Referer": "https://tmsearch.uspto.gov/search/search-results",
+      },
       body:    JSON.stringify(esQuery),
     });
 
@@ -96,9 +102,16 @@ export default async function handler(req, res) {
 
   if (req.query._debug) {
     try {
+      const USPTO_HEADERS = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Origin": "https://tmsearch.uspto.gov",
+        "Referer": "https://tmsearch.uspto.gov/search/search-results",
+      };
       const r = await fetch(USPTO_API, {
         method:  "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: USPTO_HEADERS,
         body:    JSON.stringify({
           query: { query_string: { query: trimmed, default_field: "wordmark" } },
           from:  0,
