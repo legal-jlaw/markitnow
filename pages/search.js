@@ -367,8 +367,8 @@ function PurchasePanel({ mark, trademarks, loading }) {
           {/* Score card - always visible */}
           <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
             <div style={{ flex: 1, background: "#f8faf9", borderRadius: 10, padding: 14 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Risk Summary</div>
-              <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Risk Summary</div>
+              <p style={{ fontSize: 13, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>
                 {(() => {
                   const high = report._agentData?.scoring?.highRiskCount || 0;
                   const med = report._agentData?.scoring?.mediumRiskCount || 0;
@@ -383,8 +383,8 @@ function PurchasePanel({ mark, trademarks, loading }) {
             </div>
             <div style={{ width: 100, background: `${scoreColor(sc)}11`, border: `2px solid ${scoreColor(sc)}`, borderRadius: 10, padding: 10, textAlign: "center", flexShrink: 0 }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: scoreColor(sc), lineHeight: 1 }}>{sc}</div>
-              <div style={{ fontSize: 7, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase", letterSpacing: 0, whiteSpace: "nowrap" }}>Registrability</div>
-              <div style={{ fontSize: 9, fontWeight: 800, marginTop: 3, color: scoreColor(sc) }}>{report.overallRiskLevel === "LOW" ? "LOW RISK" : report.overallRiskLevel === "MEDIUM" ? "MED RISK" : report.overallRiskLevel === "HIGH" ? "HIGH RISK" : report.overallRiskLevel}</div>
+              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase", letterSpacing: 0, whiteSpace: "nowrap" }}>Registrability</div>
+              <div style={{ fontSize: 10, fontWeight: 800, marginTop: 3, color: scoreColor(sc) }}>{report.overallRiskLevel === "LOW" ? "LOW RISK" : report.overallRiskLevel === "MEDIUM" ? "MED RISK" : report.overallRiskLevel === "HIGH" ? "HIGH RISK" : report.overallRiskLevel}</div>
             </div>
           </div>
 
@@ -392,20 +392,20 @@ function PurchasePanel({ mark, trademarks, loading }) {
           {!isPaid && (
             <div style={{ marginBottom: 14, display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f0f7f2", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#2d7a4f" }}>✓ Registration arguments</span>
-                <span style={{ fontSize: 10, color: "#8aa898" }}>{report.whyItCouldWork?.length || 0} found — unlock to read</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#2d7a4f" }}>Registration arguments</span>
+                <span style={{ fontSize: 12, color: "#8aa898" }}>{report.whyItCouldWork?.length || 0} found — unlock to read</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fdf2f1", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#c0392b" }}>⚠ Risk factors identified</span>
-                <span style={{ fontSize: 10, color: "#8aa898" }}>{report.whyItMightNotWork?.length || 0} found — unlock to read</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#c0392b" }}>Risk factors identified</span>
+                <span style={{ fontSize: 12, color: "#8aa898" }}>{report.whyItMightNotWork?.length || 0} found — unlock to read</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f8f5ff", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#6b46c1" }}>⚖ DuPont factor analysis</span>
-                <span style={{ fontSize: 10, color: "#8aa898" }}>13 factors — unlock to read</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#6b46c1" }}>DuPont factor analysis</span>
+                <span style={{ fontSize: 12, color: "#8aa898" }}>13 factors — unlock to read</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff8ec", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#b7791f" }}>📋 Conflict breakdown</span>
-                <span style={{ fontSize: 10, color: "#8aa898" }}>{report.conflictSnapshot?.length || 0} conflicts analyzed — unlock to read</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#b7791f" }}>Conflict breakdown</span>
+                <span style={{ fontSize: 12, color: "#8aa898" }}>{report.conflictSnapshot?.length || 0} conflicts analyzed — unlock to read</span>
               </div>
             </div>
           )}
@@ -446,11 +446,11 @@ function PurchasePanel({ mark, trademarks, loading }) {
               {/* Paywall overlay */}
               <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.97) 40%)", borderRadius: 10, padding: 20, textAlign: "center" }}>
                 <div style={{ fontSize: 22, marginBottom: 8 }}>🔒</div>
-                <div style={{ fontWeight: 800, fontSize: 13, color: "#111", marginBottom: 4 }}>See the Full Analysis — $99</div>
-                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 14, lineHeight: 1.6 }}>
+                <div style={{ fontWeight: 800, fontSize: 15, color: "#111", marginBottom: 4 }}>See the Full Analysis — $99</div>
+                <div style={{ fontSize: 13, color: "#6b8a78", marginBottom: 14, lineHeight: 1.6 }}>
                   Every conflict ranked by risk · Attorney-grade DuPont scoring · Exact recommendation on whether to file, rebrand, or modify · Full PDF delivered to your inbox
                 </div>
-                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "10px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "10px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
                   Unlock Full Report — $99
                 </button>
               </div>
@@ -519,7 +519,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
           {/* Risk summary teaser — never reveals conclusion */}
           <div style={{ background: "#f8faf9", borderRadius: 10, padding: 14, marginBottom: 16, borderLeft: "4px solid #111" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Memo Summary</div>
-            <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>
+            <p style={{ fontSize: 13, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>
               {(() => {
                 const high = memo.whyItMightNotWork?.length || 0;
                 const dupont = memo.duPontAnalysis?.factors?.length || 0;
@@ -534,23 +534,23 @@ function PurchasePanel({ mark, trademarks, loading }) {
           {!isPaid && (
             <div style={{ marginBottom: 16, display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f8f5ff", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#6b46c1" }}>⚖ DuPont 13-Factor Analysis</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#6b46c1" }}>DuPont 13-Factor Analysis</span>
                 <span style={{ fontSize: 10, color: "#8aa898" }}>all 13 factors — unlock to read</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fdf2f1", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#c0392b" }}>⚠ Conflict Risk Matrix</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#c0392b" }}>Conflict Risk Matrix</span>
                 <span style={{ fontSize: 10, color: "#8aa898" }}>{memo.riskMatrix?.length || 0} conflicts scored — unlock to read</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f0f7f2", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#2d7a4f" }}>📋 Prosecution Strategy</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#2d7a4f" }}>Prosecution Strategy</span>
                 <span style={{ fontSize: 10, color: "#8aa898" }}>{memo.prosecutionStrategy?.length || 0} strategies — unlock to read</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff8ec", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#b7791f" }}>📌 Filing Recommendation</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#b7791f" }}>Filing Recommendation</span>
                 <span style={{ fontSize: 10, color: "#8aa898" }}>file / rebrand / amend — unlock to read</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f5f5f5", borderRadius: 8, padding: "9px 12px" }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#444" }}>⚖ Case Law Citations</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#444" }}>Case Law Citations</span>
                 <span style={{ fontSize: 10, color: "#8aa898" }}>relevant precedent — unlock to read</span>
               </div>
             </div>
