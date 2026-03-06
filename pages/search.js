@@ -109,21 +109,15 @@ Respond ONLY with valid JSON (no markdown, no backticks):
 }`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("/api/generate-analysis", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 2000,
-          system: systemPrompt,
-          messages: [{ role: "user", content: userPrompt }],
-        }),
+        body: JSON.stringify({ mark, goods, type, systemPrompt, userPrompt }),
       });
       const data = await res.json();
-      const text = data.content?.find(b => b.type === "text")?.text || "{}";
-      const parsed = JSON.parse(text.replace(/```json|```/g, "").trim());
-      if (isReport) setReport(parsed);
-      else setMemo(parsed);
+      if (data.error) throw new Error(data.error);
+      if (isReport) setReport(data.result);
+      else setMemo(data.result);
     } catch (e) {
       console.error(e);
     }
