@@ -1,6 +1,10 @@
 // pages/api/analysis-agent.js
 // AGENT 1: Analysis Agent - uses shared analysisCore lib
 
+export const config = {
+  maxDuration: 60,
+};
+
 import { runAnalysis } from "../../lib/analysisCore";
 
 export default async function handler(req, res) {

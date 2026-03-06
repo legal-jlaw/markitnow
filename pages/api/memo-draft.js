@@ -1,7 +1,10 @@
 // pages/api/memo-draft.js
 // Lightweight memo drafter - takes existing analysis report, returns memo
 // Called AFTER analysis-agent completes on the frontend
-// Fits within Vercel 10s timeout since it only makes 1 Claude call
+
+export const config = {
+  maxDuration: 60, // seconds - requires Vercel Pro, falls back gracefully on free tier
+};
 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
@@ -23,7 +26,7 @@ export default async function handler(req, res) {
   const highRisk = conflicts.filter(c => c.riskScore === "HIGH");
   const medRisk = conflicts.filter(c => c.riskScore === "MEDIUM");
 
-  const conflictSummary = conflicts.slice(0, 8).map((c, i) =>
+  const conflictSummary = conflicts.slice(0, 3).map((c, i) =>
     `[${i+1}] "${c.markName}" (Serial: ${c.serialNumber || "N/A"}) | Owner: ${c.owner} | Status: ${c.status} | Risk: ${c.riskScore} | Reasoning: ${c.riskReasoning || "N/A"}`
   ).join("\n");
 
@@ -95,7 +98,7 @@ Respond ONLY in valid JSON:
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 4000,
+        max_tokens: 2000,
         temperature: 0.2,
         system: "You are a trademark attorney AI drafting legal memos. Cite only real data provided. Never fabricate. Clearly label output as AI-generated. Respond only in valid JSON.",
         messages: [{ role: "user", content: prompt }],
