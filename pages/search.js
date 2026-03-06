@@ -23,7 +23,7 @@ function scoreColor(s) {
 
 //  Purchase / Analysis Panel 
 
-function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
+function PurchasePanel({ mark, trademarks, loading }) {
   const [activeResult, setActiveResult] = useState(null);
   const [goods, setGoods] = useState("");
   const [generating, setGenerating] = useState(false);
@@ -34,11 +34,6 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
 
-  // Accept payment status from parent (Stripe redirect verification)
-  useEffect(() => {
-    if (initialPaid) setIsPaid(true);
-  }, [initialPaid]);
-
   async function handleEmailCapture(e) {
     e.preventDefault();
     if (!email.trim()) return;
@@ -47,7 +42,7 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
       await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, mark, source: "search_results" }),
+        body: JSON.stringify({ email, mark, source: "search_results", conflictCount: usptoCount || 0, activeCount: activeCount || 0 }),
       });
     } catch (err) {}
     setEmailSubmitted(true);
@@ -60,30 +55,77 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
     setReport(null);
     setMemo(null);
 
+    const conflictText = trademarks.slice(0, 15).map((c, i) =>
+      `${i + 1}. "${c.markName}" | Owner: ${c.owner} | Status: ${c.status} | Class: ${c.classCode} | Serial: ${c.serialNumber}`
+    ).join("\n");
+
+    const conflictSection = trademarks.length
+      ? `LIVE USPTO RESULTS (${trademarks.length} marks found matching "${mark}" or its keywords):\n${conflictText}`
+      : `LIVE USPTO RESULTS: No marks found for "${mark}" appears to be a clear mark.`;
+
+    const isReport = type === "report";
+    const systemPrompt = isReport
+      ? `You are a plain-English trademark advisor. Write clearly, no legal jargon. Be honest about risks without being alarming.`
+      : `You are a senior USPTO trademark attorney writing an internal legal memorandum. Cite Lanham Act sections (15 U.S.C. §), TMEP sections, and relevant TTAB or Federal Circuit cases. Apply DuPont factors. This is attorney work product.`;
+
+    const userPrompt = isReport
+      ? `A client wants to trademark: "${mark}"
+Used for: ${goods || "general commercial use"}
+${conflictSection}
+
+Respond ONLY with valid JSON (no markdown, no backticks):
+{
+  "executiveSummary": "2-3 sentence plain-English bottom line referencing real search results",
+  "whyItCouldWork": [{"reason":"headline","explanation":"1-2 sentences","legalHook":"legal principle"}],
+  "whyItMightNotWork": [{"reason":"headline","explanation":"1-2 sentences","legalHook":"legal principle"}],
+  "conflictSnapshot": [{"markName":"EXACT REAL NAME","owner":"Actual Owner","class":41,"risk":"LOW/MEDIUM/HIGH","reason":"Why this conflicts","serialNumber":"from data"}],
+  "overallRiskLevel": "LOW/MEDIUM/HIGH",
+  "whatHappensNext": "2-3 sentence plain English next steps",
+  "clientConfidenceScore": 72
+}`
+      : `Trademark Registrability Memo
+MARK: "${mark}" | GOODS: ${goods || "TBD"} | BASIS: Section 1(b)
+${conflictSection}
+
+Respond ONLY with valid JSON (no markdown, no backticks):
+{
+  "memoSummary": "One paragraph with legal citations referencing actual search results",
+  "whyItCouldWork": [{"argument":"headline","analysis":"detailed paragraph","citations":["15 U.S.C. § 1052"]}],
+  "whyItMightNotWork": [{"obstacle":"headline","analysis":"detailed paragraph citing specific marks","citations":["citation"]}],
+  "duPontAnalysis": {
+    "overview": "Summary citing In re E.I. DuPont de Nemours & Co., 177 U.S.P.Q. 563 (C.C.P.A. 1973)",
+    "factors": [
+      {"factor":"Similarity of the marks","number":1,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis"},
+      {"factor":"Similarity of goods/services","number":2,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis"},
+      {"factor":"Channels of trade","number":3,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis"},
+      {"factor":"Strength of the mark","number":5,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis citing Abercrombie & Fitch"}
+    ]
+  },
+  "prosecutionStrategy": [{"action":"action","rationale":"rationale","citation":"citation"}],
+  "riskMatrix": [{"risk":"risk","likelihood":"LOW/MEDIUM/HIGH","severity":"LOW/MEDIUM/HIGH","mitigation":"strategy"}],
+  "overallLegalAssessment": "LOW/MEDIUM/HIGH",
+  "recommendProceed": true,
+  "proceedRationale": "recommendation with legal basis"
+}`;
+
     try {
-      const res = await fetch("/api/ai-report", {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type,
-          mark,
-          goods: goods || "",
-          trademarks,
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 2000,
+          system: systemPrompt,
+          messages: [{ role: "user", content: userPrompt }],
         }),
       });
-
-      if (!res.ok) {
-        const err = await res.json();
-        console.error("AI report error:", err);
-        setGenerating(false);
-        return;
-      }
-
-      const parsed = await res.json();
-      if (type === "report") setReport(parsed);
+      const data = await res.json();
+      const text = data.content?.find(b => b.type === "text")?.text || "{}";
+      const parsed = JSON.parse(text.replace(/```json|```/g, "").trim());
+      if (isReport) setReport(parsed);
       else setMemo(parsed);
     } catch (e) {
-      console.error("AI report fetch error:", e);
+      console.error(e);
     }
     setGenerating(false);
   }
@@ -100,36 +142,6 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
       else setIsPaid(true);
     } catch {
       setIsPaid(true); // fallback for local dev without Stripe
-    }
-  }
-
-  async function downloadPDF(type) {
-    const data = type === "report" ? report : memo;
-    if (!data) return;
-
-    try {
-      const res = await fetch("/api/generate-pdf", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, mark, goods, data }),
-      });
-
-      if (!res.ok) {
-        console.error("PDF generation failed:", await res.text());
-        return;
-      }
-
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `MarkItNow-${type === "report" ? "Report" : "Memo"}-${mark.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    } catch (e) {
-      console.error("PDF download error:", e);
     }
   }
 
@@ -216,7 +228,7 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
             <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.6, marginBottom: 12 }}>
               Summary + pros/cons + conflict breakdown. Full PDF (with DuPont memo) unlocks for $99.
             </div>
-            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
+            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
               Generate Client Report Free →
             </button>
           </div>
@@ -240,8 +252,8 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
 
           {/* File CTA */}
           <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 16 }}>
-            <div style={{ fontWeight: 800, fontSize: 13, color: "#e8e8e8", marginBottom: 4 }}> Skip straight to filing?</div>
-            <div style={{ fontSize: 11, color: "#a0aab4", lineHeight: 1.6, marginBottom: 10 }}>
+            <div style={{ fontWeight: 800, fontSize: 13, color: "#555", marginBottom: 4 }}> Skip straight to filing?</div>
+            <div style={{ fontSize: 11, color: "#666", lineHeight: 1.6, marginBottom: 10 }}>
               U.S. Licensed Attorney reviews your application and files TEAS Plus. $399 flat $100 less than Trademarkia.
             </div>
             <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ display: "block", textAlign: "center", padding: "9px", background: "#c9a84c", color: "#0a0a0a", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
@@ -276,7 +288,7 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
     );
   }
 
-  //  Client Report result
+  //  Client Report result 
   if (activeResult === "report" && report) {
     const sc = report.clientConfidenceScore || 50;
     return (
@@ -284,11 +296,11 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
         {/* Sticky header */}
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
           <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}> Client Report</div>
-          <button onClick={() => { setActiveResult(null); setReport(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c", cursor: "pointer" }}>← Back</button>
+          <button onClick={() => { setActiveResult(null); setReport(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c" }}>← Back</button>
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px" }}>
-          {/* Score card — always visible */}
+          {/* Score card */}
           <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
             <div style={{ flex: 1, background: "#f8faf9", borderRadius: 10, padding: 14 }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Bottom Line</div>
@@ -301,33 +313,11 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
             </div>
           </div>
 
-          {/* Could work — show first item free, blur rest */}
+          {/* Could work */}
           {report.whyItCouldWork?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Why It Could Work</div>
-              {/* First item — always visible */}
-              <div style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{report.whyItCouldWork[0].reason}</div>
-                <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{report.whyItCouldWork[0].explanation}</div>
-              </div>
-              {/* Remaining items — blurred unless paid */}
-              {report.whyItCouldWork.length > 1 && !isPaid && (
-                <div style={{ position: "relative" }}>
-                  <div style={{ filter: "blur(5px)", pointerEvents: "none", userSelect: "none", opacity: 0.6 }}>
-                    {report.whyItCouldWork.slice(1, 3).map((w, i) => (
-                      <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                        <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
-                        <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ background: "#0f1e3c", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>+{report.whyItCouldWork.length - 1} more in full report</span>
-                  </div>
-                </div>
-              )}
-              {/* Show all when paid */}
-              {report.whyItCouldWork.length > 1 && isPaid && report.whyItCouldWork.slice(1).map((w, i) => (
+              {report.whyItCouldWork.map((w, i) => (
                 <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
                   <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
                   <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
@@ -337,33 +327,11 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
             </div>
           )}
 
-          {/* Risks — show first item free, blur rest */}
+          {/* Risks */}
           {report.whyItMightNotWork?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Risks</div>
-              {/* First item — always visible */}
-              <div style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{report.whyItMightNotWork[0].reason}</div>
-                <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{report.whyItMightNotWork[0].explanation}</div>
-              </div>
-              {/* Remaining items — blurred unless paid */}
-              {report.whyItMightNotWork.length > 1 && !isPaid && (
-                <div style={{ position: "relative" }}>
-                  <div style={{ filter: "blur(5px)", pointerEvents: "none", userSelect: "none", opacity: 0.6 }}>
-                    {report.whyItMightNotWork.slice(1, 3).map((w, i) => (
-                      <div key={i} style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
-                        <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
-                        <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ background: "#c0392b", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>+{report.whyItMightNotWork.length - 1} more risks identified</span>
-                  </div>
-                </div>
-              )}
-              {/* Show all when paid */}
-              {report.whyItMightNotWork.length > 1 && isPaid && report.whyItMightNotWork.slice(1).map((w, i) => (
+              {report.whyItMightNotWork.map((w, i) => (
                 <div key={i} style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
                   <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
                   <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
@@ -373,63 +341,42 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
             </div>
           )}
 
-          {/* Conflicts — fully gated */}
+          {/* Conflicts */}
           {report.conflictSnapshot?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Key Conflicts ({report.conflictSnapshot.length})</div>
-              {!isPaid ? (
-                <div style={{ position: "relative" }}>
-                  <div style={{ filter: "blur(6px)", pointerEvents: "none", userSelect: "none", opacity: 0.5 }}>
-                    {report.conflictSnapshot.slice(0, 3).map((c, i) => (
-                      <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 8, marginBottom: 5 }}>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: 700, fontSize: 11 }}>{c.markName}</div>
-                          <div style={{ fontSize: 10, color: "#6b8a78" }}>{c.owner}</div>
-                          <div style={{ fontSize: 10, color: "#4a7060" }}>{c.reason}</div>
-                        </div>
-                        <span style={{ fontSize: 9, fontWeight: 800, padding: "2px 6px", borderRadius: 4, background: `${riskColor(c.risk)}11`, color: riskColor(c.risk), height: "fit-content" }}>{c.risk}</span>
-                      </div>
-                    ))}
+              <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Key Conflicts</div>
+              {report.conflictSnapshot.map((c, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 8, marginBottom: 5 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, fontSize: 11 }}>{c.markName}</div>
+                    <div style={{ fontSize: 10, color: "#6b8a78" }}>{c.owner}</div>
+                    <div style={{ fontSize: 10, color: "#4a7060" }}>{c.reason}</div>
                   </div>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ background: "#0f1e3c", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>{report.conflictSnapshot.length} conflicts — unlock to view details</span>
-                  </div>
+                  <span style={{ fontSize: 9, fontWeight: 800, padding: "2px 6px", borderRadius: 4, background: `${riskColor(c.risk)}11`, color: riskColor(c.risk), height: "fit-content" }}>{c.risk}</span>
                 </div>
-              ) : (
-                report.conflictSnapshot.map((c, i) => (
-                  <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 8, marginBottom: 5 }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 700, fontSize: 11 }}>{c.markName}</div>
-                      <div style={{ fontSize: 10, color: "#6b8a78" }}>{c.owner}</div>
-                      <div style={{ fontSize: 10, color: "#4a7060" }}>{c.reason}</div>
-                    </div>
-                    <span style={{ fontSize: 9, fontWeight: 800, padding: "2px 6px", borderRadius: 4, background: `${riskColor(c.risk)}11`, color: riskColor(c.risk), height: "fit-content" }}>{c.risk}</span>
-                  </div>
-                ))
-              )}
+              ))}
             </div>
           )}
 
-          {/* Unlock / Download CTA */}
-          {!isPaid ? (
-            <div style={{ background: "linear-gradient(135deg, #c9a84c 0%, #b8942f 100%)", borderRadius: 12, padding: 18, textAlign: "center" }}>
-              <div style={{ fontWeight: 900, fontSize: 15, color: "#fff", marginBottom: 4 }}>Unlock Full Report</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", marginBottom: 12, lineHeight: 1.5 }}>All conflicts · DuPont analysis · Legal hooks · Prosecution strategy · Downloadable PDF</div>
-              <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "11px", background: "#fff", color: "#0f1e3c", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 14, cursor: "pointer", letterSpacing: -0.3 }}>
-                Get Full Report — $99
-              </button>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", marginTop: 8 }}>Instant PDF delivery · Money back guarantee</div>
-            </div>
-          ) : (
-            <div style={{ background: "#f0f7f2", borderRadius: 10, padding: 14, border: "2px solid #2d7a4f" }}>
+          {/* PDF unlock */}
+          <div style={{ background: "#f4f7f5", borderRadius: 10, padding: 14, border: "1px solid #d0e4d8" }}>
+            {!isPaid ? (
+              <>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}> Full PDF Report</div>
+                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>DuPont analysis + attorney memo + prosecution strategy</div>
+                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+                  Unlock PDF $99
+                </button>
+              </>
+            ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                 <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}> Report Unlocked</div>
-                <button onClick={() => downloadPDF("report")} style={{ padding: "9px 16px", background: "#2d7a4f", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>Download PDF</button>
+                <button style={{ padding: "9px 16px", background: "#2d7a4f", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>Download PDF</button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
-          <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ marginTop: 10, width: "100%", padding: "9px", background: "#fffdf7", border: "2px solid #c9a84c", borderRadius: 8, fontWeight: 700, fontSize: 11, color: "#7a5c00", cursor: "pointer" }}>
+          <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ marginTop: 10, width: "100%", padding: "9px", background: "#fffdf7", border: "2px solid #c9a84c", borderRadius: 8, fontWeight: 700, fontSize: 11, color: "#7a5c00" }}>
             Also generate Attorney Memo →
           </button>
         </div>
@@ -437,66 +384,28 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
     );
   }
 
-  //  Attorney Memo result
+  //  Attorney Memo result 
   if (activeResult === "memo" && memo) {
-    const duPontFactors = memo.duPontAnalysis?.factors || [];
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
           <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>️ Attorney Memo</div>
-          <button onClick={() => { setActiveResult(null); setMemo(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c", cursor: "pointer" }}>← Back</button>
+          <button onClick={() => { setActiveResult(null); setMemo(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c" }}>← Back</button>
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px" }}>
-          {/* Memo summary — always visible */}
           <div style={{ background: "#f8faf9", borderRadius: 10, padding: 14, marginBottom: 16, borderLeft: "4px solid #0f1e3c" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Memo Summary</div>
             <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>{memo.memoSummary}</p>
           </div>
 
-          {/* DuPont Analysis — show first 2 factors free, blur rest */}
           {memo.duPontAnalysis && (
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontWeight: 800, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>DuPont Analysis</div>
               <div style={{ fontSize: 10, color: "#6b8a78", lineHeight: 1.6, marginBottom: 8 }}>{memo.duPontAnalysis.overview}</div>
-              {/* First 2 factors — always visible */}
-              {duPontFactors.slice(0, 2).map((f, i) => (
+              {memo.duPontAnalysis.factors?.map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
-                  <div style={{ fontSize: 9, fontWeight: 800, background: "#0f1e3c", color: "#fff", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 11, color: "#0f1e3c" }}>{f.factor}</div>
-                    <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
-                  </div>
-                  <span style={{ fontSize: 8, fontWeight: 800, padding: "2px 5px", borderRadius: 3, height: "fit-content", whiteSpace: "nowrap",
-                    background: f.finding === "FAVORABLE" ? "#f0f7f2" : f.finding === "UNFAVORABLE" ? "#fdf2f1" : "#f5f5f5",
-                    color: f.finding === "FAVORABLE" ? "#2d7a4f" : f.finding === "UNFAVORABLE" ? "#c0392b" : "#7f8c8d" }}>
-                    {f.finding}
-                  </span>
-                </div>
-              ))}
-              {/* Remaining factors — blurred unless paid */}
-              {duPontFactors.length > 2 && !isPaid && (
-                <div style={{ position: "relative" }}>
-                  <div style={{ filter: "blur(5px)", pointerEvents: "none", userSelect: "none", opacity: 0.5 }}>
-                    {duPontFactors.slice(2, 5).map((f, i) => (
-                      <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
-                        <div style={{ fontSize: 9, fontWeight: 800, background: "#0f1e3c", color: "#fff", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: 600, fontSize: 11, color: "#0f1e3c" }}>{f.factor}</div>
-                          <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ background: "#0f1e3c", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>+{duPontFactors.length - 2} more DuPont factors in full memo</span>
-                  </div>
-                </div>
-              )}
-              {/* Show all when paid */}
-              {duPontFactors.length > 2 && isPaid && duPontFactors.slice(2).map((f, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
-                  <div style={{ fontSize: 9, fontWeight: 800, background: "#0f1e3c", color: "#fff", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
+                  <div style={{ fontSize: 9, fontWeight: 800, background: "#0f1e3c", color: "#111", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 11, color: "#0f1e3c" }}>{f.factor}</div>
                     <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
@@ -511,94 +420,57 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
             </div>
           )}
 
-          {/* Prosecution Strategy — fully gated */}
           {memo.prosecutionStrategy?.length > 0 && (
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 800, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Prosecution Strategy ({memo.prosecutionStrategy.length} steps)</div>
-              {!isPaid ? (
-                <div style={{ position: "relative" }}>
-                  <div style={{ filter: "blur(6px)", pointerEvents: "none", userSelect: "none", opacity: 0.5 }}>
-                    {memo.prosecutionStrategy.slice(0, 3).map((s, i) => (
-                      <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                        <div style={{ fontWeight: 700, fontSize: 11, color: "#0f1e3c" }}>{s.action}</div>
-                        <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{s.rationale}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ background: "#2d7a4f", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>Unlock to view prosecution strategy</span>
-                  </div>
+              <div style={{ fontWeight: 800, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Prosecution Strategy</div>
+              {memo.prosecutionStrategy.map((s, i) => (
+                <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
+                  <div style={{ fontWeight: 700, fontSize: 11, color: "#0f1e3c" }}>{s.action}</div>
+                  <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{s.rationale}</div>
+                  {s.citation && <code style={{ fontSize: 9, color: "#6b8a78", background: "#f0f4f2", padding: "1px 5px", borderRadius: 3 }}>{s.citation}</code>}
                 </div>
-              ) : (
-                memo.prosecutionStrategy.map((s, i) => (
-                  <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                    <div style={{ fontWeight: 700, fontSize: 11, color: "#0f1e3c" }}>{s.action}</div>
-                    <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{s.rationale}</div>
-                    {s.citation && <code style={{ fontSize: 9, color: "#6b8a78", background: "#f0f4f2", padding: "1px 5px", borderRadius: 3 }}>{s.citation}</code>}
-                  </div>
-                ))
-              )}
+              ))}
             </div>
           )}
 
-          {/* Risk Matrix — fully gated */}
           {memo.riskMatrix?.length > 0 && (
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontWeight: 800, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Risk Matrix</div>
-              {!isPaid ? (
-                <div style={{ position: "relative" }}>
-                  <div style={{ filter: "blur(6px)", pointerEvents: "none", userSelect: "none", opacity: 0.5 }}>
-                    {memo.riskMatrix.slice(0, 3).map((r, i) => (
-                      <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 55px 55px", gap: 6, padding: "7px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 4 }}>
-                        <div><div style={{ fontWeight: 600, fontSize: 10 }}>{r.risk}</div></div>
-                        <div style={{ textAlign: "center" }}><div style={{ fontSize: 10, fontWeight: 700 }}>-</div></div>
-                        <div style={{ textAlign: "center" }}><div style={{ fontSize: 10, fontWeight: 700 }}>-</div></div>
-                      </div>
-                    ))}
+              {memo.riskMatrix.map((r, i) => (
+                <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 55px 55px", gap: 6, padding: "7px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 4 }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 10 }}>{r.risk}</div>
+                    <div style={{ fontSize: 9, color: "#6b8a78" }}>{r.mitigation}</div>
                   </div>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ background: "#0f1e3c", color: "#fff", fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>Unlock to view risk matrix</span>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 8, color: "#8aa898" }}>LIKELIHOOD</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.likelihood) }}>{r.likelihood}</div>
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 8, color: "#8aa898" }}>SEVERITY</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.severity) }}>{r.severity}</div>
                   </div>
                 </div>
-              ) : (
-                memo.riskMatrix.map((r, i) => (
-                  <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 55px 55px", gap: 6, padding: "7px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 4 }}>
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: 10 }}>{r.risk}</div>
-                      <div style={{ fontSize: 9, color: "#6b8a78" }}>{r.mitigation}</div>
-                    </div>
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: 8, color: "#8aa898" }}>LIKELIHOOD</div>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.likelihood) }}>{r.likelihood}</div>
-                    </div>
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: 8, color: "#8aa898" }}>SEVERITY</div>
-                      <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.severity) }}>{r.severity}</div>
-                    </div>
-                  </div>
-                ))
-              )}
+              ))}
             </div>
           )}
 
-          {/* Unlock / Download CTA */}
-          {!isPaid ? (
-            <div style={{ background: "linear-gradient(135deg, #c9a84c 0%, #b8942f 100%)", borderRadius: 12, padding: 18, textAlign: "center" }}>
-              <div style={{ fontWeight: 900, fontSize: 15, color: "#fff", marginBottom: 4 }}>Unlock Full Attorney Memo</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", marginBottom: 12, lineHeight: 1.5 }}>All 13 DuPont factors · Prosecution strategy · Risk matrix · Case citations · Downloadable PDF</div>
-              <button onClick={() => handlePurchase("memo", 149)} style={{ width: "100%", padding: "11px", background: "#fff", color: "#0f1e3c", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 14, cursor: "pointer", letterSpacing: -0.3 }}>
-                Get Full Memo — $149
-              </button>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", marginTop: 8 }}>Attorney-grade work product · Instant PDF</div>
-            </div>
-          ) : (
-            <div style={{ background: "#fffdf7", borderRadius: 10, padding: 14, border: "2px solid #c9a84c" }}>
+          <div style={{ background: "#fffdf7", borderRadius: 10, padding: 14, border: "2px solid #c9a84c" }}>
+            {!isPaid ? (
+              <>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}> Full Attorney Memo PDF</div>
+                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>Complete work product printable, shareable, attorney-reviewed</div>
+                <button onClick={() => handlePurchase("memo", 149)} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
+                  Unlock Memo PDF $149
+                </button>
+              </>
+            ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                 <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}> Memo Unlocked</div>
-                <button onClick={() => downloadPDF("memo")} style={{ padding: "9px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>Download PDF</button>
+                <button style={{ padding: "9px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>Download PDF</button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );
@@ -611,7 +483,7 @@ function PurchasePanel({ mark, trademarks, loading, initialPaid }) {
 
 export default function SearchPage() {
   const router = useRouter();
-  const { mark, paid, session_id } = router.query;
+  const { mark } = router.query;
 
   const [trademarks, setTrademarks] = useState([]);
   const [usptoCount, setUsptoCount] = useState(null);
@@ -619,27 +491,8 @@ export default function SearchPage() {
   const [usptoStatus, setUsptoStatus] = useState("loading");
   const [filterStatus, setFilterStatus] = useState("all");
   const [newSearchInput, setNewSearchInput] = useState("");
-  const [paymentVerified, setPaymentVerified] = useState(false);
 
   useEffect(() => { if (mark) setNewSearchInput(mark); }, [mark]);
-
-  // Verify Stripe payment on redirect
-  useEffect(() => {
-    if (!session_id) return;
-    fetch(`/api/verify-payment?session_id=${encodeURIComponent(session_id)}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.paid) {
-          setPaymentVerified(true);
-          // Clean URL params without triggering navigation
-          const url = new URL(window.location);
-          url.searchParams.delete("paid");
-          url.searchParams.delete("session_id");
-          window.history.replaceState({}, "", url.toString());
-        }
-      })
-      .catch(() => {});
-  }, [session_id]);
 
   useEffect(() => {
     if (!mark) return;
@@ -692,7 +545,7 @@ export default function SearchPage() {
       <div style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* Top bar */}
         <div style={{ background: "#0f1e3c", padding: "10px 24px", display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
-          <a href="/" style={{ background: "rgba(255,255,255,0.1)", color: "#ccc", borderRadius: 7, padding: "6px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", textDecoration: "none" }}>← MarkItNow</a>
+          <a href="/" style={{ background: "rgba(255,255,255,0.1)", color: "#555", borderRadius: 7, padding: "6px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>← MarkItNow</a>
           <form onSubmit={handleNewSearch} style={{ flex: 1, display: "flex", gap: 8, maxWidth: 540 }}>
             <input value={newSearchInput} onChange={e => setNewSearchInput(e.target.value)}
               style={{ flex: 1, padding: "7px 14px", borderRadius: 7, border: "1.5px solid rgba(255,255,255,0.15)", background: "#f4f4f4", color: "#111", fontSize: 14, fontFamily: "inherit", outline: "none" }}
@@ -715,7 +568,7 @@ export default function SearchPage() {
                     background: usptoStatus === "loading" ? "#f1c40f" : usptoStatus === "done" ? "#2ecc71" : "#e74c3c",
                     animation: usptoStatus === "loading" ? "mni-pulse 1s infinite" : "none" }} />
                   <span style={{ fontWeight: 800, fontSize: 15, color: "#0f1e3c" }}>USPTO Database</span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: "#2ecc71", background: "rgba(46,204,113,0.12)", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2 }}>LIVE</span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: "#555", background: "#0f1e3c", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2 }}>LIVE</span>
                 </div>
                 {usptoStatus === "done" && (
                   <div style={{ textAlign: "right" }}>
@@ -815,7 +668,7 @@ export default function SearchPage() {
 
           {/* RIGHT: AI Analysis + Purchase */}
           <div style={{ background: "#fff", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-            <PurchasePanel mark={mark} trademarks={trademarks} loading={usptoStatus === "loading"} initialPaid={paymentVerified} />
+            <PurchasePanel mark={mark} trademarks={trademarks} loading={usptoStatus === "loading"} />
           </div>
         </div>
       </div>
