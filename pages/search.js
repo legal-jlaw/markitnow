@@ -8,9 +8,14 @@ import Head from "next/head";
 
 function statusStyle(status = "") {
   const s = status.toLowerCase();
-  if (s.includes("live") || s.includes("regist")) return { color: "#1a7a3c", bg: "#e8f7ee", dot: "#2ecc71" };
-  if (s.includes("pending") || s.includes("published")) return { color: "#7a5c00", bg: "#fffae8", dot: "#f1c40f" };
-  return { color: "#7a1a1a", bg: "#faeee8", dot: "#e74c3c" };
+  if (s.includes("live") && s.includes("regist"))  return { color: "#1a7a3c", bg: "#e8f7ee", dot: "#2ecc71",  label: "Registered",  category: "live" };
+  if (s.includes("live") && s.includes("pending")) return { color: "#7a5c00", bg: "#fffae8", dot: "#f1c40f",  label: "Pending",     category: "live" };
+  if (s.includes("live"))                          return { color: "#1a7a3c", bg: "#e8f7ee", dot: "#2ecc71",  label: "Live",        category: "live" };
+  if (s.includes("cancel"))                        return { color: "#7a1a1a", bg: "#faeee8", dot: "#e74c3c",  label: "Cancelled",   category: "dead" };
+  if (s.includes("abandon"))                       return { color: "#5a3a1a", bg: "#fdf3e8", dot: "#e67e22",  label: "Abandoned",   category: "dead" };
+  if (s.includes("expir"))                         return { color: "#5a3a1a", bg: "#fdf3e8", dot: "#e67e22",  label: "Expired",     category: "dead" };
+  if (s.includes("dead"))                          return { color: "#7a1a1a", bg: "#faeee8", dot: "#e74c3c",  label: "Dead",        category: "dead" };
+  return                                                  { color: "#555",    bg: "#f0f0f0", dot: "#aaa",     label: status || "Unknown", category: "unknown" };
 }
 
 function riskColor(r) {
@@ -606,8 +611,9 @@ export default function SearchPage() {
   }
 
   const filteredMarks = trademarks.filter(t => {
-    if (filterStatus === "active") return t.isActive;
-    if (filterStatus === "dead") return !t.isActive;
+    if (filterStatus === "active") return statusStyle(t.status).label === "Registered";
+    if (filterStatus === "pending") return statusStyle(t.status).label === "Pending";
+    if (filterStatus === "dead") return statusStyle(t.status).category === "dead";
     return true;
   });
 
@@ -675,7 +681,7 @@ export default function SearchPage() {
               </div>
               {usptoStatus === "done" && trademarks.length > 0 && (
                 <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
-                  {[["all", "All"], ["active", "Active Only"], ["dead", "Dead Marks"]].map(([val, label]) => (
+                  {[["all", "All"], ["active", "Live (Registered)"], ["pending", "Live (Pending)"], ["dead", "Dead"]].map(([val, label]) => (
                     <button key={val} onClick={() => setFilterStatus(val)} style={{ padding: "3px 10px", borderRadius: 20, border: "1px solid", borderColor: filterStatus === val ? "#111" : "#d4e3d9", background: filterStatus === val ? "#111" : "#fff", color: filterStatus === val ? "#fff" : "#6b8a78", fontSize: 10, fontWeight: 600 }}>
                       {label}
                     </button>
@@ -736,7 +742,7 @@ export default function SearchPage() {
                           <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
                             <div style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot, flexShrink: 0 }} />
                             <span style={{ fontSize: 10, fontWeight: 700, color: ss.color, background: ss.bg, padding: "2px 7px", borderRadius: 5 }}>
-                              {t.status?.replace("Live/", "") || "Unknown"}
+                            {ss.label}
                             </span>
                           </div>
                           {t.registrationDate && <div style={{ fontSize: 9, color: "#aab8b2", marginTop: 3 }}>Reg. {t.registrationDate}</div>}
