@@ -693,26 +693,23 @@ export default function SearchPage() {
               {usptoStatus === "done" && filteredMarks.length > 0 && (
                 <>
                   {/* Table header */}
-                  <div style={{ display: "grid", gridTemplateColumns: "2.2fr 1.5fr 65px 120px", gap: 8, padding: "8px 22px", background: "#f8faf9", borderBottom: "1px solid #eef2f0", fontSize: 10, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, position: "sticky", top: 0, zIndex: 5 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "2.2fr 130px", gap: 8, padding: "8px 22px", background: "#f8faf9", borderBottom: "1px solid #eef2f0", fontSize: 10, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, position: "sticky", top: 0, zIndex: 5 }}>
                     <div>Mark / Owner</div>
-                    <div>Goods & Services</div>
-                    <div>Class</div>
                     <div>Status</div>
                   </div>
 
                   {filteredMarks.map((t, i) => {
                     const ss = statusStyle(t.status);
                     return (
-                      <div key={i} style={{ display: "grid", gridTemplateColumns: "2.2fr 1.5fr 65px 120px", gap: 8, padding: "11px 22px", borderBottom: "1px solid #f0f4f2", background: i % 2 === 0 ? "#fff" : "#fafcfb", alignItems: "start" }}>
+                      <div key={i} style={{ display: "grid", gridTemplateColumns: "2.2fr 130px", gap: 8, padding: "11px 22px", borderBottom: "1px solid #f0f4f2", background: i % 2 === 0 ? "#fff" : "#fafcfb", alignItems: "start" }}>
                         <div>
                           <div style={{ fontWeight: 700, fontSize: 13, color: "#111", lineHeight: 1.3 }}>{t.markName}</div>
                           <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>{t.owner}</div>
-                          <div style={{ fontSize: 9, color: "#b0bcb8", marginTop: 1 }}>#{t.serialNumber}{t.filingDate ? ` · ${t.filingDate}` : ""}</div>
+                          <div style={{ fontSize: 9, color: "#b0bcb8", marginTop: 1 }}>
+                            #{t.serialNumber}{t.filingDate ? ` · ${t.filingDate}` : ""}
+                            {t.serialNumber && <a href={`https://tsdr.uspto.gov/#caseNumber=${t.serialNumber}&caseType=SERIAL_NO&searchType=statusSearch`} target="_blank" rel="noreferrer" style={{ marginLeft: 6, color: "#2d7a4f", fontWeight: 600 }}>USPTO ↗</a>}
+                          </div>
                         </div>
-                        <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.4 }}>
-                          {t.description ? t.description.slice(0, 90) + (t.description.length > 90 ? "…" : "") : "-"}
-                        </div>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: "#111" }}>{t.classCode || "-"}</div>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
                             <div style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot, flexShrink: 0 }} />
