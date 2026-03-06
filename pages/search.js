@@ -653,7 +653,7 @@ export default function SearchPage() {
         </div>
 
         {/* Split pane */}
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 480px", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 35%", overflow: "hidden" }}>
 
           {/* LEFT: USPTO results */}
           <div style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRight: "1px solid #d4e0da", background: "#fff" }}>
