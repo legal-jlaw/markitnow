@@ -29,13 +29,16 @@ function scoreColor(s) {
 //  Purchase / Analysis Panel 
 
 function PurchasePanel({ mark, trademarks, loading }) {
+  const { query } = useRouter();
+  const devMode = query.dev === "1"; // ?dev=1 bypasses paywall for testing
+
   const [activeResult, setActiveResult] = useState(null);
   const [goods, setGoods] = useState("");
   const [generating, setGenerating] = useState(false);
   const [report, setReport] = useState(null);
   const [memo, setMemo] = useState(null);
   const [showModal, setShowModal] = useState(null); // "report" | "memo" | null
-  const [isPaid, setIsPaid] = useState(false);
+  const [isPaid, setIsPaid] = useState(devMode); // auto-paid in dev mode
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
