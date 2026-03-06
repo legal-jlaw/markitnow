@@ -65,16 +65,27 @@ export default async function handler(req, res) {
   const trimmed = mark.trim();
   const firstWord = trimmed.split(/\s+/)[0]; // "strange water" → "strange"
 
+  // Debug mode - returns raw first item to inspect field names
+  if (req.query._debug) {
+    const encoded = encodeURIComponent(trimmed);
+    const url = `https://${RAPIDAPI_HOST}/v1/trademarkSearch/${encoded}/all`;
+    const r = await fetch(url, { headers: rapidHeaders(apiKey) });
+    const raw = await r.json();
+    return res.status(200).json({ rawFirstItem: raw.items?.[0], rawKeys: Object.keys(raw.items?.[0] || {}) });
+  }
+
   try {
     // Run parallel queries for broad coverage
     const queries = [
       queryRapidAPI(trimmed, "all", apiKey),           // exact full mark, all statuses
       queryRapidAPI(trimmed, "active", apiKey),        // exact, active only
+      queryRapidAPI(trimmed, "dead", apiKey),          // exact, dead only
     ];
 
     // If multi-word, also search first word for broader results
     if (firstWord.length > 2 && firstWord.toLowerCase() !== trimmed.toLowerCase()) {
       queries.push(queryRapidAPI(firstWord, "active", apiKey));
+      queries.push(queryRapidAPI(firstWord, "dead", apiKey));
     }
 
     const results = await Promise.allSettled(queries);
