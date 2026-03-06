@@ -73,7 +73,17 @@ function PurchasePanel({ mark, trademarks, loading }) {
         const mapped = {
           executiveSummary: data.analysis?.executiveSummary || "",
           overallRiskLevel: data.scoring?.overallRisk || "UNKNOWN",
-          clientConfidenceScore: data.scoring?.overallRisk === "LOW" ? 80 : data.scoring?.overallRisk === "MEDIUM" ? 55 : 25,
+          clientConfidenceScore: (() => {
+            const risk = data.scoring?.overallRisk;
+            const high = data.scoring?.highRiskCount || 0;
+            const med = data.scoring?.mediumRiskCount || 0;
+            const total = data.retrieval?.activeCount || 0;
+            if (risk === "HIGH" || high >= 3) return Math.max(10, 30 - high * 3);
+            if (risk === "MEDIUM" || high >= 1 || med >= 3) return Math.max(30, 60 - high * 5 - med * 2);
+            if (total > 50) return 65; // clean field but crowded space
+            if (total > 20) return 72;
+            return 85;
+          })(),
           whyItCouldWork: data.scoring?.overallRisk === "LOW" || conflicts.filter(c => c.riskScore === "LOW").length > 0
             ? [{ reason: data.analysis?.registrabilityAssessment?.distinctiveness || "Mark appears registrable", explanation: data.analysis?.registrabilityAssessment?.reasoning || "", legalHook: `Registration likelihood: ${data.analysis?.registrabilityAssessment?.likelihood}` }]
             : [{ reason: "Registrability depends on conflict resolution", explanation: data.analysis?.recommendation?.reasoning || "", legalHook: "Likelihood of confusion analysis required" }],
@@ -332,19 +342,31 @@ function PurchasePanel({ mark, trademarks, loading }) {
             </div>
             <div style={{ width: 78, background: `${scoreColor(sc)}11`, border: `2px solid ${scoreColor(sc)}`, borderRadius: 10, padding: 10, textAlign: "center", flexShrink: 0 }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: scoreColor(sc), lineHeight: 1 }}>{sc}</div>
-              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase" }}>Confidence</div>
-              <div style={{ fontSize: 9, fontWeight: 800, marginTop: 3, color: scoreColor(sc) }}>{report.overallRiskLevel}</div>
+              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase" }}>Registrability</div>
+              <div style={{ fontSize: 9, fontWeight: 800, marginTop: 3, color: scoreColor(sc) }}>{report.overallRiskLevel === "LOW" ? "LOW RISK" : report.overallRiskLevel === "MEDIUM" ? "MED RISK" : report.overallRiskLevel === "HIGH" ? "HIGH RISK" : report.overallRiskLevel}</div>
             </div>
           </div>
 
           {/* First "why it could work" item - always visible */}
           {report.whyItCouldWork?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Why It Could Work</div>
+              <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}>✓ Why It Could Work</div>
               <div style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
                 <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{report.whyItCouldWork[0].reason}</div>
                 <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{report.whyItCouldWork[0].explanation}</div>
                 {report.whyItCouldWork[0].legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{report.whyItCouldWork[0].legalHook}</div>}
+              </div>
+            </div>
+          )}
+
+          {/* First adverse factor - always visible */}
+          {report.whyItMightNotWork?.length > 0 && (
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}>⚠ Key Risk Factor</div>
+              <div style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10 }}>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{report.whyItMightNotWork[0].reason}</div>
+                <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{report.whyItMightNotWork[0].explanation}</div>
+                {report.whyItMightNotWork[0].legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{report.whyItMightNotWork[0].legalHook}</div>}
               </div>
             </div>
           )}
@@ -693,7 +715,7 @@ export default function SearchPage() {
               {usptoStatus === "done" && filteredMarks.length > 0 && (
                 <>
                   {/* Table header */}
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 22px", background: "#f8faf9", borderBottom: "1px solid #eef2f0", fontSize: 10, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, position: "sticky", top: 0, zIndex: 5 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 16, padding: "8px 22px", background: "#f8faf9", borderBottom: "1px solid #eef2f0", fontSize: 10, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, position: "sticky", top: 0, zIndex: 5 }}>
                     <div>Mark / Owner</div>
                     <div>Status</div>
                   </div>
@@ -701,8 +723,8 @@ export default function SearchPage() {
                   {filteredMarks.map((t, i) => {
                     const ss = statusStyle(t.status);
                     return (
-                      <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "start", padding: "11px 22px", borderBottom: "1px solid #f0f4f2", background: i % 2 === 0 ? "#fff" : "#fafcfb" }}>
-                        <div style={{ flex: 1, minWidth: 0, marginRight: 12 }}>
+                      <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 16, padding: "11px 22px", borderBottom: "1px solid #f0f4f2", background: i % 2 === 0 ? "#fff" : "#fafcfb", alignItems: "start" }}>
+                        <div>
                           <div style={{ fontWeight: 700, fontSize: 13, color: "#111", lineHeight: 1.3 }}>{t.markName}</div>
                           <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>{t.owner}</div>
                           <div style={{ fontSize: 9, color: "#b0bcb8", marginTop: 1 }}>
