@@ -34,6 +34,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
   const [generating, setGenerating] = useState(false);
   const [report, setReport] = useState(null);
   const [memo, setMemo] = useState(null);
+  const [showModal, setShowModal] = useState(null); // "report" | "memo" | null
   const [isPaid, setIsPaid] = useState(false);
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
@@ -188,6 +189,43 @@ function PurchasePanel({ mark, trademarks, loading }) {
   if (!activeResult) {
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+
+        {/* Modal overlay */}
+        {showModal && (
+          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+            <div style={{ background: "#fff", borderRadius: 14, padding: 24, width: "100%", maxWidth: 400, boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+              <div style={{ fontWeight: 900, fontSize: 16, color: "#111", marginBottom: 4 }}>
+                {showModal === "report" ? "🔍 Run AI Analysis Report" : "⚖️ Generate AI Legal Memo"}
+              </div>
+              <div style={{ fontSize: 12, color: "#6b8a78", marginBottom: 16, lineHeight: 1.5 }}>
+                Tell us what your brand does so we can assess goods &amp; services similarity — one of the most important DuPont factors.
+              </div>
+              <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#111", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8 }}>
+                What does your brand do?
+              </label>
+              <textarea
+                value={goods}
+                onChange={e => setGoods(e.target.value)}
+                placeholder="e.g. Sparkling water and health beverages sold online..."
+                autoFocus
+                style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1.5px solid #d4e3d9", fontSize: 12, fontFamily: "inherit", background: "#f8faf9", color: "#1a2e23", outline: "none", resize: "none", minHeight: 70, boxSizing: "border-box", marginBottom: 14 }}
+              />
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={() => setShowModal(null)} style={{ flex: 1, padding: "9px", background: "#f4f4f4", color: "#555", border: "none", borderRadius: 8, fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
+                  Cancel
+                </button>
+                <button
+                  onClick={() => { setShowModal(null); generate(showModal); }}
+                  style={{ flex: 2, padding: "9px", background: showModal === "memo" ? "#c9a84c" : "#111", color: showModal === "memo" ? "#0a0a0a" : "#fff", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}
+                >
+                  {showModal === "report" ? "Run Analysis →" : "Generate Memo →"}
+                </button>
+              </div>
+              <div style={{ fontSize: 10, color: "#aaa", marginTop: 10, textAlign: "center" }}>You can skip this — we'll analyze based on mark name alone.</div>
+            </div>
+          </div>
+        )}
+
         <div style={{ padding: "20px 24px", borderBottom: "1px solid #eef2f0" }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>AI Analysis</div>
           <h3 style={{ fontSize: 18, fontWeight: 900, color: "#111", margin: "0 0 6px" }}>
@@ -242,19 +280,6 @@ function PurchasePanel({ mark, trademarks, loading }) {
         )}
 
         <div style={{ padding: "16px 20px", flex: 1, overflowY: "auto" }}>
-          {/* Goods input */}
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#111", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8 }}>
-              What does your brand do?
-            </label>
-            <textarea
-              value={goods}
-              onChange={e => setGoods(e.target.value)}
-              placeholder="e.g. Sparkling water and health beverages sold online..."
-              style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1.5px solid #d4e3d9", fontSize: 12, fontFamily: "inherit", background: "#f8faf9", color: "#1a2e23", outline: "none", resize: "none", minHeight: 60, boxSizing: "border-box" }}
-            />
-          </div>
-
           {/* AI Analysis Report card */}
           <div style={{ border: "1.5px solid #d4e3d9", borderRadius: 12, padding: 16, marginBottom: 12, background: "#fff" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
@@ -267,7 +292,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
             <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.6, marginBottom: 12 }}>
               Summary + pros/cons + conflict breakdown. Full PDF (with DuPont memo) unlocks for $99.
             </div>
-            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+            <button onClick={() => setShowModal("report")} style={{ width: "100%", padding: "9px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
               Run AI Analysis Report →
             </button>
           </div>
@@ -284,7 +309,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
             <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.6, marginBottom: 12 }}>
               Full legal memo w/ DuPont 13-factor analysis, risk matrix, prosecution strategy. PDF unlocks for $149.
             </div>
-            <button onClick={() => generate("memo")} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
+            <button onClick={() => setShowModal("memo")} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
               Generate AI Legal Memo - $149 →
             </button>
           </div>
@@ -653,7 +678,7 @@ export default function SearchPage() {
         </div>
 
         {/* Split pane */}
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 40%", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 30%", overflow: "hidden" }}>
 
           {/* LEFT: USPTO results */}
           <div style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRight: "1px solid #d4e0da", background: "#fff" }}>
@@ -729,46 +754,46 @@ export default function SearchPage() {
                           {/* Wordmark header */}
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
                             <div>
-                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Wordmark</div>
-                              <div style={{ fontWeight: 900, fontSize: 14, color: "#111", letterSpacing: 0.5, fontFamily: "Georgia, serif" }}>{t.markName}</div>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Wordmark</div>
+                              <div style={{ fontWeight: 900, fontSize: 16, color: "#111", letterSpacing: 0.5, fontFamily: "Georgia, serif" }}>{t.markName}</div>
                             </div>
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
                               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot }} />
-                                <span style={{ fontSize: 9, fontWeight: 800, color: ss.color, background: ss.bg, padding: "1px 6px", borderRadius: 4 }}>{ss.category === "live" ? "Live" : "Dead"} / {ss.label}</span>
+                                <span style={{ fontSize: 10, fontWeight: 800, color: ss.color, background: ss.bg, padding: "1px 6px", borderRadius: 4 }}>{ss.category === "live" ? "Live" : "Dead"} / {ss.label}</span>
                               </div>
-                              {t.registrationDate && <div style={{ fontSize: 8, color: "#aab8b2" }}>Reg. {t.registrationDate}</div>}
+                              {t.registrationDate && <div style={{ fontSize: 9, color: "#aab8b2" }}>Reg. {t.registrationDate}</div>}
                             </div>
                           </div>
 
                           {/* Detail grid */}
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5px 12px", fontSize: 10 }}>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5px 12px", fontSize: 12 }}>
                             <div>
-                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Serial</div>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Serial</div>
                               <div style={{ color: "#111", fontWeight: 600 }}>
                                 {t.serialNumber}
                                 {t.serialNumber && (
-                                  <a href={`https://tsdr.uspto.gov/#caseNumber=${t.serialNumber}&caseType=SERIAL_NO&searchType=statusSearch`} target="_blank" rel="noreferrer" style={{ marginLeft: 5, color: "#2d7a4f", fontWeight: 700, fontSize: 9 }}>USPTO ↗</a>
+                                  <a href={`https://tsdr.uspto.gov/#caseNumber=${t.serialNumber}&caseType=SERIAL_NO&searchType=statusSearch`} target="_blank" rel="noreferrer" style={{ marginLeft: 5, color: "#2d7a4f", fontWeight: 700, fontSize: 10 }}>USPTO ↗</a>
                                 )}
                               </div>
                             </div>
                             <div>
-                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Filing Date</div>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Filing Date</div>
                               <div style={{ color: "#111" }}>{t.filingDate || "—"}</div>
                             </div>
                             <div style={{ gridColumn: "1 / -1" }}>
-                              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Owner</div>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Owner</div>
                               <div style={{ color: "#111" }}>{t.owner}</div>
                             </div>
                             {t.classCode && (
                               <div>
-                                <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Class</div>
+                                <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Class</div>
                                 <div style={{ color: "#111", fontWeight: 600 }}>{t.classCode}</div>
                               </div>
                             )}
                             {t.description && (
                               <div style={{ gridColumn: "1 / -1" }}>
-                                <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Goods &amp; Services</div>
+                                <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Goods &amp; Services</div>
                                 <div style={{ color: "#4a7060", lineHeight: 1.4 }}>{t.description}</div>
                               </div>
                             )}
