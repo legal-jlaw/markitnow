@@ -1,6 +1,140 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// AGENT 2: impression-agent
+// Reads UTM params + referrer on widget open.
+// Returns a personalized greeting and suggested questions.
+// Pure frontend - no API call needed.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function getImpressionContext() {
+  if (typeof window === "undefined") return { source: "direct", medium: null, campaign: null, referrer: null };
+  const params = new URLSearchParams(window.location.search);
+  const source = params.get("utm_source") || null;
+  const medium = params.get("utm_medium") || null;
+  const campaign = params.get("utm_campaign") || null;
+  const referrer = document.referrer || null;
+
+  // Normalize referrer to domain
+  let referrerDomain = null;
+  try {
+    if (referrer) referrerDomain = new URL(referrer).hostname.replace("www.", "");
+  } catch { /* ignore */ }
+
+  return { source, medium, campaign, referrer: referrerDomain };
+}
+
+function getPersonalizedGreeting(ctx) {
+  const { source, medium, campaign, referrer } = ctx;
+  const s = (source || "").toLowerCase();
+  const m = (medium || "").toLowerCase();
+  const c = (campaign || "").toLowerCase();
+  const r = (referrer || "").toLowerCase();
+
+  // Google Ads
+  if (s === "google" && m === "cpc") {
+    return {
+      message: "Looks like you searched for trademark help - good instinct. The biggest mistake people make is filing without checking for conflicts first. Want me to walk you through a free search?",
+      suggested: [
+        "How do I check if my name is taken?",
+        "What does it cost to file a trademark?",
+        "How long does trademark registration take?",
+        "What is a likelihood of confusion refusal?",
+      ],
+    };
+  }
+
+  // Google organic
+  if (s === "google" || r.includes("google")) {
+    return {
+      message: "Hey - you found us through Google. Most people land here because they're about to file or just got a rejection. Which one is you?",
+      suggested: [
+        "I want to trademark my brand name",
+        "I got an Office Action - what do I do?",
+        "How do I search for conflicting trademarks?",
+        "What is the USPTO filing fee?",
+      ],
+    };
+  }
+
+  // Instagram / TikTok / social
+  if (s === "instagram" || s === "tiktok" || s === "facebook" || m === "social") {
+    return {
+      message: "Saw us on social? Quick version: you can search the entire USPTO trademark database for free right here. Takes 10 seconds. Want to try it?",
+      suggested: [
+        "Is my brand name available to trademark?",
+        "How much does trademarking actually cost?",
+        "Can I trademark a logo?",
+        "What happens if I don't trademark my brand?",
+      ],
+    };
+  }
+
+  // Email campaign
+  if (m === "email" || s === "email") {
+    return {
+      message: "Welcome back. If you're here from our email, you're probably looking at next steps for your trademark. I can help with that - what's on your mind?",
+      suggested: [
+        "What are my next steps after searching?",
+        "How do I file a trademark application?",
+        "What is the Watch plan and do I need it?",
+        "How long until my trademark is registered?",
+      ],
+    };
+  }
+
+  // Referral from legal blog or law-related site
+  if (r.includes("avvo") || r.includes("justia") || r.includes("nolo") || r.includes("law") || r.includes("legal") || r.includes("attorney")) {
+    return {
+      message: "Came from a legal resource? You're already doing your homework - that's the right move. What specific trademark question can I help you with?",
+      suggested: [
+        "What are the 13 DuPont factors?",
+        "What is a Section 2(d) refusal?",
+        "Do I need an attorney to file a trademark?",
+        "What is TEAS Plus vs TEAS Standard?",
+      ],
+    };
+  }
+
+  // Pricing page
+  if (typeof window !== "undefined" && window.location.pathname.includes("pricing")) {
+    return {
+      message: "Looking at pricing? Happy to help you figure out which service fits your situation. What are you trying to protect?",
+      suggested: [
+        "What is included in the AI Analysis Report?",
+        "What is the difference between Watch and Defend?",
+        "Do I need an attorney to file?",
+        "What happens after I pay?",
+      ],
+    };
+  }
+
+  // Search results page - they just searched
+  if (typeof window !== "undefined" && window.location.pathname.includes("search")) {
+    return {
+      message: "You just ran a search - want me to explain what those results mean and whether any of them are a real risk to your filing?",
+      suggested: [
+        "How do I read USPTO search results?",
+        "What makes a trademark conflict serious?",
+        "Should I be worried about similar marks in other classes?",
+        "What is the next step after searching?",
+      ],
+    };
+  }
+
+  // Default generic
+  return {
+    message: "Hi, I'm MarkitBot. I can answer questions about trademark registration, USPTO fees, deadlines, and MarkItNow's services. What can I help you with?",
+    suggested: [
+      "Is my brand name available to trademark?",
+      "What does an Office Action mean?",
+      "How much does it cost to file a trademark?",
+      "What happens if I miss a trademark deadline?",
+    ],
+  };
+}
+
 const SUGGESTED = [
   "Is my brand name available to trademark?",
   "What does an Office Action mean?",
@@ -55,10 +189,16 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const [showSuggested, setShowSuggested] = useState(true);
   const [showClosingCard, setShowClosingCard] = useState(false);
+  const [impression, setImpression] = useState(null);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
 
+  // impression-agent: runs once on first open, reads UTM + referrer
   useEffect(() => {
+    if (open && !impression) {
+      const ctx = getImpressionContext();
+      setImpression(getPersonalizedGreeting(ctx));
+    }
     if (open && inputRef.current) inputRef.current.focus();
   }, [open]);
 
@@ -148,21 +288,21 @@ export default function ChatWidget() {
           {/* Messages */}
           <div style={{ flex: 1, overflowY: "auto", padding: "16px", display: "flex", flexDirection: "column", gap: 12 }}>
 
-            {/* Welcome message */}
+            {/* Welcome message - personalized by impression-agent */}
             {messages.length === 0 && (
               <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                 <BotAvatar />
                 <div style={{ background: "#f4f4f4", borderRadius: "4px 16px 16px 16px", padding: "12px 14px", maxWidth: "85%", fontSize: 13, color: "#333", lineHeight: 1.6 }}>
-                  Hi, I'm MarkitBot. I can answer questions about trademark registration, USPTO fees, deadlines, and MarkItNow's services. What can I help you with?
+                  {impression?.message || "Hi, I'm MarkitBot. I can answer questions about trademark registration, USPTO fees, deadlines, and MarkItNow's services. What can I help you with?"}
                 </div>
               </div>
             )}
 
-            {/* Suggested questions */}
+            {/* Suggested questions - personalized by impression-agent */}
             {showSuggested && messages.length === 0 && (
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 4 }}>
                 <div style={{ fontSize: 11, color: "#aaa", fontWeight: 600, paddingLeft: 38 }}>SUGGESTED</div>
-                {SUGGESTED.map(q => (
+                {(impression?.suggested || SUGGESTED).map(q => (
                   <button key={q} onClick={() => sendMessage(q)}
                     style={{ textAlign: "left", background: "#fff", border: "1px solid #e8e8e8", borderRadius: 10, padding: "9px 14px", fontSize: 12, color: "#444", cursor: "pointer", fontFamily: "Poppins, sans-serif", lineHeight: 1.4 }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = "#c9a84c"}
