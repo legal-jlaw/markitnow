@@ -96,22 +96,31 @@ function PurchasePanel({ mark, trademarks, loading }) {
         setReport(mapped);
 
       } else {
-        // Use Agent 8 (memo-agent) - full legal memo
-        const res = await fetch("/api/memo-agent", {
+        // Step 1: Run analysis-agent to get conflict data
+        const analysisRes = await fetch("/api/analysis-agent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ mark, goodsServices: goods, classCode: null }),
         });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
+        const analysisData = await analysisRes.json();
+        if (analysisData.error) throw new Error(analysisData.error);
 
-        // Map memo-agent output to existing memo display format
-        const memo = data.memo || {};
+        // Step 2: Pass analysis result to memo-draft (single Claude call, fast)
+        const memoRes = await fetch("/api/memo-draft", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mark, goodsServices: goods, report: analysisData }),
+        });
+        const memoData = await memoRes.json();
+        if (memoData.error) throw new Error(memoData.error);
+
+        // Map to display format
+        const memo = memoData.memo || {};
         const dupont = memo.sectionIII?.subsections || [];
         const mapped = {
           memoSummary: memo.executiveSummary || "",
-          overallLegalAssessment: data.report?.overallRisk || "UNKNOWN",
-          recommendProceed: !["REBRAND_RECOMMENDED", "CONSULT_ATTORNEY"].includes(memo.sectionVI?.conclusion),
+          overallLegalAssessment: analysisData.scoring?.overallRisk || "UNKNOWN",
+          recommendProceed: !["REBRAND_RECOMMENDED", "CONSULT_ATTORNEY"].includes(analysisData.analysis?.recommendation?.action),
           proceedRationale: memo.sectionVI?.filingStrategy || "",
           whyItCouldWork: (memo.sectionVI?.recommendations || []).map(r => ({ argument: r, analysis: r, citations: [] })),
           whyItMightNotWork: (memo.sectionV?.conflicts || []).filter(c => c.riskLevel === "HIGH").slice(0, 3).map(c => ({
@@ -135,7 +144,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
             severity: c.riskLevel || "MEDIUM",
             mitigation: c.analysis,
           })),
-          _agentData: data,
+          _agentData: { analysis: analysisData, memo: memoData },
         };
         setMemo(mapped);
       }
