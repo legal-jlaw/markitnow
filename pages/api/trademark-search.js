@@ -71,7 +71,7 @@ export default async function handler(req, res) {
     const url = `https://${RAPIDAPI_HOST}/v1/trademarkSearch/${encoded}/all`;
     const r = await fetch(url, { headers: rapidHeaders(apiKey) });
     const raw = await r.json();
-    return res.status(200).json({ rawFirstItem: raw.items?.[0], rawKeys: Object.keys(raw.items?.[0] || {}) });
+    return res.status(200).json({ rawFirstItem: raw.items?.[0], rawKeys: Object.keys(raw.items?.[0] || {}), rawTotal: raw.total, rawCount: raw.count, rawError: raw.message || raw.error, rawStatus: r.status });
   }
 
   try {
