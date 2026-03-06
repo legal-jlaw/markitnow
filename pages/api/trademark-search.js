@@ -10,7 +10,7 @@
 // GET /api/trademark-search?mark=nike&_debug=1
 // ─────────────────────────────────────────────────────────────────────────────
 
-const MARKER_BASE = "https://markerapi.com/api/v2/trademarks";
+const MARKER_BASE = "https://dev.markerapi.com/api/v2/trademarks";
 
 function resolveStatus(item) {
   const code = String(item.statuscode || "");
@@ -31,7 +31,7 @@ function normalizeItem(t) {
   const statusLabel = resolveStatus(t);
   const isActive = statusLabel.toLowerCase().startsWith("live");
   return {
-    markName:         t.trademark || "",
+    markName:         t.wordmark || t.trademark || "",
     serialNumber:     t.serialnumber || "",
     owner:            t.owner || "Unknown",
     status:           statusLabel,
