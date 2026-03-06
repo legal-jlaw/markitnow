@@ -625,7 +625,7 @@ export default function SearchPage() {
         </div>
 
         {/* Split pane */}
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 420px", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 480px", overflow: "hidden" }}>
 
           {/* LEFT: USPTO results */}
           <div style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRight: "1px solid #d4e0da", background: "#fff" }}>
@@ -693,7 +693,7 @@ export default function SearchPage() {
               {usptoStatus === "done" && filteredMarks.length > 0 && (
                 <>
                   {/* Table header */}
-                  <div style={{ display: "grid", gridTemplateColumns: "2.2fr 130px", gap: 8, padding: "8px 22px", background: "#f8faf9", borderBottom: "1px solid #eef2f0", fontSize: 10, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, position: "sticky", top: 0, zIndex: 5 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 22px", background: "#f8faf9", borderBottom: "1px solid #eef2f0", fontSize: 10, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, position: "sticky", top: 0, zIndex: 5 }}>
                     <div>Mark / Owner</div>
                     <div>Status</div>
                   </div>
@@ -701,8 +701,8 @@ export default function SearchPage() {
                   {filteredMarks.map((t, i) => {
                     const ss = statusStyle(t.status);
                     return (
-                      <div key={i} style={{ display: "grid", gridTemplateColumns: "2.2fr 130px", gap: 8, padding: "11px 22px", borderBottom: "1px solid #f0f4f2", background: i % 2 === 0 ? "#fff" : "#fafcfb", alignItems: "start" }}>
-                        <div>
+                      <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "start", padding: "11px 22px", borderBottom: "1px solid #f0f4f2", background: i % 2 === 0 ? "#fff" : "#fafcfb" }}>
+                        <div style={{ flex: 1, minWidth: 0, marginRight: 12 }}>
                           <div style={{ fontWeight: 700, fontSize: 13, color: "#111", lineHeight: 1.3 }}>{t.markName}</div>
                           <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>{t.owner}</div>
                           <div style={{ fontSize: 9, color: "#b0bcb8", marginTop: 1 }}>
