@@ -137,7 +137,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
               analysis: s.analysis,
             })),
           },
-          prosecutionStrategy: (memo.sectionVI?.recommendations || []).map(r => ({ action: r, rationale: r, citation: "" })),
+          prosecutionStrategy: (memo.sectionVI?.recommendations || []).slice(0, 2).map(r => ({ action: r, rationale: r, citation: "" })),
           riskMatrix: (memo.sectionV?.conflicts || []).map(c => ({
             risk: c.markName,
             likelihood: c.riskLevel || "MEDIUM",
@@ -257,11 +257,11 @@ function PurchasePanel({ mark, trademarks, loading }) {
             </button>
           </div>
 
-          {/* Attorney Memo card */}
+          {/* AI Legal Memo card */}
           <div style={{ border: "2px solid #c9a84c", borderRadius: 12, padding: 16, marginBottom: 12, background: "#fffdf7" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>️ Attorney Memo</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>️ AI Legal Memo</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>DuPont analysis · Case citations · Prosecution strategy</div>
               </div>
               <div style={{ background: "#c9a84c", color: "#0a0a0a", fontWeight: 800, fontSize: 11, padding: "3px 8px", borderRadius: 5 }}>Free Preview</div>
@@ -270,7 +270,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
               Full legal memo w/ DuPont 13-factor analysis, risk matrix, prosecution strategy. PDF unlocks for $149.
             </div>
             <button onClick={() => generate("memo")} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
-              Generate Attorney Memo - $149 →
+              Generate AI Legal Memo - $149 →
             </button>
           </div>
 
@@ -401,19 +401,19 @@ function PurchasePanel({ mark, trademarks, loading }) {
           </div>
 
           <button onClick={() => { setActiveResult(null); setReport(null); generate("memo"); }} style={{ marginTop: 10, width: "100%", padding: "9px", background: "#fffdf7", border: "2px solid #c9a84c", borderRadius: 8, fontWeight: 700, fontSize: 11, color: "#7a5c00" }}>
-            Also generate Attorney Memo →
+            Also generate AI Legal Memo →
           </button>
         </div>
       </div>
     );
   }
 
-  //  Attorney Memo result 
+  //  AI Legal Memo result 
   if (activeResult === "memo" && memo) {
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>️ Attorney Memo</div>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>️ AI Legal Memo</div>
           <button onClick={() => { setActiveResult(null); setMemo(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#111" }}>← Back</button>
         </div>
 
@@ -441,6 +441,19 @@ function PurchasePanel({ mark, trademarks, loading }) {
                   </span>
                 </div>
               ))}
+              {/* Teaser for remaining 11 factors */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: "linear-gradient(135deg, #fffdf7, #fff8e8)", border: "1.5px dashed #c9a84c", borderRadius: 8, marginTop: 4 }}>
+                <div style={{ display: "flex", gap: 4 }}>
+                  {[3,4,5,6,7,8,9,10,11,12,13].map(n => (
+                    <div key={n} style={{ width: 18, height: 18, borderRadius: "50%", background: "#e8d8a0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, fontWeight: 800, color: "#7a5c00" }}>{n}</div>
+                  ))}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#7a5c00" }}>+11 more DuPont factors analyzed</div>
+                  <div style={{ fontSize: 9, color: "#a07840" }}>Channels of trade · Mark strength · Actual confusion · Buyer sophistication · more</div>
+                </div>
+                <span style={{ fontSize: 9, fontWeight: 800, color: "#7a5c00", background: "#fde68a", padding: "3px 8px", borderRadius: 4, whiteSpace: "nowrap" }}>PDF $149</span>
+              </div>
             </div>
           )}
 
@@ -482,7 +495,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
           <div style={{ background: "#fffdf7", borderRadius: 10, padding: 14, border: "2px solid #c9a84c" }}>
             {!isPaid ? (
               <>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}> Full Attorney Memo PDF</div>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}> Full AI Legal Memo PDF</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>Complete work product printable, shareable, attorney-reviewed</div>
                 <button onClick={() => handlePurchase("memo", 149)} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
                   Unlock Memo PDF $149
