@@ -1,3 +1,5 @@
+import { runAnalysis } from "../../lib/analysisCore";
+
 // pages/api/memo-agent.js
 // ─────────────────────────────────────────────────────────────────────────────
 // AGENT 8: memo-agent
@@ -27,27 +29,13 @@
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
 // Use VERCEL_URL in production (auto-set by Vercel), fallback to markitnow-two for testing
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
-  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
-  || "https://markitnow-two.vercel.app";
 
-// ── Step 1: Get analysis report (run agent or use provided) ───────────────────
+
+// ── Step 1: Get analysis report (run inline - no HTTP call) ──────────────────
 
 async function stepGetReport(mark, goodsServices, classCode, existingReport) {
   if (existingReport) return existingReport;
-
-  const res = await fetch(`${BASE_URL}/api/analysis-agent`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mark, goodsServices, classCode }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(`Analysis agent failed: ${err.error}`);
-  }
-
-  return res.json();
+  return runAnalysis(mark, goodsServices, classCode, null);
 }
 
 // ── Step 2: Draft legal memo ──────────────────────────────────────────────────
