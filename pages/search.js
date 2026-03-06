@@ -130,7 +130,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
           })),
           duPontAnalysis: {
             overview: memo.sectionIII?.overallConclusion || "",
-            factors: dupont.map((s, i) => ({
+            factors: dupont.slice(0, 2).map((s, i) => ({
               factor: s.factor,
               number: i + 1,
               finding: s.weight === "FAVORS_APPLICANT" ? "FAVORABLE" : s.weight === "FAVORS_REGISTRANT" ? "UNFAVORABLE" : "NEUTRAL",
