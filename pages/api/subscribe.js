@@ -8,13 +8,31 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const { email, mark, source } = req.body;
+  const { email, mark, source, conflictCount, activeCount, goodsServices } = req.body;
   if (!email?.trim()) return res.status(400).json({ error: "Email required" });
 
   const apiKey = process.env.RESEND_API_KEY;
 
   // Log capture regardless of email provider status
   console.log("EMAIL CAPTURE:", { email, mark, source, timestamp: new Date().toISOString() });
+
+  // ── lead-profile-agent: fire and forget ──
+  // Profiles the lead, segments them, generates personalized email copy
+  // Non-blocking - subscribe response is not delayed
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://markitnow-two.vercel.app";
+  fetch(`${baseUrl}/api/lead-profile-agent`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, mark, conflictCount, activeCount, goodsServices, source }),
+  }).then(async (r) => {
+    const profile = await r.json();
+    console.log("LEAD PROFILE:", JSON.stringify({
+      email,
+      segment: profile.segment?.segment,
+      urgencyScore: profile.profile?.urgencyScore,
+      subject: profile.emailCopy?.subject,
+    }));
+  }).catch((e) => console.error("lead-profile-agent error:", e));
 
   if (!apiKey) {
     console.warn("RESEND_API_KEY not set - email not sent");
@@ -43,7 +61,7 @@ export default async function handler(req, res) {
       fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "https://markitnow-two.vercel.app"}/api/drip`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, mark, day: d.day, subject: d.subject }),
+        body: JSON.stringify({ email, mark, day: d.day, subject: d.subject, apiKey }),
       }).catch(() => {}); // Non-blocking
     }
 
