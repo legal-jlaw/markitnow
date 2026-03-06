@@ -29,6 +29,11 @@ function resolveStatus(src) {
 }
 
 function normalizeItem(src) {
+  // Drawing codes: 1=Typeset, 2=Design only, 3=Design+Words, 4=Standard Char, 5=Stylized, 6=No drawing
+  // Filter out pure design marks (code 2) — no wordmark to conflict with
+  const drawingCode = src.drawingCode || 4;
+  if (drawingCode === 2) return null;
+
   const statusLabel = resolveStatus(src);
   const isActive    = statusLabel.startsWith("Live");
 
@@ -41,6 +46,11 @@ function normalizeItem(src) {
 
   const owner = (src.ownerName || [])[0] || src.ownerFullText?.[0] || "Unknown";
 
+  const markTypeLabel = drawingCode === 4 ? "Standard Character" :
+                        drawingCode === 1 ? "Typeset" :
+                        drawingCode === 3 ? "Design + Words" :
+                        drawingCode === 5 ? "Stylized" : "Wordmark";
+
   return {
     markName:         src.wordmark || "",
     serialNumber:     String(src.id || ""),
@@ -50,6 +60,8 @@ function normalizeItem(src) {
     registrationDate: src.registrationDate ? src.registrationDate.split("T")[0] : "",
     classCode:        classes,
     description:      desc,
+    markType:         markTypeLabel,
+    drawingCode,
     isActive,
   };
 }
@@ -80,7 +92,7 @@ async function queryUSPTO(esQuery) {
     }
 
     const hits = data.hits?.hits || [];
-    return hits.map(h => normalizeItem(h.source || {}));
+    return hits.map(h => normalizeItem(h.source || {})).filter(Boolean);
   } catch (err) {
     console.error(`[USPTO] fetch error: ${err.message}`);
     return [];
