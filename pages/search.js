@@ -381,9 +381,9 @@ function PurchasePanel({ mark, trademarks, loading }) {
                 })()}
               </p>
             </div>
-            <div style={{ width: 92, background: `${scoreColor(sc)}11`, border: `2px solid ${scoreColor(sc)}`, borderRadius: 10, padding: 10, textAlign: "center", flexShrink: 0 }}>
+            <div style={{ width: 100, background: `${scoreColor(sc)}11`, border: `2px solid ${scoreColor(sc)}`, borderRadius: 10, padding: 10, textAlign: "center", flexShrink: 0 }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: scoreColor(sc), lineHeight: 1 }}>{sc}</div>
-              <div style={{ fontSize: 7.5, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.5 }}>Registrability</div>
+              <div style={{ fontSize: 7, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase", letterSpacing: 0, whiteSpace: "nowrap" }}>Registrability</div>
               <div style={{ fontSize: 9, fontWeight: 800, marginTop: 3, color: scoreColor(sc) }}>{report.overallRiskLevel === "LOW" ? "LOW RISK" : report.overallRiskLevel === "MEDIUM" ? "MED RISK" : report.overallRiskLevel === "HIGH" ? "HIGH RISK" : report.overallRiskLevel}</div>
             </div>
           </div>
@@ -793,7 +793,7 @@ export default function SearchPage() {
                           {/* Wordmark header */}
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
                             <div>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>Wordmark</div>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>{t.markType || "Wordmark"}</div>
                               <div style={{ fontWeight: 900, fontSize: 16, color: "#111", letterSpacing: 0.5, fontFamily: "Georgia, serif" }}>{t.markName}</div>
                             </div>
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
