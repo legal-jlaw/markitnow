@@ -99,6 +99,40 @@ async function queryUSPTO(esQuery) {
   }
 }
 
+// Sound-alike variant generator (USPTO TMEP § 1207.01(b)(i))
+function phoneticVariants(word) {
+  const w = word.toLowerCase();
+  const variants = new Set();
+  const rules = [
+    [/ph/g, "f"],    [/f/g, "ph"],
+    [/ck/g, "k"],    [/k/g, "ck"],
+    [/qu/g, "kw"],   [/kw/g, "qu"],
+    [/x/g, "ks"],    [/ks/g, "x"],
+    [/z/g, "s"],     [/s/g, "z"],
+    [/ight/g, "ite"],[/ite/g, "ight"],
+    [/oo/g, "u"],    [/u/g, "oo"],
+    [/ie/g, "y"],    [/y/g, "ie"],
+    [/ea/g, "ee"],   [/ee/g, "ea"],
+    [/tion/g, "shun"],
+    [/c(?=[ei])/g, "s"],
+    [/c(?=[^ei])/g, "k"],
+  ];
+  for (const [pattern, replacement] of rules) {
+    const v = w.replace(pattern, replacement);
+    if (v !== w && v.length > 2) variants.add(v);
+  }
+  const words = w.split(/\s+/);
+  if (words.length > 1) {
+    for (const wd of words) {
+      for (const [pattern, replacement] of rules) {
+        const v = wd.replace(pattern, replacement);
+        if (v !== wd && v.length > 2) variants.add(v);
+      }
+    }
+  }
+  return [...variants].slice(0, 4);
+}
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
@@ -143,28 +177,28 @@ export default async function handler(req, res) {
     }
   }
 
+  const phonetics = phoneticVariants(trimmed);
+
   try {
     const queries = [
-      queryUSPTO({
-        query: { match_phrase: { wordmark: trimmed } },
-        from:  0,
-        size:  PAGE_SIZE,
-      }),
-      queryUSPTO({
-        query: { query_string: { query: trimmed, default_field: "wordmark" } },
-        from:  0,
-        size:  PAGE_SIZE,
-      }),
+      // 1. Exact phrase
+      queryUSPTO({ query: { match_phrase: { wordmark: trimmed } }, from: 0, size: PAGE_SIZE }),
+      // 2. Token-level query_string
+      queryUSPTO({ query: { query_string: { query: trimmed, default_field: "wordmark" } }, from: 0, size: PAGE_SIZE }),
+      // 3. Wildcard prefix (catches "MAYAN WARRIOR GALAXYER")
+      queryUSPTO({ query: { query_string: { query: `${trimmed}*`, default_field: "wordmark" } }, from: 0, size: 25 }),
+      // 4. Fuzzy edit-distance (catches PHAZE, stylized variants)
+      queryUSPTO({ query: { match: { wordmark: { query: trimmed, fuzziness: "AUTO", prefix_length: 1 } } }, from: 0, size: 25 }),
     ];
 
     if (isMultiWord && firstWord.length > 2) {
-      queries.push(
-        queryUSPTO({
-          query: { match_phrase: { wordmark: firstWord } },
-          from:  0,
-          size:  PAGE_SIZE,
-        })
-      );
+      queries.push(queryUSPTO({ query: { match_phrase: { wordmark: firstWord } }, from: 0, size: 25 }));
+      queries.push(queryUSPTO({ query: { match: { wordmark: { query: firstWord, fuzziness: "AUTO", prefix_length: 1 } } }, from: 0, size: 15 }));
+    }
+
+    // 5. Phonetic sound-alike variants (NITE→NIGHT, KOOL→COOL, etc.)
+    for (const variant of phonetics) {
+      queries.push(queryUSPTO({ query: { match: { wordmark: { query: variant, fuzziness: "1", prefix_length: 1 } } }, from: 0, size: 15 }));
     }
 
     const results   = await Promise.allSettled(queries);
