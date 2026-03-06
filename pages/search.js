@@ -335,7 +335,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: 32, textAlign: "center" }}>
         <div style={{ fontSize: 44, marginBottom: 16 }}>️</div>
         <div style={{ fontWeight: 800, fontSize: 16, color: "#111", marginBottom: 6 }}>
-          {activeResult === "report" ? "Analyzing conflicts..." : "Drafting attorney memo..."}
+          {activeResult === "report" ? "Analyzing conflicts..." : "Drafting AI Legal Memo..."}
         </div>
         <div style={{ fontSize: 12, color: "#8aa898", lineHeight: 1.7 }}>
           {activeResult === "report"
