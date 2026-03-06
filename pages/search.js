@@ -42,7 +42,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
       await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, mark, source: "search_results", conflictCount: usptoCount || 0, activeCount: activeCount || 0 }),
+        body: JSON.stringify({ email, mark, source: "search_results", conflictCount: trademarks.length || 0, activeCount: trademarks.filter(t => t.isActive).length || 0 }),
       });
     } catch (err) {}
     setEmailSubmitted(true);
@@ -55,69 +55,90 @@ function PurchasePanel({ mark, trademarks, loading }) {
     setReport(null);
     setMemo(null);
 
-    const conflictText = trademarks.slice(0, 15).map((c, i) =>
-      `${i + 1}. "${c.markName}" | Owner: ${c.owner} | Status: ${c.status} | Class: ${c.classCode} | Serial: ${c.serialNumber}`
-    ).join("\n");
-
-    const conflictSection = trademarks.length
-      ? `LIVE USPTO RESULTS (${trademarks.length} marks found matching "${mark}" or its keywords):\n${conflictText}`
-      : `LIVE USPTO RESULTS: No marks found for "${mark}" appears to be a clear mark.`;
-
     const isReport = type === "report";
-    const systemPrompt = isReport
-      ? `You are a plain-English trademark advisor. Write clearly, no legal jargon. Be honest about risks without being alarming.`
-      : `You are a senior USPTO trademark attorney writing an internal legal memorandum. Cite Lanham Act sections (15 U.S.C. §), TMEP sections, and relevant TTAB or Federal Circuit cases. Apply DuPont factors. This is attorney work product.`;
-
-    const userPrompt = isReport
-      ? `A client wants to trademark: "${mark}"
-Used for: ${goods || "general commercial use"}
-${conflictSection}
-
-Respond ONLY with valid JSON (no markdown, no backticks):
-{
-  "executiveSummary": "2-3 sentence plain-English bottom line referencing real search results",
-  "whyItCouldWork": [{"reason":"headline","explanation":"1-2 sentences","legalHook":"legal principle"}],
-  "whyItMightNotWork": [{"reason":"headline","explanation":"1-2 sentences","legalHook":"legal principle"}],
-  "conflictSnapshot": [{"markName":"EXACT REAL NAME","owner":"Actual Owner","class":41,"risk":"LOW/MEDIUM/HIGH","reason":"Why this conflicts","serialNumber":"from data"}],
-  "overallRiskLevel": "LOW/MEDIUM/HIGH",
-  "whatHappensNext": "2-3 sentence plain English next steps",
-  "clientConfidenceScore": 72
-}`
-      : `Trademark Registrability Memo
-MARK: "${mark}" | GOODS: ${goods || "TBD"} | BASIS: Section 1(b)
-${conflictSection}
-
-Respond ONLY with valid JSON (no markdown, no backticks):
-{
-  "memoSummary": "One paragraph with legal citations referencing actual search results",
-  "whyItCouldWork": [{"argument":"headline","analysis":"detailed paragraph","citations":["15 U.S.C. § 1052"]}],
-  "whyItMightNotWork": [{"obstacle":"headline","analysis":"detailed paragraph citing specific marks","citations":["citation"]}],
-  "duPontAnalysis": {
-    "overview": "Summary citing In re E.I. DuPont de Nemours & Co., 177 U.S.P.Q. 563 (C.C.P.A. 1973)",
-    "factors": [
-      {"factor":"Similarity of the marks","number":1,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis"},
-      {"factor":"Similarity of goods/services","number":2,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis"},
-      {"factor":"Channels of trade","number":3,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis"},
-      {"factor":"Strength of the mark","number":5,"finding":"FAVORABLE/UNFAVORABLE/NEUTRAL","analysis":"analysis citing Abercrombie & Fitch"}
-    ]
-  },
-  "prosecutionStrategy": [{"action":"action","rationale":"rationale","citation":"citation"}],
-  "riskMatrix": [{"risk":"risk","likelihood":"LOW/MEDIUM/HIGH","severity":"LOW/MEDIUM/HIGH","mitigation":"strategy"}],
-  "overallLegalAssessment": "LOW/MEDIUM/HIGH",
-  "recommendProceed": true,
-  "proceedRationale": "recommendation with legal basis"
-}`;
 
     try {
-      const res = await fetch("/api/generate-analysis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mark, goods, type, systemPrompt, userPrompt }),
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      if (isReport) setReport(data.result);
-      else setMemo(data.result);
+      if (isReport) {
+        // Use Agent 1 (analysis-agent) - multi-step USPTO search + DuPont scoring
+        const res = await fetch("/api/analysis-agent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mark, goodsServices: goods, classCode: null }),
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        // Map Agent 1 output to existing report display format
+        const conflicts = data.scoring?.scoredConflicts || [];
+        const mapped = {
+          executiveSummary: data.analysis?.executiveSummary || "",
+          overallRiskLevel: data.scoring?.overallRisk || "UNKNOWN",
+          clientConfidenceScore: data.scoring?.overallRisk === "LOW" ? 80 : data.scoring?.overallRisk === "MEDIUM" ? 55 : 25,
+          whyItCouldWork: data.scoring?.overallRisk === "LOW" || conflicts.filter(c => c.riskScore === "LOW").length > 0
+            ? [{ reason: data.analysis?.registrabilityAssessment?.distinctiveness || "Mark appears registrable", explanation: data.analysis?.registrabilityAssessment?.reasoning || "", legalHook: `Registration likelihood: ${data.analysis?.registrabilityAssessment?.likelihood}` }]
+            : [{ reason: "Registrability depends on conflict resolution", explanation: data.analysis?.recommendation?.reasoning || "", legalHook: "Likelihood of confusion analysis required" }],
+          whyItMightNotWork: conflicts.filter(c => c.riskScore === "HIGH" || c.riskScore === "MEDIUM").slice(0, 3).map(c => ({
+            reason: `Conflict: ${c.markName}`,
+            explanation: c.riskReasoning || "",
+            legalHook: `DuPont factor: ${c.dupont?.markSimilarity || "Mark similarity"}`
+          })),
+          conflictSnapshot: conflicts.slice(0, 5).map(c => ({
+            markName: c.markName,
+            owner: c.owner,
+            class: c.classCode,
+            risk: c.riskScore,
+            reason: c.riskReasoning,
+            serialNumber: c.serialNumber,
+          })),
+          whatHappensNext: (data.analysis?.recommendation?.nextSteps || []).join(" "),
+          _agentData: data, // preserve full agent output
+        };
+        setReport(mapped);
+
+      } else {
+        // Use Agent 8 (memo-agent) - full legal memo
+        const res = await fetch("/api/memo-agent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mark, goodsServices: goods, classCode: null }),
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        // Map memo-agent output to existing memo display format
+        const memo = data.memo || {};
+        const dupont = memo.sectionIII?.subsections || [];
+        const mapped = {
+          memoSummary: memo.executiveSummary || "",
+          overallLegalAssessment: data.report?.overallRisk || "UNKNOWN",
+          recommendProceed: !["REBRAND_RECOMMENDED", "CONSULT_ATTORNEY"].includes(memo.sectionVI?.conclusion),
+          proceedRationale: memo.sectionVI?.filingStrategy || "",
+          whyItCouldWork: (memo.sectionVI?.recommendations || []).map(r => ({ argument: r, analysis: r, citations: [] })),
+          whyItMightNotWork: (memo.sectionV?.conflicts || []).filter(c => c.riskLevel === "HIGH").slice(0, 3).map(c => ({
+            obstacle: c.markName,
+            analysis: c.analysis,
+            citations: [`Serial No. ${c.serialNumber}`],
+          })),
+          duPontAnalysis: {
+            overview: memo.sectionIII?.overallConclusion || "",
+            factors: dupont.map((s, i) => ({
+              factor: s.factor,
+              number: i + 1,
+              finding: s.weight === "FAVORS_APPLICANT" ? "FAVORABLE" : s.weight === "FAVORS_REGISTRANT" ? "UNFAVORABLE" : "NEUTRAL",
+              analysis: s.analysis,
+            })),
+          },
+          prosecutionStrategy: (memo.sectionVI?.recommendations || []).map(r => ({ action: r, rationale: r, citation: "" })),
+          riskMatrix: (memo.sectionV?.conflicts || []).map(c => ({
+            risk: c.markName,
+            likelihood: c.riskLevel || "MEDIUM",
+            severity: c.riskLevel || "MEDIUM",
+            mitigation: c.analysis,
+          })),
+          _agentData: data,
+        };
+        setMemo(mapped);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -222,7 +243,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
             <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.6, marginBottom: 12 }}>
               Summary + pros/cons + conflict breakdown. Full PDF (with DuPont memo) unlocks for $99.
             </div>
-            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#111", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
               Run Client Report →
             </button>
           </div>
@@ -358,7 +379,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               <>
                 <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}> Full PDF Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>DuPont analysis + attorney memo + prosecution strategy</div>
-                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#111", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
                   Unlock PDF $99
                 </button>
               </>
@@ -399,7 +420,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               <div style={{ fontSize: 10, color: "#6b8a78", lineHeight: 1.6, marginBottom: 8 }}>{memo.duPontAnalysis.overview}</div>
               {memo.duPontAnalysis.factors?.map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
-                  <div style={{ fontSize: 9, fontWeight: 800, background: "#111", color: "#111", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
+                  <div style={{ fontSize: 9, fontWeight: 800, background: "#111", color: "#fff", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 11, color: "#111" }}>{f.factor}</div>
                     <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
