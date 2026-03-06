@@ -3,6 +3,7 @@ import ChatWidget from "../components/ChatWidget";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { generateReportPDF, generateMemoPDF } from "../lib/generatePDF";
 
 //  Helpers 
 
@@ -491,7 +492,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
               )}
               <div style={{ background: "#f0fff4", borderRadius: 10, padding: 14, border: "1px solid #9ae6b4", display: "flex", gap: 10, alignItems: "center", marginBottom: 10 }}>
                 <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}>✓ Report Unlocked</div>
-                <button style={{ padding: "9px 16px", background: "#2d7a4f", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>Download PDF</button>
+                <button onClick={() => generateReportPDF(mark, report, report._agentData)} style={{ padding: "9px 16px", background: "#2d7a4f", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>Download PDF</button>
               </div>
             </>
           )}
@@ -636,7 +637,7 @@ function PurchasePanel({ mark, trademarks, loading }) {
             ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                 <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}>✓ Memo Unlocked</div>
-                <button style={{ padding: "9px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>Download PDF</button>
+                <button onClick={() => generateMemoPDF(mark, memo)} style={{ padding: "9px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>Download PDF</button>
               </div>
             )}
           </div>
