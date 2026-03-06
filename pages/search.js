@@ -145,7 +145,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div style={{ padding: "20px 24px", borderBottom: "1px solid #eef2f0" }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>AI Analysis</div>
-          <h3 style={{ fontSize: 18, fontWeight: 900, color: "#0f1e3c", margin: "0 0 6px" }}>
+          <h3 style={{ fontSize: 18, fontWeight: 900, color: "#111", margin: "0 0 6px" }}>
             {loading ? "Searching USPTO..." : trademarks.length > 0
               ? `${trademarks.filter(t => t.isActive).length} active conflicts found - review before filing`
               : `"${mark}" looks clear - confirm before filing`}
@@ -199,7 +199,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
         <div style={{ padding: "16px 20px", flex: 1, overflowY: "auto" }}>
           {/* Goods input */}
           <div style={{ marginBottom: 16 }}>
-            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#0f1e3c", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8 }}>
+            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#111", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8 }}>
               What does your brand do?
             </label>
             <textarea
@@ -214,7 +214,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ border: "1.5px solid #d4e3d9", borderRadius: 12, padding: 16, marginBottom: 12, background: "#fff" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}> Client Report</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}> Client Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>Plain English · Risk assessment · Conflict analysis</div>
               </div>
               <div style={{ background: "#f0f7f2", color: "#2d7a4f", fontWeight: 800, fontSize: 11, padding: "3px 8px", borderRadius: 5 }}>Free Preview</div>
@@ -222,8 +222,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
             <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.6, marginBottom: 12 }}>
               Summary + pros/cons + conflict breakdown. Full PDF (with DuPont memo) unlocks for $99.
             </div>
-            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
-              Generate Client Report Free →
+            <button onClick={() => generate("report")} style={{ width: "100%", padding: "9px", background: "#111", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+              Run Client Report →
             </button>
           </div>
 
@@ -231,7 +231,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ border: "2px solid #c9a84c", borderRadius: 12, padding: 16, marginBottom: 12, background: "#fffdf7" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
               <div>
-                <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>️ Attorney Memo</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>️ Attorney Memo</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>DuPont analysis · Case citations · Prosecution strategy</div>
               </div>
               <div style={{ background: "#c9a84c", color: "#0a0a0a", fontWeight: 800, fontSize: 11, padding: "3px 8px", borderRadius: 5 }}>Free Preview</div>
@@ -240,12 +240,12 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               Full legal memo w/ DuPont 13-factor analysis, risk matrix, prosecution strategy. PDF unlocks for $149.
             </div>
             <button onClick={() => generate("memo")} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
-              Generate Attorney Memo Free →
+              Generate Attorney Memo - $149 →
             </button>
           </div>
 
           {/* File CTA */}
-          <div style={{ background: "#0f1e3c", borderRadius: 12, padding: 16 }}>
+          <div style={{ background: "#111", borderRadius: 12, padding: 16 }}>
             <div style={{ fontWeight: 800, fontSize: 13, color: "#fff", marginBottom: 4 }}> Skip straight to filing?</div>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, marginBottom: 10 }}>
               U.S. Licensed Attorney reviews your application and files TEAS Plus. $399 flat - $100 less than Trademarkia.
@@ -264,7 +264,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: 32, textAlign: "center" }}>
         <div style={{ fontSize: 44, marginBottom: 16 }}>️</div>
-        <div style={{ fontWeight: 800, fontSize: 16, color: "#0f1e3c", marginBottom: 6 }}>
+        <div style={{ fontWeight: 800, fontSize: 16, color: "#111", marginBottom: 6 }}>
           {activeResult === "report" ? "Analyzing conflicts..." : "Drafting attorney memo..."}
         </div>
         <div style={{ fontSize: 12, color: "#8aa898", lineHeight: 1.7 }}>
@@ -289,8 +289,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
       <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         {/* Sticky header */}
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}> Client Report</div>
-          <button onClick={() => { setActiveResult(null); setReport(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c" }}>← Back</button>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}> Client Report</div>
+          <button onClick={() => { setActiveResult(null); setReport(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#111" }}>← Back</button>
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px" }}>
@@ -313,7 +313,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Why It Could Work</div>
               {report.whyItCouldWork.map((w, i) => (
                 <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
+                  <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{w.reason}</div>
                   <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
                   {w.legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{w.legalHook}</div>}
                 </div>
@@ -327,7 +327,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
               <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}> Risks</div>
               {report.whyItMightNotWork.map((w, i) => (
                 <div key={i} style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10, marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c" }}>{w.reason}</div>
+                  <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{w.reason}</div>
                   <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{w.explanation}</div>
                   {w.legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{w.legalHook}</div>}
                 </div>
@@ -338,7 +338,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           {/* Conflicts */}
           {report.conflictSnapshot?.length > 0 && (
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Key Conflicts</div>
+              <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 8 }}>Key Conflicts</div>
               {report.conflictSnapshot.map((c, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 8, marginBottom: 5 }}>
                   <div style={{ flex: 1 }}>
@@ -356,9 +356,9 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ background: "#f4f7f5", borderRadius: 10, padding: 14, border: "1px solid #d0e4d8" }}>
             {!isPaid ? (
               <>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}> Full PDF Report</div>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}> Full PDF Report</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>DuPont analysis + attorney memo + prosecution strategy</div>
-                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#0f1e3c", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
+                <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "9px", background: "#111", color: "#111", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12 }}>
                   Unlock PDF $99
                 </button>
               </>
@@ -383,25 +383,25 @@ Respond ONLY with valid JSON (no markdown, no backticks):
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         <div style={{ padding: "12px 20px", borderBottom: "1px solid #eef2f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, background: "#fff" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#0f1e3c" }}>️ Attorney Memo</div>
-          <button onClick={() => { setActiveResult(null); setMemo(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#0f1e3c" }}>← Back</button>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#111" }}>️ Attorney Memo</div>
+          <button onClick={() => { setActiveResult(null); setMemo(null); }} style={{ background: "#f4f7f5", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 600, color: "#111" }}>← Back</button>
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px" }}>
-          <div style={{ background: "#f8faf9", borderRadius: 10, padding: 14, marginBottom: 16, borderLeft: "4px solid #0f1e3c" }}>
+          <div style={{ background: "#f8faf9", borderRadius: 10, padding: 14, marginBottom: 16, borderLeft: "4px solid #111" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Memo Summary</div>
             <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>{memo.memoSummary}</p>
           </div>
 
           {memo.duPontAnalysis && (
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 800, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>DuPont Analysis</div>
+              <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>DuPont Analysis</div>
               <div style={{ fontSize: 10, color: "#6b8a78", lineHeight: 1.6, marginBottom: 8 }}>{memo.duPontAnalysis.overview}</div>
               {memo.duPontAnalysis.factors?.map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
-                  <div style={{ fontSize: 9, fontWeight: 800, background: "#0f1e3c", color: "#111", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
+                  <div style={{ fontSize: 9, fontWeight: 800, background: "#111", color: "#111", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 11, color: "#0f1e3c" }}>{f.factor}</div>
+                    <div style={{ fontWeight: 600, fontSize: 11, color: "#111" }}>{f.factor}</div>
                     <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
                   </div>
                   <span style={{ fontSize: 8, fontWeight: 800, padding: "2px 5px", borderRadius: 3, height: "fit-content", whiteSpace: "nowrap",
@@ -416,10 +416,10 @@ Respond ONLY with valid JSON (no markdown, no backticks):
 
           {memo.prosecutionStrategy?.length > 0 && (
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 800, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Prosecution Strategy</div>
+              <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>Prosecution Strategy</div>
               {memo.prosecutionStrategy.map((s, i) => (
                 <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700, fontSize: 11, color: "#0f1e3c" }}>{s.action}</div>
+                  <div style={{ fontWeight: 700, fontSize: 11, color: "#111" }}>{s.action}</div>
                   <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{s.rationale}</div>
                   {s.citation && <code style={{ fontSize: 9, color: "#6b8a78", background: "#f0f4f2", padding: "1px 5px", borderRadius: 3 }}>{s.citation}</code>}
                 </div>
@@ -429,7 +429,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
 
           {memo.riskMatrix?.length > 0 && (
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 800, fontSize: 12, color: "#0f1e3c", marginBottom: 8 }}>Risk Matrix</div>
+              <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>Risk Matrix</div>
               {memo.riskMatrix.map((r, i) => (
                 <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 55px 55px", gap: 6, padding: "7px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 4 }}>
                   <div>
@@ -452,7 +452,7 @@ Respond ONLY with valid JSON (no markdown, no backticks):
           <div style={{ background: "#fffdf7", borderRadius: 10, padding: 14, border: "2px solid #c9a84c" }}>
             {!isPaid ? (
               <>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#0f1e3c", marginBottom: 3 }}> Full Attorney Memo PDF</div>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}> Full Attorney Memo PDF</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>Complete work product printable, shareable, attorney-reviewed</div>
                 <button onClick={() => handlePurchase("memo", 149)} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
                   Unlock Memo PDF $149
@@ -538,7 +538,7 @@ export default function SearchPage() {
 
       <div style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* Top bar */}
-        <div style={{ background: "#0f1e3c", padding: "10px 24px", display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
+        <div style={{ background: "#111", padding: "10px 24px", display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
           <a href="/" style={{ background: "rgba(255,255,255,0.1)", color: "#555", borderRadius: 7, padding: "6px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>← MarkItNow</a>
           <form onSubmit={handleNewSearch} style={{ flex: 1, display: "flex", gap: 8, maxWidth: 540 }}>
             <input value={newSearchInput} onChange={e => setNewSearchInput(e.target.value)}
@@ -561,25 +561,25 @@ export default function SearchPage() {
                   <div style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0,
                     background: usptoStatus === "loading" ? "#f1c40f" : usptoStatus === "done" ? "#2ecc71" : "#e74c3c",
                     animation: usptoStatus === "loading" ? "mni-pulse 1s infinite" : "none" }} />
-                  <span style={{ fontWeight: 800, fontSize: 15, color: "#0f1e3c" }}>USPTO Database</span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: "#555", background: "#0f1e3c", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2 }}>LIVE</span>
+                  <span style={{ fontWeight: 800, fontSize: 15, color: "#111" }}>USPTO Database</span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: "#555", background: "#111", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2 }}>LIVE</span>
                 </div>
                 {usptoStatus === "done" && (
                   <div style={{ textAlign: "right" }}>
-                    <span style={{ fontSize: 18, fontWeight: 900, color: "#0f1e3c" }}>{usptoCount?.toLocaleString()}</span>
+                    <span style={{ fontSize: 18, fontWeight: 900, color: "#111" }}>{usptoCount?.toLocaleString()}</span>
                     <span style={{ fontSize: 11, color: "#8aa898", marginLeft: 6 }}>marks · </span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: activeCount > 0 ? "#c0392b" : "#2d7a4f" }}>{activeCount} active</span>
                   </div>
                 )}
               </div>
               <div style={{ fontSize: 12, color: "#6b8a78" }}>
-                Results for: <strong style={{ color: "#0f1e3c" }}>"{mark}"</strong>
+                Results for: <strong style={{ color: "#111" }}>"{mark}"</strong>
                 {trademarks.length > 0 && ` expanded search includes first keyword`}
               </div>
               {usptoStatus === "done" && trademarks.length > 0 && (
                 <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
                   {[["all", "All"], ["active", "Active Only"], ["dead", "Dead Marks"]].map(([val, label]) => (
-                    <button key={val} onClick={() => setFilterStatus(val)} style={{ padding: "3px 10px", borderRadius: 20, border: "1px solid", borderColor: filterStatus === val ? "#0f1e3c" : "#d4e3d9", background: filterStatus === val ? "#0f1e3c" : "#fff", color: filterStatus === val ? "#fff" : "#6b8a78", fontSize: 10, fontWeight: 600 }}>
+                    <button key={val} onClick={() => setFilterStatus(val)} style={{ padding: "3px 10px", borderRadius: 20, border: "1px solid", borderColor: filterStatus === val ? "#111" : "#d4e3d9", background: filterStatus === val ? "#111" : "#fff", color: filterStatus === val ? "#fff" : "#6b8a78", fontSize: 10, fontWeight: 600 }}>
                       {label}
                     </button>
                   ))}
@@ -592,7 +592,7 @@ export default function SearchPage() {
               {usptoStatus === "loading" && (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 280, color: "#6b8a78" }}>
                   <div style={{ fontSize: 36, marginBottom: 12 }}></div>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: "#0f1e3c" }}>Searching USPTO database...</div>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>Searching USPTO database...</div>
                   <div style={{ fontSize: 12, marginTop: 4 }}>Running parallel queries · Deduplicating results</div>
                 </div>
               )}
@@ -630,14 +630,14 @@ export default function SearchPage() {
                     return (
                       <div key={i} style={{ display: "grid", gridTemplateColumns: "2.2fr 1.5fr 65px 120px", gap: 8, padding: "11px 22px", borderBottom: "1px solid #f0f4f2", background: i % 2 === 0 ? "#fff" : "#fafcfb", alignItems: "start" }}>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: 13, color: "#0f1e3c", lineHeight: 1.3 }}>{t.markName}</div>
+                          <div style={{ fontWeight: 700, fontSize: 13, color: "#111", lineHeight: 1.3 }}>{t.markName}</div>
                           <div style={{ fontSize: 11, color: "#6b8a78", marginTop: 2 }}>{t.owner}</div>
                           <div style={{ fontSize: 9, color: "#b0bcb8", marginTop: 1 }}>#{t.serialNumber}{t.filingDate ? ` · ${t.filingDate}` : ""}</div>
                         </div>
                         <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.4 }}>
                           {t.description ? t.description.slice(0, 90) + (t.description.length > 90 ? "…" : "") : "-"}
                         </div>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: "#0f1e3c" }}>{t.classCode || "-"}</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#111" }}>{t.classCode || "-"}</div>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
                             <div style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot, flexShrink: 0 }} />
