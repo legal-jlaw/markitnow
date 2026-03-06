@@ -370,9 +370,9 @@ function PurchasePanel({ mark, trademarks, loading }) {
               <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Bottom Line</div>
               <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>{report.executiveSummary}</p>
             </div>
-            <div style={{ width: 78, background: `${scoreColor(sc)}11`, border: `2px solid ${scoreColor(sc)}`, borderRadius: 10, padding: 10, textAlign: "center", flexShrink: 0 }}>
+            <div style={{ width: 92, background: `${scoreColor(sc)}11`, border: `2px solid ${scoreColor(sc)}`, borderRadius: 10, padding: 10, textAlign: "center", flexShrink: 0 }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: scoreColor(sc), lineHeight: 1 }}>{sc}</div>
-              <div style={{ fontSize: 8, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase" }}>Registrability</div>
+              <div style={{ fontSize: 7.5, fontWeight: 700, color: "#8aa898", marginTop: 3, textTransform: "uppercase", letterSpacing: 0.5 }}>Registrability</div>
               <div style={{ fontSize: 9, fontWeight: 800, marginTop: 3, color: scoreColor(sc) }}>{report.overallRiskLevel === "LOW" ? "LOW RISK" : report.overallRiskLevel === "MEDIUM" ? "MED RISK" : report.overallRiskLevel === "HIGH" ? "HIGH RISK" : report.overallRiskLevel}</div>
             </div>
           </div>
@@ -694,7 +694,7 @@ export default function SearchPage() {
                     background: usptoStatus === "loading" ? "#f1c40f" : usptoStatus === "done" ? "#2ecc71" : "#e74c3c",
                     animation: usptoStatus === "loading" ? "mni-pulse 1s infinite" : "none" }} />
                   <span style={{ fontWeight: 800, fontSize: 15, color: "#111" }}>USPTO Database</span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: "#555", background: "#111", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2 }}>LIVE</span>
+                  <span style={{ fontSize: 9, fontWeight: 700, background: "#c9a84c", padding: "2px 7px", borderRadius: 4, letterSpacing: 1.2, color: "#fff" }}>LIVE</span>
                 </div>
                 {usptoStatus === "done" && (
                   <div style={{ textAlign: "right" }}>
@@ -763,8 +763,15 @@ export default function SearchPage() {
                             </div>
                             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
                               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                                <div style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot }} />
-                                <span style={{ fontSize: 10, fontWeight: 800, color: ss.color, background: ss.bg, padding: "1px 6px", borderRadius: 4 }}>{ss.category === "live" ? "Live" : "Dead"} / {ss.label}</span>
+                                <span style={{
+                                  fontSize: 10, fontWeight: 800, borderRadius: 4, padding: "2px 7px",
+                                  color: "#fff",
+                                  background: ss.category === "live"
+                                    ? (ss.label === "Pending" ? "#e8a000" : "#00a846")
+                                    : "#d93025",
+                                }}>
+                                  {ss.category === "live" ? "LIVE" : "DEAD"} / {ss.label}
+                                </span>
                               </div>
                               {t.registrationDate && <div style={{ fontSize: 9, color: "#aab8b2" }}>Reg. {t.registrationDate}</div>}
                             </div>
