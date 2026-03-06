@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "https://markitnow-two.vercel.app"}/api/drip`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, mark, day: d.day, subject: d.subject, apiKey }),
+        body: JSON.stringify({ email, mark, day: d.day, subject: d.subject }),
       }).catch(() => {}); // Non-blocking
     }
 

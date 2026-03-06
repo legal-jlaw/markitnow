@@ -6,8 +6,14 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { email, mark, day, subject, apiKey } = req.body;
-  if (!email || !mark || !day || !apiKey) return res.status(400).json({ error: "Missing params" });
+  const { email, mark, day, subject } = req.body;
+  if (!email || !mark || !day) return res.status(400).json({ error: "Missing params" });
+
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY not set - drip email not sent");
+    return res.status(200).json({ success: true, warning: "Email provider not configured" });
+  }
 
   const scheduledAt = new Date(Date.now() + day * 24 * 60 * 60 * 1000).toISOString();
 
