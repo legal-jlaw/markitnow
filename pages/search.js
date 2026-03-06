@@ -367,8 +367,19 @@ function PurchasePanel({ mark, trademarks, loading }) {
           {/* Score card - always visible */}
           <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
             <div style={{ flex: 1, background: "#f8faf9", borderRadius: 10, padding: 14 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Bottom Line</div>
-              <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>{report.executiveSummary}</p>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Risk Summary</div>
+              <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>
+                {(() => {
+                  const high = report._agentData?.scoring?.highRiskCount || 0;
+                  const med = report._agentData?.scoring?.mediumRiskCount || 0;
+                  const total = report._agentData?.retrieval?.totalFound || 0;
+                  const active = report._agentData?.retrieval?.activeCount || 0;
+                  const risk = report.overallRiskLevel;
+                  if (risk === "HIGH") return `We found ${high} high-risk conflict${high !== 1 ? "s" : ""} that could block registration. Full analysis required before filing.`;
+                  if (risk === "MEDIUM") return `${active} active marks overlap with yours. ${med > 0 ? `${med} present a moderate likelihood of confusion risk.` : "Further analysis recommended before filing."}`;
+                  return `${total} marks found in the USPTO database. Full DuPont analysis determines your registrability odds.`;
+                })()}
+              </p>
             </div>
             <div style={{ width: 92, background: `${scoreColor(sc)}11`, border: `2px solid ${scoreColor(sc)}`, borderRadius: 10, padding: 10, textAlign: "center", flexShrink: 0 }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: scoreColor(sc), lineHeight: 1 }}>{sc}</div>
@@ -377,26 +388,24 @@ function PurchasePanel({ mark, trademarks, loading }) {
             </div>
           </div>
 
-          {/* First "why it could work" item - always visible */}
-          {report.whyItCouldWork?.length > 0 && (
-            <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 11, color: "#2d7a4f", marginBottom: 8, background: "#f0f7f2", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}>✓ Why It Could Work</div>
-              <div style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{report.whyItCouldWork[0].reason}</div>
-                <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{report.whyItCouldWork[0].explanation}</div>
-                {report.whyItCouldWork[0].legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{report.whyItCouldWork[0].legalHook}</div>}
+          {/* Teaser rows - show counts but not content */}
+          {!isPaid && (
+            <div style={{ marginBottom: 14, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f0f7f2", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#2d7a4f" }}>✓ Registration arguments</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>{report.whyItCouldWork?.length || 0} found — unlock to read</span>
               </div>
-            </div>
-          )}
-
-          {/* First adverse factor - always visible */}
-          {report.whyItMightNotWork?.length > 0 && (
-            <div style={{ marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: 11, color: "#c0392b", marginBottom: 8, background: "#fdf2f1", display: "inline-block", padding: "2px 10px", borderRadius: 20 }}>⚠ Key Risk Factor</div>
-              <div style={{ borderLeft: "3px solid #c0392b", paddingLeft: 10 }}>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#111" }}>{report.whyItMightNotWork[0].reason}</div>
-                <div style={{ fontSize: 11, color: "#4a7060", lineHeight: 1.5 }}>{report.whyItMightNotWork[0].explanation}</div>
-                {report.whyItMightNotWork[0].legalHook && <div style={{ fontSize: 10, color: "#8aa898", fontStyle: "italic" }}>{report.whyItMightNotWork[0].legalHook}</div>}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fdf2f1", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#c0392b" }}>⚠ Risk factors identified</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>{report.whyItMightNotWork?.length || 0} found — unlock to read</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f8f5ff", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#6b46c1" }}>⚖ DuPont factor analysis</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>13 factors — unlock to read</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff8ec", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#b7791f" }}>📋 Conflict breakdown</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>{report.conflictSnapshot?.length || 0} conflicts analyzed — unlock to read</span>
               </div>
             </div>
           )}
@@ -437,9 +446,9 @@ function PurchasePanel({ mark, trademarks, loading }) {
               {/* Paywall overlay */}
               <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.97) 40%)", borderRadius: 10, padding: 20, textAlign: "center" }}>
                 <div style={{ fontSize: 22, marginBottom: 8 }}>🔒</div>
-                <div style={{ fontWeight: 800, fontSize: 13, color: "#111", marginBottom: 4 }}>Full Report Locked</div>
+                <div style={{ fontWeight: 800, fontSize: 13, color: "#111", marginBottom: 4 }}>See the Full Analysis — $99</div>
                 <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 14, lineHeight: 1.6 }}>
-                  Unlock all risks, key conflicts, DuPont analysis + full PDF for $99
+                  Every conflict ranked by risk · Attorney-grade DuPont scoring · Exact recommendation on whether to file, rebrand, or modify · Full PDF delivered to your inbox
                 </div>
                 <button onClick={() => handlePurchase("report", 99)} style={{ width: "100%", padding: "10px", background: "#111", color: "#fff", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
                   Unlock Full Report — $99
@@ -502,92 +511,118 @@ function PurchasePanel({ mark, trademarks, loading }) {
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "16px 20px" }}>
+
+          {/* Risk summary teaser — never reveals conclusion */}
           <div style={{ background: "#f8faf9", borderRadius: 10, padding: 14, marginBottom: 16, borderLeft: "4px solid #111" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#8aa898", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.8 }}>Memo Summary</div>
-            <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>{memo.memoSummary}</p>
+            <p style={{ fontSize: 12, lineHeight: 1.7, color: "#1a2e23", margin: 0 }}>
+              {(() => {
+                const high = memo.whyItMightNotWork?.length || 0;
+                const dupont = memo.duPontAnalysis?.factors?.length || 0;
+                const strat = memo.prosecutionStrategy?.length || 0;
+                if (high > 0) return `This memo identifies ${high} high-risk conflict${high !== 1 ? "s" : ""} requiring analysis before filing. Full DuPont scoring and prosecution strategy available in the complete memo.`;
+                return `Analysis complete. ${dupont > 0 ? `${dupont} DuPont factors scored.` : ""} ${strat > 0 ? `${strat} prosecution strategies identified.` : ""} Unlock to see the full recommendation.`;
+              })()}
+            </p>
           </div>
 
-          {memo.duPontAnalysis && (
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>DuPont Analysis</div>
-              <div style={{ fontSize: 10, color: "#6b8a78", lineHeight: 1.6, marginBottom: 8 }}>{memo.duPontAnalysis.overview}</div>
-              {memo.duPontAnalysis.factors?.map((f, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
-                  <div style={{ fontSize: 9, fontWeight: 800, background: "#111", color: "#fff", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 11, color: "#111" }}>{f.factor}</div>
-                    <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
-                  </div>
-                  <span style={{ fontSize: 8, fontWeight: 800, padding: "2px 5px", borderRadius: 3, height: "fit-content", whiteSpace: "nowrap",
-                    background: f.finding === "FAVORABLE" ? "#f0f7f2" : f.finding === "UNFAVORABLE" ? "#fdf2f1" : "#f5f5f5",
-                    color: f.finding === "FAVORABLE" ? "#2d7a4f" : f.finding === "UNFAVORABLE" ? "#c0392b" : "#7f8c8d" }}>
-                    {f.finding}
-                  </span>
-                </div>
-              ))}
-              {/* Teaser for remaining 11 factors */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: "linear-gradient(135deg, #fffdf7, #fff8e8)", border: "1.5px dashed #c9a84c", borderRadius: 8, marginTop: 4 }}>
-                <div style={{ display: "flex", gap: 4 }}>
-                  {[3,4,5,6,7,8,9,10,11,12,13].map(n => (
-                    <div key={n} style={{ width: 18, height: 18, borderRadius: "50%", background: "#e8d8a0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, fontWeight: 800, color: "#7a5c00" }}>{n}</div>
-                  ))}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#7a5c00" }}>+11 more DuPont factors analyzed</div>
-                  <div style={{ fontSize: 9, color: "#a07840" }}>Channels of trade · Mark strength · Actual confusion · Buyer sophistication · more</div>
-                </div>
-                <span style={{ fontSize: 9, fontWeight: 800, color: "#7a5c00", background: "#fde68a", padding: "3px 8px", borderRadius: 4, whiteSpace: "nowrap" }}>PDF $149</span>
+          {/* Locked content rows — show what's inside without giving it away */}
+          {!isPaid && (
+            <div style={{ marginBottom: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f8f5ff", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#6b46c1" }}>⚖ DuPont 13-Factor Analysis</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>all 13 factors — unlock to read</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fdf2f1", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#c0392b" }}>⚠ Conflict Risk Matrix</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>{memo.riskMatrix?.length || 0} conflicts scored — unlock to read</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f0f7f2", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#2d7a4f" }}>📋 Prosecution Strategy</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>{memo.prosecutionStrategy?.length || 0} strategies — unlock to read</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff8ec", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#b7791f" }}>📌 Filing Recommendation</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>file / rebrand / amend — unlock to read</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f5f5f5", borderRadius: 8, padding: "9px 12px" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#444" }}>⚖ Case Law Citations</span>
+                <span style={{ fontSize: 10, color: "#8aa898" }}>relevant precedent — unlock to read</span>
               </div>
             </div>
           )}
 
-          {memo.prosecutionStrategy?.length > 0 && (
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>Prosecution Strategy</div>
-              {memo.prosecutionStrategy.map((s, i) => (
-                <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700, fontSize: 11, color: "#111" }}>{s.action}</div>
-                  <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{s.rationale}</div>
-                  {s.citation && <code style={{ fontSize: 9, color: "#6b8a78", background: "#f0f4f2", padding: "1px 5px", borderRadius: 3 }}>{s.citation}</code>}
+          {/* Full memo content — only shown after purchase */}
+          {isPaid && (
+            <>
+              {memo.duPontAnalysis && (
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>DuPont Analysis</div>
+                  <div style={{ fontSize: 10, color: "#6b8a78", lineHeight: 1.6, marginBottom: 8 }}>{memo.duPontAnalysis.overview}</div>
+                  {memo.duPontAnalysis.factors?.map((f, i) => (
+                    <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 5, alignItems: "flex-start" }}>
+                      <div style={{ fontSize: 9, fontWeight: 800, background: "#111", color: "#fff", width: 18, height: 18, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{f.number}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 600, fontSize: 11, color: "#111" }}>{f.factor}</div>
+                        <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{f.analysis}</div>
+                      </div>
+                      <span style={{ fontSize: 8, fontWeight: 800, padding: "2px 5px", borderRadius: 3, height: "fit-content", whiteSpace: "nowrap",
+                        background: f.finding === "FAVORABLE" ? "#f0f7f2" : f.finding === "UNFAVORABLE" ? "#fdf2f1" : "#f5f5f5",
+                        color: f.finding === "FAVORABLE" ? "#2d7a4f" : f.finding === "UNFAVORABLE" ? "#c0392b" : "#7f8c8d" }}>
+                        {f.finding}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
-
-          {memo.riskMatrix?.length > 0 && (
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>Risk Matrix</div>
-              {memo.riskMatrix.slice(0, 1).map((r, i) => (
-                <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 55px 55px", gap: 6, padding: "7px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 4 }}>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 10 }}>{r.risk}</div>
-                    <div style={{ fontSize: 9, color: "#6b8a78" }}>{r.mitigation}</div>
-                  </div>
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 8, color: "#8aa898" }}>LIKELIHOOD</div>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.likelihood) }}>{r.likelihood}</div>
-                  </div>
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 8, color: "#8aa898" }}>SEVERITY</div>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.severity) }}>{r.severity}</div>
-                  </div>
+              )}
+              {memo.prosecutionStrategy?.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>Prosecution Strategy</div>
+                  {memo.prosecutionStrategy.map((s, i) => (
+                    <div key={i} style={{ borderLeft: "3px solid #2d7a4f", paddingLeft: 10, marginBottom: 8 }}>
+                      <div style={{ fontWeight: 700, fontSize: 11, color: "#111" }}>{s.action}</div>
+                      <div style={{ fontSize: 10, color: "#4a7060", lineHeight: 1.4 }}>{s.rationale}</div>
+                      {s.citation && <code style={{ fontSize: 9, color: "#6b8a78", background: "#f0f4f2", padding: "1px 5px", borderRadius: 3 }}>{s.citation}</code>}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+              {memo.riskMatrix?.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ fontWeight: 800, fontSize: 12, color: "#111", marginBottom: 8 }}>Risk Matrix</div>
+                  {memo.riskMatrix.map((r, i) => (
+                    <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 55px 55px", gap: 6, padding: "7px 10px", background: "#f8faf9", borderRadius: 7, marginBottom: 4 }}>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: 10 }}>{r.risk}</div>
+                        <div style={{ fontSize: 9, color: "#6b8a78" }}>{r.mitigation}</div>
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: 8, color: "#8aa898" }}>LIKELIHOOD</div>
+                        <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.likelihood) }}>{r.likelihood}</div>
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: 8, color: "#8aa898" }}>SEVERITY</div>
+                        <div style={{ fontSize: 10, fontWeight: 700, color: riskColor(r.severity) }}>{r.severity}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           <div style={{ background: "#fffdf7", borderRadius: 10, padding: 14, border: "2px solid #c9a84c" }}>
             {!isPaid ? (
               <>
-                <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}> Full AI Legal Memo PDF</div>
-                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>Complete work product printable, shareable, attorney-reviewed</div>
+                <div style={{ fontWeight: 700, fontSize: 12, color: "#111", marginBottom: 3 }}>Full AI Legal Memo PDF — $149</div>
+                <div style={{ fontSize: 11, color: "#6b8a78", marginBottom: 10 }}>All 13 DuPont factors · Conflict risk matrix · Prosecution strategy · Filing recommendation · Case citations · PDF delivered to inbox</div>
                 <button onClick={() => handlePurchase("memo", 149)} style={{ width: "100%", padding: "9px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>
-                  Unlock Memo PDF $149
+                  Unlock Full Memo — $149
                 </button>
               </>
             ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}> Memo Unlocked</div>
+                <div style={{ flex: 1, fontSize: 12, color: "#2d7a4f", fontWeight: 700 }}>✓ Memo Unlocked</div>
                 <button style={{ padding: "9px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12 }}>Download PDF</button>
               </div>
             )}
