@@ -4,3 +4,5 @@ node_modules/
 .DS_Store
 *.log
 out/
+data/
+scripts/_tmp_*

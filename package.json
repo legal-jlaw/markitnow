@@ -8,7 +8,9 @@
     "start": "next start",
     "db:migrate": "node scripts/run-migration.js",
     "ingest": "node scripts/parse-uspto-xml.js",
-    "sync": "node scripts/sync-weekly.js"
+    "sync": "node scripts/sync-weekly.js",
+    "download": "node scripts/download-uspto.js",
+    "download:ingest": "node scripts/download-uspto.js --ingest"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
@@ -16,6 +18,7 @@
     "next": "14.2.0",
     "pdfkit": "^0.17.2",
     "pg": "^8.20.0",
+    "pg-copy-streams": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sax": "^1.5.0",

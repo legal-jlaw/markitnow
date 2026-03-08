@@ -22,6 +22,8 @@ const { createReadStream } = require("fs");
 const { createGunzip } = require("zlib");
 const { pipeline } = require("stream/promises");
 const sax = require("sax");
+const dns = require("dns");
+dns.setDefaultResultOrder("ipv4first");
 
 // ---------------------------------------------------------------------------
 // Config: database connection from .env.local
@@ -30,12 +32,21 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env.local") });
 
 const { Pool } = require("pg");
 
+// Use DATABASE_URL (direct) with fallback to DATABASE_URL_POOLER if set
+const dbUrl = process.env.DATABASE_URL;
+const poolerUrl = process.env.DATABASE_URL_POOLER;
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes("supabase")
-    ? { rejectUnauthorized: false }
-    : undefined,
-  max: 5,
+  connectionString: dbUrl,
+  ssl: dbUrl?.includes("supabase") ? { rejectUnauthorized: false } : undefined,
+  max: 2,
+  idleTimeoutMillis: 60000,
+  connectionTimeoutMillis: 30000,
+});
+
+// Test connection and fall back to pooler if direct fails
+pool.on("error", (err) => {
+  console.warn("Pool background error:", err.message);
 });
 
 // ---------------------------------------------------------------------------
@@ -294,128 +305,185 @@ function parseDate(str) {
   if (!str || str.length < 8) return null;
   const clean = str.replace(/[^0-9]/g, "");
   if (clean.length < 8) return null;
+  const year = parseInt(clean.slice(0, 4));
+  const month = parseInt(clean.slice(4, 6));
+  const day = parseInt(clean.slice(6, 8));
+  // Strict validation: check the date round-trips correctly
+  // (JS Date auto-corrects invalid dates like June 31 → July 1, so we catch that)
+  if (year < 1800 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) return null;
   const d = `${clean.slice(0, 4)}-${clean.slice(4, 6)}-${clean.slice(6, 8)}`;
-  // Validate it's a real date
-  const parsed = new Date(d);
+  const parsed = new Date(d + "T00:00:00Z");
   if (isNaN(parsed.getTime())) return null;
+  // Verify the date didn't roll over (e.g. Feb 30 → Mar 2)
+  if (parsed.getUTCMonth() + 1 !== month || parsed.getUTCDate() !== day) return null;
   return d;
 }
 
 // ---------------------------------------------------------------------------
-// Database insert: batch upserts for performance
+// Database insert: uses PostgreSQL COPY protocol for maximum throughput
 // ---------------------------------------------------------------------------
 
-const BATCH_SIZE = 500;
-let batch = [];
+const { Readable } = require("stream");
+const copyFrom = require("pg-copy-streams").from;
 
-async function flushBatch(sourceFile) {
+const BATCH_SIZE = 5000; // COPY can handle large batches efficiently
+
+// Escape a value for COPY tab-delimited format
+function copyEscape(val) {
+  if (val === null || val === undefined || val === "") return "\\N";
+  return String(val)
+    .replace(/\\/g, "\\\\")
+    .replace(/\t/g, "\\t")
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r");
+}
+
+// Stream rows into a table via COPY ... FROM STDIN
+function copyInto(client, table, columns, rows) {
+  return new Promise((resolve, reject) => {
+    if (rows.length === 0) return resolve();
+    const colList = columns.join(", ");
+    const sql = `COPY ${table} (${colList}) FROM STDIN WITH (FORMAT text)`;
+    const pgStream = client.query(copyFrom(sql));
+
+    // Build the entire payload as one string (fast for batches up to ~1000 rows)
+    const lines = rows.map(row => row.map(copyEscape).join("\t")).join("\n") + "\n";
+    const readable = Readable.from([lines]);
+
+    readable.on("error", reject);
+    pgStream.on("error", reject);
+    pgStream.on("finish", resolve);
+    readable.pipe(pgStream);
+  });
+}
+
+async function flushBatch(sourceFile, client) {
   if (batch.length === 0) return;
 
-  const client = await pool.connect();
   try {
     await client.query("BEGIN");
 
-    for (const c of batch) {
-      const statusLabel =
-        STATUS_LABELS[c.statusCode] ||
+    // --- 1. Trademarks: COPY into temp table, then upsert into real table ---
+    const tmCols = [
+      "serial_number","registration_number","mark_identification","mark_drawing_code",
+      "status_code","status_date","status_label",
+      "filing_date","registration_date","abandonment_date","cancellation_date",
+      "attorney_name","mark_type","register_type","source_file"
+    ];
+
+    await client.query(`
+      CREATE TEMP TABLE IF NOT EXISTS _tmp_trademarks (LIKE trademarks INCLUDING DEFAULTS)
+    `);
+    await client.query("TRUNCATE _tmp_trademarks");
+
+    const tmRows = batch.map(c => {
+      const statusLabel = STATUS_LABELS[c.statusCode] ||
         (ACTIVE_CODES.has(c.statusCode) ? "Live" : "Dead/Unknown");
+      return [
+        c.serialNumber, c.registrationNumber, c.markIdentification, c.markDrawingCode,
+        c.statusCode, c.statusDate, statusLabel,
+        c.filingDate, c.registrationDate, c.abandonmentDate, c.cancellationDate,
+        c.attorneyName, c.markType, c.registerType, sourceFile,
+      ];
+    });
+    await copyInto(client, "_tmp_trademarks", tmCols, tmRows);
 
-      // Upsert trademark
-      await client.query(
-        `INSERT INTO trademarks (
-          serial_number, registration_number, mark_identification, mark_drawing_code,
-          status_code, status_date, status_label,
-          filing_date, registration_date, abandonment_date, cancellation_date,
-          attorney_name, mark_type, register_type, source_file
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
-        ON CONFLICT (serial_number) DO UPDATE SET
-          registration_number = EXCLUDED.registration_number,
-          mark_identification = EXCLUDED.mark_identification,
-          mark_drawing_code = EXCLUDED.mark_drawing_code,
-          status_code = EXCLUDED.status_code,
-          status_date = EXCLUDED.status_date,
-          status_label = EXCLUDED.status_label,
-          filing_date = EXCLUDED.filing_date,
-          registration_date = EXCLUDED.registration_date,
-          abandonment_date = EXCLUDED.abandonment_date,
-          cancellation_date = EXCLUDED.cancellation_date,
-          attorney_name = EXCLUDED.attorney_name,
-          mark_type = EXCLUDED.mark_type,
-          register_type = EXCLUDED.register_type,
-          source_file = EXCLUDED.source_file,
-          updated_at = NOW()`,
-        [
-          c.serialNumber, c.registrationNumber, c.markIdentification, c.markDrawingCode,
-          c.statusCode, c.statusDate, statusLabel,
-          c.filingDate, c.registrationDate, c.abandonmentDate, c.cancellationDate,
-          c.attorneyName, c.markType, c.registerType, sourceFile,
-        ]
-      );
+    // Upsert from temp → real
+    await client.query(`
+      INSERT INTO trademarks (${tmCols.join(",")})
+      SELECT ${tmCols.join(",")} FROM _tmp_trademarks
+      ON CONFLICT (serial_number) DO UPDATE SET
+        registration_number = EXCLUDED.registration_number,
+        mark_identification = EXCLUDED.mark_identification,
+        mark_drawing_code = EXCLUDED.mark_drawing_code,
+        status_code = EXCLUDED.status_code,
+        status_date = EXCLUDED.status_date,
+        status_label = EXCLUDED.status_label,
+        filing_date = EXCLUDED.filing_date,
+        registration_date = EXCLUDED.registration_date,
+        abandonment_date = EXCLUDED.abandonment_date,
+        cancellation_date = EXCLUDED.cancellation_date,
+        attorney_name = EXCLUDED.attorney_name,
+        mark_type = EXCLUDED.mark_type,
+        register_type = EXCLUDED.register_type,
+        source_file = EXCLUDED.source_file,
+        updated_at = NOW()
+    `);
 
-      // Replace child records: delete old, insert new
-      await client.query("DELETE FROM owners WHERE serial_number = $1", [c.serialNumber]);
+    // Collect serial numbers for bulk deletes of child tables
+    const serials = batch.map(c => c.serialNumber);
+    const serialPlaceholders = serials.map((_, i) => `$${i + 1}`).join(",");
+
+    // --- 2. Owners ---
+    await client.query(`DELETE FROM owners WHERE serial_number IN (${serialPlaceholders})`, serials);
+    const ownerRows = [];
+    for (const c of batch) {
       for (const o of c.owners) {
-        await client.query(
-          `INSERT INTO owners (serial_number, entry_number, party_type, party_name,
-            legal_entity_type, entity_statement, address_1, address_2,
-            city, state, country, postcode, nationality, dba_aka_text)
-          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
-          [
-            c.serialNumber, o.entryNumber, o.partyType, o.partyName,
-            o.legalEntityType, o.entityStatement, o.address1, o.address2,
-            o.city, o.state, o.country, o.postcode, o.nationality, o.dbaAkaText,
-          ]
-        );
+        ownerRows.push([
+          c.serialNumber, o.entryNumber, o.partyType, o.partyName,
+          o.legalEntityType, o.entityStatement, o.address1, o.address2,
+          o.city, o.state, o.country, o.postcode, o.nationality, o.dbaAkaText,
+        ]);
       }
+    }
+    if (ownerRows.length > 0) {
+      await copyInto(client, "owners", [
+        "serial_number","entry_number","party_type","party_name",
+        "legal_entity_type","entity_statement","address_1","address_2",
+        "city","state","country","postcode","nationality","dba_aka_text"
+      ], ownerRows);
+    }
 
-      await client.query("DELETE FROM classifications WHERE serial_number = $1", [c.serialNumber]);
+    // --- 3. Classifications ---
+    await client.query(`DELETE FROM classifications WHERE serial_number IN (${serialPlaceholders})`, serials);
+    const classRows = [];
+    for (const c of batch) {
       for (const cl of c.classifications) {
-        await client.query(
-          `INSERT INTO classifications (serial_number, international_code, us_code,
-            status_code, status_date, first_use_date, first_use_commerce, primary_code)
-          VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
-          [
-            c.serialNumber, cl.internationalCode, cl.usCode,
-            cl.statusCode, cl.statusDate, cl.firstUseDate, cl.firstUseCommerce, cl.primaryCode,
-          ]
-        );
+        classRows.push([
+          c.serialNumber, cl.internationalCode, cl.usCode,
+          cl.statusCode, cl.statusDate, cl.firstUseDate, cl.firstUseCommerce, cl.primaryCode,
+        ]);
       }
+    }
+    if (classRows.length > 0) {
+      await copyInto(client, "classifications", [
+        "serial_number","international_code","us_code",
+        "status_code","status_date","first_use_date","first_use_commerce","primary_code"
+      ], classRows);
+    }
 
-      // Only insert goods & services statements (type starts with "GS")
-      await client.query("DELETE FROM goods_services WHERE serial_number = $1", [c.serialNumber]);
-      for (const st of c.statements.filter((s) => s.typeCode.startsWith("GS"))) {
-        await client.query(
-          `INSERT INTO goods_services (serial_number, type_code, description)
-          VALUES ($1,$2,$3)`,
-          [c.serialNumber, st.typeCode, st.text]
-        );
+    // --- 4. Goods & Services ---
+    await client.query(`DELETE FROM goods_services WHERE serial_number IN (${serialPlaceholders})`, serials);
+    const gsRows = [];
+    for (const c of batch) {
+      for (const st of c.statements.filter(s => s.typeCode.startsWith("GS"))) {
+        gsRows.push([c.serialNumber, st.typeCode, st.text]);
       }
+    }
+    if (gsRows.length > 0) {
+      await copyInto(client, "goods_services", [
+        "serial_number","type_code","description"
+      ], gsRows);
+    }
 
-      await client.query("DELETE FROM design_searches WHERE serial_number = $1", [c.serialNumber]);
+    // --- 5. Design searches ---
+    await client.query(`DELETE FROM design_searches WHERE serial_number IN (${serialPlaceholders})`, serials);
+    const dsRows = [];
+    for (const c of batch) {
       for (const ds of c.designSearches) {
-        await client.query(
-          `INSERT INTO design_searches (serial_number, design_code) VALUES ($1,$2)`,
-          [c.serialNumber, ds.code]
-        );
+        dsRows.push([c.serialNumber, ds.code]);
       }
-
-      // Skip events for bulk load (optional, saves time — uncomment if needed)
-      // await client.query("DELETE FROM events WHERE serial_number = $1", [c.serialNumber]);
-      // for (const ev of c.events) {
-      //   await client.query(
-      //     `INSERT INTO events (serial_number, event_code, event_type, event_date, description_text, sequence_number)
-      //     VALUES ($1,$2,$3,$4,$5,$6)`,
-      //     [c.serialNumber, ev.code, ev.type, ev.date, ev.descriptionText, ev.sequenceNumber]
-      //   );
-      // }
+    }
+    if (dsRows.length > 0) {
+      await copyInto(client, "design_searches", [
+        "serial_number","design_code"
+      ], dsRows);
     }
 
     await client.query("COMMIT");
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;
-  } finally {
-    client.release();
   }
 
   batch = [];
@@ -426,40 +494,70 @@ async function flushBatch(sourceFile) {
 // ---------------------------------------------------------------------------
 
 async function processZipFile(zipPath, sourceFile) {
-  const AdmZip = require("adm-zip");
-  const zip = new AdmZip(zipPath);
-  const entries = zip.getEntries();
+  const { execSync } = require("child_process");
 
+  // Use CLI unzip instead of AdmZip — handles files >2GB that exceed Node Buffer limits
+  const tmpDir = path.join(__dirname, `_tmp_extract_${Date.now()}`);
+  fs.mkdirSync(tmpDir, { recursive: true });
+
+  try {
+    console.log(`  📂 Extracting zip with CLI unzip...`);
+    execSync(`unzip -o -q "${path.resolve(zipPath)}" -d "${tmpDir}"`, { maxBuffer: 10 * 1024 * 1024 });
+  } catch (err) {
+    // unzip may return exit code 1 for warnings — check if files were extracted
+    const extracted = fs.readdirSync(tmpDir).filter(f => f.endsWith(".xml"));
+    if (extracted.length === 0) {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+      throw new Error(`Failed to extract zip: ${err.message}`);
+    }
+  }
+
+  const xmlFiles = fs.readdirSync(tmpDir).filter(f => f.endsWith(".xml")).sort();
   let totalRecords = 0;
 
-  for (const entry of entries) {
-    if (entry.entryName.endsWith(".xml")) {
-      console.log(`  📄 Extracting: ${entry.entryName}`);
+  // Acquire ONE persistent connection for the entire ingest
+  const client = await pool.connect();
+  console.log("  🔗 Database connection acquired");
 
-      // Write to temp file (streaming from zip buffer)
-      const tmpPath = path.join(__dirname, `_tmp_${Date.now()}.xml`);
-      fs.writeFileSync(tmpPath, entry.getData());
+  try {
+    // Extend statement timeout for the session (10 min per statement)
+    await client.query("SET statement_timeout = '600000'");
 
-      try {
-        const stream = createReadStream(tmpPath, { encoding: "utf-8" });
-        const count = await parseXMLStream(stream, async (caseFile, n) => {
-          batch.push(caseFile);
-          if (batch.length >= BATCH_SIZE) {
-            await flushBatch(sourceFile);
-            if (n % 5000 === 0) {
-              process.stdout.write(`\r  ✅ ${n.toLocaleString()} records processed...`);
-            }
-          }
-        });
+    for (const xmlFile of xmlFiles) {
+      const tmpPath = path.join(tmpDir, xmlFile);
+      console.log(`  📄 Processing: ${xmlFile}`);
 
-        // Flush remaining
-        await flushBatch(sourceFile);
-        totalRecords += count;
-        console.log(`\n  ✅ ${entry.entryName}: ${count.toLocaleString()} records`);
-      } finally {
-        fs.unlinkSync(tmpPath);
+      // Phase 1: Parse ALL records into memory (SAX is sync, can't await inside callback)
+      const allRecords = [];
+      const stream = createReadStream(tmpPath, { encoding: "utf-8" });
+      const count = await parseXMLStream(stream, (caseFile, n) => {
+        allRecords.push(caseFile);
+        if (n % 5000 === 0) {
+          process.stdout.write(`\r  📖 Parsed ${n.toLocaleString()} records...`);
+        }
+      });
+      console.log(`\n  📖 Parsed ${count.toLocaleString()} records, now inserting...`);
+
+      // Phase 2: Flush to DB in batches via COPY protocol
+      const startInsert = Date.now();
+      for (let i = 0; i < allRecords.length; i += BATCH_SIZE) {
+        batch = allRecords.slice(i, i + BATCH_SIZE);
+        await flushBatch(sourceFile, client);
+        const done = Math.min(i + BATCH_SIZE, allRecords.length);
+        const elapsed = ((Date.now() - startInsert) / 1000).toFixed(0);
+        const rate = (done / ((Date.now() - startInsert) / 1000)).toFixed(0);
+        process.stdout.write(`\r  ✅ ${done.toLocaleString()} / ${allRecords.length.toLocaleString()} inserted (${rate} rec/s, ${elapsed}s)...`);
       }
+      batch = [];
+
+      totalRecords += count;
+      console.log(`\n  ✅ ${xmlFile}: ${count.toLocaleString()} records done`);
     }
+  } finally {
+    client.release();
+    console.log("  🔗 Database connection released");
+    // Clean up extracted files
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
   return totalRecords;
@@ -546,7 +644,14 @@ Environment:
         );
       }
 
-      console.log(`📦 ${file}`);
+      // Skip files that are too small (likely incomplete downloads)
+      const fileSize = fs.statSync(filePath).size;
+      if (file.endsWith(".zip") && fileSize < 10000) {
+        console.log(`⏭️  Skipping ${file} (${fileSize} bytes — likely incomplete download)`);
+        continue;
+      }
+
+      console.log(`📦 ${file} (${(fileSize / 1024 / 1024).toFixed(1)} MB)`);
       const startTime = Date.now();
 
       try {
@@ -556,19 +661,29 @@ Environment:
             ? await countRecordsInZip(filePath)
             : await processZipFile(filePath, file);
         } else {
+          // For raw XML files: parse all, then flush
+          const allRecords = [];
           const stream = createReadStream(filePath, { encoding: "utf-8" });
-          count = await parseXMLStream(stream, async (caseFile, n) => {
-            if (!dryRun) {
-              batch.push(caseFile);
-              if (batch.length >= BATCH_SIZE) {
-                await flushBatch(file);
-              }
-            }
+          count = await parseXMLStream(stream, (caseFile, n) => {
+            allRecords.push(caseFile);
             if (n % 5000 === 0) {
-              process.stdout.write(`\r  ✅ ${n.toLocaleString()} records...`);
+              process.stdout.write(`\r  📖 Parsed ${n.toLocaleString()} records...`);
             }
           });
-          if (!dryRun) await flushBatch(file);
+
+          if (!dryRun && allRecords.length > 0) {
+            const xmlClient = await pool.connect();
+            await xmlClient.query("SET statement_timeout = '300000'");
+            try {
+              for (let i = 0; i < allRecords.length; i += BATCH_SIZE) {
+                batch = allRecords.slice(i, i + BATCH_SIZE);
+                await flushBatch(file, xmlClient);
+              }
+              batch = [];
+            } finally {
+              xmlClient.release();
+            }
+          }
         }
 
         totalRecords += count;
@@ -600,19 +715,29 @@ Environment:
         ? await countRecordsInZip(inputPath)
         : await processZipFile(inputPath, file);
     } else {
+      // Parse all records first, then flush to DB
+      const allRecords = [];
       const stream = createReadStream(inputPath, { encoding: "utf-8" });
-      totalRecords = await parseXMLStream(stream, async (caseFile, n) => {
-        if (!dryRun) {
-          batch.push(caseFile);
-          if (batch.length >= BATCH_SIZE) {
-            await flushBatch(file);
-          }
-        }
+      totalRecords = await parseXMLStream(stream, (caseFile, n) => {
+        allRecords.push(caseFile);
         if (n % 5000 === 0) {
-          process.stdout.write(`\r  ✅ ${n.toLocaleString()} records...`);
+          process.stdout.write(`\r  📖 Parsed ${n.toLocaleString()} records...`);
         }
       });
-      if (!dryRun) await flushBatch(file);
+
+      if (!dryRun && allRecords.length > 0) {
+        const xmlClient = await pool.connect();
+        await xmlClient.query("SET statement_timeout = '300000'");
+        try {
+          for (let i = 0; i < allRecords.length; i += BATCH_SIZE) {
+            batch = allRecords.slice(i, i + BATCH_SIZE);
+            await flushBatch(file, xmlClient);
+          }
+          batch = [];
+        } finally {
+          xmlClient.release();
+        }
+      }
     }
   }
 
@@ -623,23 +748,22 @@ Environment:
 
 // Dry-run helper: just count records in a zip without DB writes
 async function countRecordsInZip(zipPath) {
-  const AdmZip = require("adm-zip");
-  const zip = new AdmZip(zipPath);
+  const { execSync } = require("child_process");
+  const tmpDir = path.join(__dirname, `_tmp_dryrun_${Date.now()}`);
+  fs.mkdirSync(tmpDir, { recursive: true });
+  try {
+    execSync(`unzip -o -q "${path.resolve(zipPath)}" -d "${tmpDir}"`, { maxBuffer: 10 * 1024 * 1024 });
+  } catch (err) { /* warnings ok */ }
+  const xmlFiles = fs.readdirSync(tmpDir).filter(f => f.endsWith(".xml"));
   let total = 0;
-  for (const entry of zip.getEntries()) {
-    if (entry.entryName.endsWith(".xml")) {
-      const tmpPath = path.join(__dirname, `_tmp_${Date.now()}.xml`);
-      fs.writeFileSync(tmpPath, entry.getData());
-      try {
-        const stream = createReadStream(tmpPath, { encoding: "utf-8" });
-        const count = await parseXMLStream(stream, () => {});
-        total += count;
-        console.log(`  📄 ${entry.entryName}: ${count.toLocaleString()} records`);
-      } finally {
-        fs.unlinkSync(tmpPath);
-      }
-    }
+  for (const xmlFile of xmlFiles) {
+    const tmpPath = path.join(tmpDir, xmlFile);
+    const stream = createReadStream(tmpPath, { encoding: "utf-8" });
+    const count = await parseXMLStream(stream, () => {});
+    total += count;
+    console.log(`  📄 ${xmlFile}: ${count.toLocaleString()} records`);
   }
+  fs.rmSync(tmpDir, { recursive: true, force: true });
   return total;
 }
 
