@@ -1,23 +1,25 @@
 // pages/api/stripe-webhook.js
 // ─────────────────────────────────────────────────────────────────────────────
-// Stripe webhook handler
+// Stripe webhook handler — with payments table persistence + retry logic
 //
 // Fires on: checkout.session.completed
 //
 // Flow:
 //   1. Verify Stripe signature (security)
 //   2. Extract email, mark, product from session
-//   3. Run Analysis Agent (Agent 1) to generate report data
-//   4. Run Lead Profile Agent (Agent 3) with buyer segment
-//   5. Send PDF delivery email via Resend
-//   6. Trigger post-purchase drip sequence
+//   3. Create payment record in DB (dedup by stripe_session_id)
+//   4. Run Analysis Agent (Agent 1) to generate report data
+//   5. Run Lead Profile Agent (Agent 3) with buyer segment
+//   6. Send report email via Resend (with up to 3 retries)
+//   7. Trigger post-purchase drip sequence
+//   8. Update payment record with delivery status
 //
 // Requires env vars:
 //   STRIPE_SECRET_KEY
 //   STRIPE_WEBHOOK_SECRET  (from Stripe Dashboard > Webhooks)
 //   NEXT_PUBLIC_ANTHROPIC_KEY
-//   RAPIDAPI_KEY
 //   RESEND_API_KEY
+//   DATABASE_URL
 //
 // Stripe Dashboard setup:
 //   Endpoint URL: https://markitnow.ai/api/stripe-webhook
@@ -28,13 +30,15 @@ export const config = {
   api: {
     bodyParser: false, // Required for Stripe signature verification
   },
+  maxDuration: 60, // Allow up to 60s for analysis + email delivery
 };
 
-const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
-const RAPIDAPI_HOST = "uspto-trademark.p.rapidapi.com";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
   || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
   || "https://markitnow-two.vercel.app";
+
+const MAX_RETRIES = 3;
+const RETRY_DELAYS = [2000, 5000, 15000]; // 2s, 5s, 15s
 
 // ── Raw body reader (required for Stripe signature verification) ──────────────
 
@@ -55,12 +59,66 @@ async function verifyStripeSignature(rawBody, signature, secret) {
   return stripe.webhooks.constructEvent(rawBody, signature, secret);
 }
 
-// ── Run Analysis Agent inline (avoids internal fetch latency) ─────────────────
+// ── DB helpers for payments table ─────────────────────────────────────────────
+
+function getDb() {
+  try {
+    const { getPool } = require("../../lib/db");
+    return getPool();
+  } catch {
+    return null;
+  }
+}
+
+async function createPaymentRecord(db, { stripeSessionId, paymentIntent, email, mark, product, amountCents, goodsServices, classCode, customerName }) {
+  try {
+    const { rows } = await db.query(
+      `INSERT INTO payments (stripe_session_id, stripe_payment_intent, email, mark, product, amount_cents, goods_services, class_code, customer_name)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       ON CONFLICT (stripe_session_id) DO UPDATE SET updated_at = NOW()
+       RETURNING id, (xmax = 0) AS is_new`,
+      [stripeSessionId, paymentIntent, email, mark, product, amountCents, goodsServices, classCode, customerName]
+    );
+    const record = rows[0];
+    if (!record.is_new) {
+      console.log(`[Webhook] Duplicate webhook for session ${stripeSessionId} — skipping`);
+    }
+    return record;
+  } catch (err) {
+    console.error("[Webhook] Failed to create payment record:", err.message);
+    return null;
+  }
+}
+
+async function updatePaymentStatus(db, stripeSessionId, updates) {
+  if (!db) return;
+  const setClauses = [];
+  const values = [];
+  let idx = 1;
+
+  for (const [key, value] of Object.entries(updates)) {
+    // Convert camelCase to snake_case
+    const col = key.replace(/([A-Z])/g, "_$1").toLowerCase();
+    setClauses.push(`${col} = $${idx}`);
+    values.push(value);
+    idx++;
+  }
+  setClauses.push(`updated_at = NOW()`);
+  values.push(stripeSessionId);
+
+  try {
+    await db.query(
+      `UPDATE payments SET ${setClauses.join(", ")} WHERE stripe_session_id = $${idx}`,
+      values
+    );
+  } catch (err) {
+    console.error("[Webhook] Failed to update payment status:", err.message);
+  }
+}
+
+// ── Run Analysis Agent inline ─────────────────────────────────────────────────
 
 async function runAnalysisAgent(mark, goodsServices, classCode) {
-  const anthropicKey = process.env.NEXT_PUBLIC_ANTHROPIC_KEY;
-
-  // Call our own analysis agent endpoint
   const res = await fetch(`${BASE_URL}/api/analysis-agent`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -73,6 +131,25 @@ async function runAnalysisAgent(mark, goodsServices, classCode) {
   }
 
   return res.json();
+}
+
+// ── Retry helper ──────────────────────────────────────────────────────────────
+
+async function withRetry(fn, label, maxRetries = MAX_RETRIES) {
+  let lastErr;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (attempt < maxRetries) {
+        const delay = RETRY_DELAYS[attempt] || 5000;
+        console.warn(`[Webhook] ${label} attempt ${attempt + 1} failed: ${err.message} — retrying in ${delay}ms`);
+        await new Promise(r => setTimeout(r, delay));
+      }
+    }
+  }
+  throw lastErr;
 }
 
 // ── Generate HTML report for email delivery ───────────────────────────────────
@@ -239,7 +316,7 @@ async function sendReportEmail(email, mark, report, product) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.warn("[Webhook] RESEND_API_KEY not set - skipping email delivery");
-    return;
+    return { skipped: true };
   }
 
   const isMemo = product === "memo";
@@ -276,10 +353,6 @@ async function sendReportEmail(email, mark, report, product) {
 function triggerPostPurchaseDrip(email, mark, product, report) {
   const risk = report?.scoring?.overallRisk || "UNKNOWN";
 
-  // Post-purchase sequence is different from pre-purchase drip
-  // Day 3: "Now that you have your report, here's what to do next"
-  // Day 7: Push toward filing or subscription
-  // Day 14: Upsell to Watch plan if not yet subscribed
   const drips = [
     {
       day: 3,
@@ -340,55 +413,113 @@ export default async function handler(req, res) {
   const product = session.metadata?.product || "report";
   const goodsServices = session.metadata?.goodsServices || null;
   const classCode = session.metadata?.classCode || null;
-  const amountPaid = session.amount_total / 100;
+  const amountCents = session.amount_total || 0;
 
-  console.log(`[Webhook] Payment confirmed: ${email} | mark: "${mark}" | product: ${product} | amount: $${amountPaid}`);
+  console.log(`[Webhook] Payment confirmed: ${email} | mark: "${mark}" | product: ${product} | amount: $${amountCents / 100}`);
 
   if (!email || !mark) {
     console.error("[Webhook] Missing email or mark in session metadata");
     return res.status(200).json({ received: true, error: "Missing email or mark" });
   }
 
+  // ── Persist payment to DB ───────────────────────────────────────────────────
+  const db = getDb();
+  let paymentRecord = null;
+
+  if (db) {
+    paymentRecord = await createPaymentRecord(db, {
+      stripeSessionId: session.id,
+      paymentIntent: session.payment_intent,
+      email,
+      mark,
+      product,
+      amountCents,
+      goodsServices,
+      classCode,
+      customerName: session.customer_details?.name || null,
+    });
+
+    // If this is a duplicate webhook (Stripe retried), skip processing
+    if (paymentRecord && !paymentRecord.is_new) {
+      return res.status(200).json({ received: true, duplicate: true });
+    }
+  }
+
   // Respond to Stripe immediately - processing happens async
   res.status(200).json({ received: true });
 
   // ── Async processing after responding to Stripe ──
+  let report = null;
+
+  // Step 1: Run Analysis Agent (with retry)
   try {
-    // Step 1: Run Analysis Agent
     console.log(`[Webhook] Running Analysis Agent for "${mark}"`);
-    const report = await runAnalysisAgent(mark, goodsServices, classCode);
+    report = await withRetry(
+      () => runAnalysisAgent(mark, goodsServices, classCode),
+      "Analysis Agent"
+    );
     console.log(`[Webhook] Analysis complete - Risk: ${report?.scoring?.overallRisk}`);
 
-    // Step 2: Run Lead Profile Agent (buyer segment - highest value)
-    fetch(`${BASE_URL}/api/lead-profile-agent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        mark,
-        conflictCount: report?.retrieval?.totalFound || 0,
-        activeCount: report?.retrieval?.activeCount || 0,
-        goodsServices,
-        source: "stripe_paid",
-        product,
-        amountPaid,
-      }),
-    }).then(async (r) => {
-      const profile = await r.json();
-      console.log(`[Webhook] Lead profiled: ${profile.segment?.segment} | urgency: ${profile.profile?.urgencyScore}`);
-    }).catch((e) => console.error("[Webhook] Lead profile error:", e));
+    await updatePaymentStatus(db, session.id, {
+      analysisStatus: "success",
+    });
+  } catch (err) {
+    console.error(`[Webhook] Analysis failed after ${MAX_RETRIES} retries:`, err.message);
+    await updatePaymentStatus(db, session.id, {
+      analysisStatus: "failed",
+      analysisError: err.message,
+    });
+    // Still try to send a basic email even if analysis fails
+  }
 
-    // Step 3: Deliver report via email
+  // Step 2: Run Lead Profile Agent (fire-and-forget, non-critical)
+  fetch(`${BASE_URL}/api/lead-profile-agent`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email,
+      mark,
+      conflictCount: report?.retrieval?.totalFound || 0,
+      activeCount: report?.retrieval?.activeCount || 0,
+      goodsServices,
+      source: "stripe_paid",
+      product,
+      amountPaid: amountCents / 100,
+    }),
+  }).then(async (r) => {
+    const profile = await r.json();
+    console.log(`[Webhook] Lead profiled: ${profile.segment?.segment} | urgency: ${profile.profile?.urgencyScore}`);
+  }).catch((e) => console.error("[Webhook] Lead profile error:", e));
+
+  // Step 3: Deliver report via email (with retry)
+  try {
     console.log(`[Webhook] Sending report email to ${email}`);
-    await sendReportEmail(email, mark, report, product);
+    const emailResult = await withRetry(
+      () => sendReportEmail(email, mark, report, product),
+      "Email delivery"
+    );
     console.log(`[Webhook] Report delivered to ${email}`);
 
-    // Step 4: Trigger post-purchase drip
+    await updatePaymentStatus(db, session.id, {
+      emailStatus: "success",
+      resendEmailId: emailResult?.id || null,
+      deliveredAt: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.error(`[Webhook] Email delivery failed after ${MAX_RETRIES} retries:`, err.message);
+    await updatePaymentStatus(db, session.id, {
+      emailStatus: "failed",
+      emailError: err.message,
+      retryCount: MAX_RETRIES,
+      lastRetryAt: new Date().toISOString(),
+      // Schedule retry for 1 hour from now (picked up by retry-deliveries endpoint)
+      nextRetryAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    });
+  }
+
+  // Step 4: Trigger post-purchase drip
+  if (report) {
     triggerPostPurchaseDrip(email, mark, product, report);
     console.log(`[Webhook] Post-purchase drip queued for ${email}`);
-
-  } catch (err) {
-    console.error("[Webhook] Processing error:", err.message);
-    // TODO: Add to retry queue / alert Wali via email if delivery fails
   }
 }

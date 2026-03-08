@@ -6,12 +6,18 @@ export const config = {
 };
 
 import { runAnalysis } from "../../lib/analysisCore";
+const { aiLimiter, applyRateLimit } = require("../../lib/rateLimit");
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+
+  // Rate limit: 10 AI analysis calls per minute per IP
+  // Skip rate limit for internal calls (from webhook)
+  const isInternal = req.headers["x-internal-call"] === process.env.STRIPE_WEBHOOK_SECRET;
+  if (!isInternal && applyRateLimit(req, res, aiLimiter)) return;
 
   const { mark, goodsServices, classCode, useType, prefetchedConflicts } = req.body;
   if (!mark?.trim()) return res.status(400).json({ error: "mark is required" });

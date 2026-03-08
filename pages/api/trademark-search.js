@@ -1,26 +1,24 @@
 // pages/api/trademark-search.js
 // ─────────────────────────────────────────────────────────────────────────────
-// USPTO trademark search via USPTO's own internal OpenSearch API
-// The same endpoint that powers tmsearch.uspto.gov
-// FREE - no API key, no quota, no third-party dependency
-//
-// POST https://tmsearch.uspto.gov/prod-stage-v1-0-0/tmsearch
-// OpenSearch query_string syntax
+// Hybrid trademark search:
+//   1. Supabase DB (fast, bulk data) — primary source when data is loaded
+//   2. USPTO live API (real-time) — fallback, also used to supplement DB results
 //
 // GET /api/trademark-search?mark=strange+water
 // GET /api/trademark-search?mark=nike&_debug=1
+// GET /api/trademark-search?mark=nike&source=uspto  (force USPTO live API)
 // ─────────────────────────────────────────────────────────────────────────────
+
+const { searchTrademarks: dbSearch, isDatabaseReady } = require("../../lib/db");
+const { searchLimiter, applyRateLimit } = require("../../lib/rateLimit");
 
 const USPTO_API = "https://tmsearch.uspto.gov/prod-stage-v1-0-0/tmsearch";
 const PAGE_SIZE = 50;
 
 // ── In-memory cache ───────────────────────────────────────────────────────────
 // Serverless instances share memory within a warm instance, cutting repeat
-// USPTO calls for popular searches. TTL: 24 hours, max 500 entries.
-//
-// ARCHITECTURE NOTE: When Flavia's Supabase bulk pipeline is ready, replace
-// the queryUSPTO() calls below with Supabase queries. Keep this cache on top
-// of that too. USPTO live API becomes fallback for marks filed in last 7 days.
+// calls for popular searches. TTL: 24 hours, max 500 entries.
+// Cache sits on top of both Supabase DB and USPTO live API.
 // ─────────────────────────────────────────────────────────────────────────────
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const searchCache  = new Map();
@@ -136,10 +134,38 @@ function phoneticVariants(word) {
   return [...variants].slice(0, 4);
 }
 
+// Normalize a Supabase DB row (from search_trademarks_ranked) to match USPTO API shape
+function normalizeDbRow(row) {
+  const statusLabel = (row.status_label || "").toLowerCase();
+  const status = row.is_active
+    ? (row.registration_date ? "Live/Registered" : "Live/Pending")
+    : statusLabel.includes("cancel") ? "Dead/Cancelled"
+    : statusLabel.includes("expir") ? "Dead/Expired"
+    : "Dead/Abandoned";
+
+  return {
+    markName:         row.mark_identification || "",
+    serialNumber:     row.serial_number || "",
+    owner:            row.owner_name || "Unknown",
+    status,
+    filingDate:       row.filing_date ? String(row.filing_date).split("T")[0] : "",
+    registrationDate: row.registration_date ? String(row.registration_date).split("T")[0] : "",
+    classCode:        row.class_codes || "",
+    description:      row.description || "",
+    isActive:         !!row.is_active,
+    markType:         "Standard Character",
+    drawingCode:      4,
+    source:           "db",
+  };
+}
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   if (req.method === "OPTIONS") return res.status(200).end();
+
+  // Rate limit: 30 searches per minute per IP
+  if (applyRateLimit(req, res, searchLimiter)) return;
 
   const mark = req.query.mark?.trim();
   if (!mark) return res.status(400).json({ error: "mark param required" });
@@ -148,6 +174,7 @@ export default async function handler(req, res) {
   const firstWord  = trimmed.split(/\s+/)[0];
   const isMultiWord = firstWord.toLowerCase() !== trimmed.toLowerCase();
   const cacheKey   = trimmed.toLowerCase();
+  const forceUSPTO = req.query.source === "uspto";
 
   // ── Debug mode ──────────────────────────────────────────────────────────────
   if (req.query._debug) {
@@ -170,6 +197,43 @@ export default async function handler(req, res) {
     return res.status(200).json(cached);
   }
 
+  // ── Try Supabase DB first (if data is loaded and not forcing USPTO) ────────
+  if (!forceUSPTO) {
+    try {
+      const dbReady = await isDatabaseReady();
+      if (dbReady) {
+        const dbRows = await dbSearch(trimmed, { status: "all", limit: 200 });
+        if (dbRows && dbRows.length > 0) {
+          const items = dbRows.map(normalizeDbRow).filter(Boolean);
+          items.sort((a, b) => {
+            if (a.isActive && !b.isActive) return -1;
+            if (!a.isActive && b.isActive) return  1;
+            return (b.filingDate || "").localeCompare(a.filingDate || "");
+          });
+
+          const activeCount = items.filter(i => i.isActive).length;
+          const payload = {
+            mark:        trimmed,
+            totalFound:  items.length,
+            activeCount,
+            items,
+            source:      "database",
+            cachedAt:    new Date().toISOString(),
+          };
+
+          cacheSet(cacheKey, payload);
+          res.setHeader("X-Cache", "MISS");
+          res.setHeader("X-Source", "supabase");
+          return res.status(200).json(payload);
+        }
+      }
+    } catch (dbErr) {
+      // DB failed — fall through to USPTO live API
+      console.warn("DB search failed, falling back to USPTO:", dbErr.message);
+    }
+  }
+
+  // ── Fallback: USPTO live API ───────────────────────────────────────────────
   const phonetics = phoneticVariants(trimmed);
 
   try {
@@ -217,12 +281,13 @@ export default async function handler(req, res) {
       totalFound:  deduplicated.length,
       activeCount,
       items:       deduplicated,
+      source:      "uspto_live",
       cachedAt:    new Date().toISOString(),
     };
 
-    // ── Cache miss — store result ──────────────────────────────────────────────
     cacheSet(cacheKey, payload);
     res.setHeader("X-Cache", "MISS");
+    res.setHeader("X-Source", "uspto");
 
     return res.status(200).json(payload);
 
