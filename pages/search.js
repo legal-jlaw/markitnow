@@ -883,11 +883,24 @@ export default function SearchPage() {
                         <div key={i} style={{ border: "1px solid #e0e8e4", borderRadius: 8, background: "#fff", padding: "10px 12px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
                           {/* Wordmark header */}
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
-                            <div>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>{t.markType || "Wordmark"}</div>
-                              <div style={{ fontWeight: 900, fontSize: 16, color: "#111", letterSpacing: 0.5, fontFamily: "Georgia, serif" }}>{t.markName}</div>
+                            <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0 }}>
+                              {/* Logo thumbnail — only for design+words (3) or stylized (5) marks */}
+                              {(t.drawingCode === 3 || t.drawingCode === 5) && t.serialNumber && (
+                                <div style={{ flexShrink: 0, width: 52, height: 52, borderRadius: 6, border: "1px solid #e8ede9", background: "#f9faf9", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                  <img
+                                    src={`https://tsdr.uspto.gov/img/${t.serialNumber}/large`}
+                                    alt={t.markName}
+                                    onError={e => { e.target.style.display = "none"; e.target.parentNode.style.display = "none"; }}
+                                    style={{ width: "100%", height: "100%", objectFit: "contain", padding: 4 }}
+                                  />
+                                </div>
+                              )}
+                              <div style={{ minWidth: 0 }}>
+                                <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 }}>{t.markType || "Wordmark"}</div>
+                                <div style={{ fontWeight: 900, fontSize: 16, color: "#111", letterSpacing: 0.5, fontFamily: "Georgia, serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.markName}</div>
+                              </div>
                             </div>
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3, flexShrink: 0, marginLeft: 8 }}>
                               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                                 <span style={{
                                   fontSize: 10, fontWeight: 800, borderRadius: 4, padding: "2px 7px",
