@@ -807,7 +807,7 @@ export default function SearchPage() {
         body { margin: 0; font-family: 'DM Sans', system-ui, sans-serif; }
       `}</style>
 
-      <div style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div style={{ height: isMobile ? "auto" : "100vh", minHeight: "100vh", display: "flex", flexDirection: "column", overflow: isMobile ? "auto" : "hidden" }}>
         {/* Top bar */}
         <div style={{ background: "#111", padding: isMobile ? "10px 14px" : "10px 24px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", gap: isMobile ? 8 : 14, flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -825,10 +825,10 @@ export default function SearchPage() {
         </div>
 
         {/* Split pane */}
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 30%", gridTemplateRows: isMobile ? "50% 50%" : "1fr", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: isMobile ? "block" : "grid", gridTemplateColumns: "1fr 30%", overflow: isMobile ? "auto" : "hidden" }}>
 
           {/* LEFT: USPTO results */}
-          <div style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRight: "1px solid #d4e0da", background: "#fff" }}>
+          <div style={{ display: "flex", flexDirection: "column", overflow: isMobile ? "visible" : "hidden", borderRight: isMobile ? "none" : "1px solid #d4e0da", borderBottom: isMobile ? "3px solid #c9a84c" : "none", background: "#fff" }}>
             {/* Panel header */}
             <div style={{ padding: "14px 22px", borderBottom: "1px solid #eef2f0", flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
@@ -980,7 +980,7 @@ export default function SearchPage() {
           </div>
 
           {/* RIGHT: AI Analysis + Purchase */}
-          <div style={{ background: "#fff", overflow: "hidden", display: "flex", flexDirection: "column", borderTop: isMobile ? "2px solid #c9a84c" : "none" }}>
+          <div style={{ background: "#fff", overflow: isMobile ? "visible" : "hidden", display: "flex", flexDirection: "column" }}>
             <PurchasePanel mark={mark} trademarks={trademarks} loading={usptoStatus === "loading"} isMobile={isMobile} />
           </div>
         </div>
