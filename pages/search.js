@@ -7,6 +7,16 @@ import { generateReportPDF, generateMemoPDF } from "../lib/generatePDF";
 
 //  Helpers 
 
+function useWindowWidth() {
+  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  useEffect(() => {
+    const handler = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+  return width;
+}
+
 function statusStyle(status = "") {
   const s = status.toLowerCase();
   if (s.includes("live") && s.includes("regist"))  return { color: "#1a7a3c", bg: "#e8f7ee", dot: "#2ecc71",  label: "Registered",  category: "live" };
@@ -29,7 +39,7 @@ function scoreColor(s) {
 
 //  Purchase / Analysis Panel 
 
-function PurchasePanel({ mark, trademarks, loading }) {
+function PurchasePanel({ mark, trademarks, loading, isMobile }) {
   const { query } = useRouter();
   const devMode = query.dev === "1"; // ?dev=1 bypasses paywall for testing
 
@@ -738,6 +748,8 @@ export default function SearchPage() {
   const [usptoStatus, setUsptoStatus] = useState("loading");
   const [filterStatus, setFilterStatus] = useState("all");
   const [newSearchInput, setNewSearchInput] = useState("");
+  const windowWidth = useWindowWidth();
+  const isMobile = windowWidth < 768;
 
   useEffect(() => { if (mark) setNewSearchInput(mark); }, [mark]);
 
@@ -784,6 +796,7 @@ export default function SearchPage() {
         <meta property="og:description" content="Search the live USPTO trademark database free. See active marks, dead marks, owner info, and filing dates. Instant results across 4M+ federal trademark registrations." />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MarkItNow.ai" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Free USPTO Trademark Search | MarkItNow.ai" />
         <meta name="twitter:description" content="Search the live USPTO trademark database free. See active marks, dead marks, owner info, and filing dates. Instant results across 4M+ federal trademark registrations." />
@@ -796,19 +809,23 @@ export default function SearchPage() {
 
       <div style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* Top bar */}
-        <div style={{ background: "#111", padding: "10px 24px", display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
-          <a href="/" style={{ background: "rgba(255,255,255,0.1)", color: "#555", borderRadius: 7, padding: "6px 14px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>← MarkItNow</a>
-          <form onSubmit={handleNewSearch} style={{ flex: 1, display: "flex", gap: 8, maxWidth: 540 }}>
+        <div style={{ background: "#111", padding: isMobile ? "10px 14px" : "10px 24px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", gap: isMobile ? 8 : 14, flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <a href="/" style={{ background: "rgba(255,255,255,0.1)", color: "#aaa", borderRadius: 7, padding: "6px 12px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", textDecoration: "none" }}>← MarkItNow</a>
+          </div>
+          <form onSubmit={handleNewSearch} style={{ flex: 1, display: "flex", gap: 8 }}>
             <input value={newSearchInput} onChange={e => setNewSearchInput(e.target.value)}
-              style={{ flex: 1, padding: "7px 14px", borderRadius: 7, border: "1.5px solid rgba(255,255,255,0.15)", background: "#f4f4f4", color: "#111", fontSize: 14, fontFamily: "inherit", outline: "none" }}
+              style={{ flex: 1, padding: "8px 14px", borderRadius: 7, border: "1.5px solid rgba(255,255,255,0.15)", background: "#f4f4f4", color: "#111", fontSize: isMobile ? 16 : 14, fontFamily: "inherit", outline: "none", minWidth: 0 }}
               placeholder="Search another mark..." />
-            <button type="submit" style={{ padding: "7px 16px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 7, fontWeight: 800, fontSize: 13 }}>Search</button>
+            <button type="submit" style={{ padding: "8px 14px", background: "#c9a84c", color: "#0a0a0a", border: "none", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>Search</button>
           </form>
-          <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap" }}>Don't file blind - Get Analysis</a>
+          {!isMobile && (
+            <a href={`/file?mark=${encodeURIComponent(mark)}`} style={{ background: "#c9a84c", color: "#0a0a0a", padding: "7px 14px", borderRadius: 7, fontWeight: 800, fontSize: 13, whiteSpace: "nowrap", textDecoration: "none" }}>Don't file blind - Get Analysis</a>
+          )}
         </div>
 
         {/* Split pane */}
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 30%", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 30%", gridTemplateRows: isMobile ? "50% 50%" : "1fr", overflow: "hidden" }}>
 
           {/* LEFT: USPTO results */}
           <div style={{ display: "flex", flexDirection: "column", overflow: "hidden", borderRight: "1px solid #d4e0da", background: "#fff" }}>
@@ -835,8 +852,8 @@ export default function SearchPage() {
                 {trademarks.length > 0 && ` expanded search includes first keyword`}
               </div>
               {usptoStatus === "done" && trademarks.length > 0 && (
-                <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
-                  {[["all", "All"], ["active", "Live (Registered)"], ["pending", "Live (Pending)"], ["dead", "Dead"]].map(([val, label]) => (
+                <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+                  {[["all", "All"], ["active", "Registered"], ["pending", "Pending"], ["dead", "Dead"]].map(([val, label]) => (
                     <button key={val} onClick={() => setFilterStatus(val)} style={{ padding: "3px 10px", borderRadius: 20, border: "1px solid", borderColor: filterStatus === val ? "#111" : "#d4e3d9", background: filterStatus === val ? "#111" : "#fff", color: filterStatus === val ? "#fff" : "#6b8a78", fontSize: 10, fontWeight: 600 }}>
                       {label}
                     </button>
@@ -886,7 +903,7 @@ export default function SearchPage() {
                             <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0 }}>
                               {/* Logo thumbnail — only for design+words (3) or stylized (5) marks */}
                               {(t.drawingCode === 3 || t.drawingCode === 5) && t.serialNumber && (
-                                <div style={{ flexShrink: 0, width: 52, height: 52, borderRadius: 6, border: "1px solid #e8ede9", background: "#f9faf9", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <div style={{ flexShrink: 0, width: isMobile ? 40 : 52, height: isMobile ? 40 : 52, borderRadius: 6, border: "1px solid #e8ede9", background: "#f9faf9", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
                                   <img
                                     src={`https://tsdr.uspto.gov/img/${t.serialNumber}/large`}
                                     alt={t.markName}
@@ -917,7 +934,7 @@ export default function SearchPage() {
                           </div>
 
                           {/* Detail grid */}
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5px 12px", fontSize: 12 }}>
+                          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "5px 12px", fontSize: 12 }}>
                             <div>
                               <div style={{ fontSize: 9, fontWeight: 700, color: "#8aa898", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 1 }}>Serial</div>
                               <div style={{ color: "#111", fontWeight: 600 }}>
@@ -963,8 +980,8 @@ export default function SearchPage() {
           </div>
 
           {/* RIGHT: AI Analysis + Purchase */}
-          <div style={{ background: "#fff", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-            <PurchasePanel mark={mark} trademarks={trademarks} loading={usptoStatus === "loading"} />
+          <div style={{ background: "#fff", overflow: "hidden", display: "flex", flexDirection: "column", borderTop: isMobile ? "2px solid #c9a84c" : "none" }}>
+            <PurchasePanel mark={mark} trademarks={trademarks} loading={usptoStatus === "loading"} isMobile={isMobile} />
           </div>
         </div>
       </div>
