@@ -805,9 +805,11 @@ export default function SearchPage() {
         @keyframes mni-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
         * { box-sizing: border-box; }
         body { margin: 0; font-family: 'DM Sans', system-ui, sans-serif; }
+        html, body { overflow-x: hidden; }
+        @media (max-width: 767px) { body { overflow-y: auto !important; } }
       `}</style>
 
-      <div style={{ height: isMobile ? "auto" : "100vh", minHeight: "100vh", display: "flex", flexDirection: "column", overflow: isMobile ? "auto" : "hidden" }}>
+      <div style={{ height: isMobile ? "auto" : "100vh", minHeight: isMobile ? "100dvh" : "100vh", display: "flex", flexDirection: "column", overflow: isMobile ? "visible" : "hidden" }}>
         {/* Top bar */}
         <div style={{ background: "#111", padding: isMobile ? "10px 14px" : "10px 24px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", gap: isMobile ? 8 : 14, flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -825,10 +827,10 @@ export default function SearchPage() {
         </div>
 
         {/* Split pane */}
-        <div style={{ flex: 1, display: isMobile ? "block" : "grid", gridTemplateColumns: "1fr 30%", overflow: isMobile ? "auto" : "hidden" }}>
+        <div style={{ flex: isMobile ? "none" : 1, display: isMobile ? "block" : "grid", gridTemplateColumns: "1fr 30%", overflow: isMobile ? "visible" : "hidden" }}>
 
           {/* LEFT: USPTO results */}
-          <div style={{ display: "flex", flexDirection: "column", overflow: isMobile ? "visible" : "hidden", borderRight: isMobile ? "none" : "1px solid #d4e0da", borderBottom: isMobile ? "3px solid #c9a84c" : "none", background: "#fff" }}>
+          <div style={{ display: "flex", flexDirection: "column", overflow: isMobile ? "visible" : "hidden", borderRight: isMobile ? "none" : "1px solid #d4e0da", borderBottom: isMobile ? "3px solid #c9a84c" : "none", background: "#fff", minHeight: isMobile ? "auto" : 0 }}>
             {/* Panel header */}
             <div style={{ padding: "14px 22px", borderBottom: "1px solid #eef2f0", flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
